@@ -1,0 +1,1 @@
+# vpdrl-inventory-system
