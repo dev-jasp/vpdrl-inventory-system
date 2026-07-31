@@ -1,0 +1,14 @@
+# Vendored Claude Design snapshots are byte-for-byte copies of upstream.
+# Formatting them would rewrite all 2.5k lines and destroy diff fidelity
+# against the design project, breaking the re-pull workflow in
+# docs/agents/design.md. Never format these.
+design/
+
+# Build output and generated files
+.next/
+out/
+build/
+coverage/
+next-env.d.ts
+*.tsbuildinfo
+package-lock.json
