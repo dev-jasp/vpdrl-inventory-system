@@ -1,26 +1,147 @@
 @import "tailwindcss";
 
+/* Design tokens, copied from the `<style>` block of
+   `design/LabTrack Dashboard.dc.html`. Names are kept verbatim so a snippet
+   lifted out of the design (`var(--text-3)`, `var(--border-soft)`, …) works
+   here unchanged. Colours are also exposed to Tailwind below under the same
+   suffix, so `--surface-2` is `bg-surface-2` and `--text-3` is `text-text-3`.
+   The rest stay CSS-only: `shadow-[var(--shadow-2)]`, `bg-[var(--scrim)]`. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: oklch(98.5% 0.002 247.839);
+  --surface: #ffffff;
+  --surface-2: #fafbfc;
+  --muted: #f5f6f8;
+  --border: #ecedf1;
+  --border-strong: #e4e6ec;
+  --border-soft: #f1f2f6;
+  --grid: #e5e7eb;
+  --grid-soft: #f1f2f4;
+  --text: #1c2033;
+  --text-2: #5c6379;
+  --text-3: #8b91a6;
+  --text-4: #a8adbd;
+  --tint-blue: #dbeafe;
+  --tint-green: #d1fae5;
+  --tint-red: #fee2e2;
+  --tint-violet: #ddd6fe;
+  --tint-amber: #fde68a;
+  --badge-green-bg: #ecfdf5;
+  --badge-green-fg: #047857;
+  --badge-amber-bg: #fffbeb;
+  --badge-amber-fg: #b45309;
+  --badge-red-bg: #fef2f2;
+  --badge-red-fg: #b91c1c;
+  --badge-violet-bg: #f5f3ff;
+  --badge-violet-fg: #6d28d9;
+  --shadow-1: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-2: 0 12px 28px rgba(16, 24, 40, 0.14);
+  --shadow-3: 0 26px 64px rgba(16, 24, 40, 0.26);
+  --scrim: rgba(22, 26, 44, 0.34);
+  --scroll-thumb: #dfe2e8;
+  --accent-fg: #1d4ed8;
+  --av-1: #dbeafe;
+  --av-2: #e6f7f0;
+  --av-3: #fff1e2;
+  --av-4: #e8edf0;
+  --av-5: #fdeaea;
+  --av-6: #e6f2ef;
 }
+
+[data-theme="dark"] {
+  --bg: oklch(20.5% 0.012 265);
+  --surface: oklch(25.2% 0.014 265);
+  --surface-2: oklch(28% 0.014 265);
+  --muted: oklch(30.5% 0.015 265);
+  --border: oklch(32% 0.016 265);
+  --border-strong: oklch(36% 0.018 265);
+  --border-soft: oklch(29.5% 0.014 265);
+  --grid: oklch(33% 0.016 265);
+  --grid-soft: oklch(29% 0.014 265);
+  --text: oklch(96% 0.004 265);
+  --text-2: oklch(80% 0.012 265);
+  --text-3: oklch(66% 0.016 265);
+  --text-4: oklch(56% 0.018 265);
+  --tint-blue: oklch(38% 0.09 262);
+  --tint-green: oklch(37% 0.08 155);
+  --tint-red: oklch(37% 0.09 25);
+  --tint-violet: oklch(38% 0.09 292);
+  --tint-amber: oklch(40% 0.09 75);
+  --badge-green-bg: oklch(30% 0.06 155);
+  --badge-green-fg: oklch(84% 0.13 158);
+  --badge-amber-bg: oklch(31% 0.06 75);
+  --badge-amber-fg: oklch(86% 0.13 85);
+  --badge-red-bg: oklch(30% 0.07 25);
+  --badge-red-fg: oklch(84% 0.12 25);
+  --badge-violet-bg: oklch(31% 0.07 292);
+  --badge-violet-fg: oklch(85% 0.12 295);
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 12px 28px rgba(0, 0, 0, 0.5);
+  --shadow-3: 0 26px 64px rgba(0, 0, 0, 0.6);
+  --scrim: rgba(6, 8, 16, 0.58);
+  --scroll-thumb: oklch(36% 0.016 265);
+  --accent-fg: #93c5fd;
+  --av-1: oklch(36% 0.08 262);
+  --av-2: oklch(35% 0.07 158);
+  --av-3: oklch(36% 0.08 70);
+  --av-4: oklch(36% 0.07 292);
+  --av-5: oklch(35% 0.08 25);
+  --av-6: oklch(35% 0.06 165);
+}
+
+/* The theme is an explicit user choice written to `data-theme` on <html>, not
+   a media query — see `ThemeToggle`. `dark:` follows that attribute. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-border-soft: var(--border-soft);
+  --color-grid: var(--grid);
+  --color-grid-soft: var(--grid-soft);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-text-4: var(--text-4);
+  --color-tint-blue: var(--tint-blue);
+  --color-tint-green: var(--tint-green);
+  --color-tint-red: var(--tint-red);
+  --color-tint-violet: var(--tint-violet);
+  --color-tint-amber: var(--tint-amber);
+  --color-badge-green-bg: var(--badge-green-bg);
+  --color-badge-green-fg: var(--badge-green-fg);
+  --color-badge-amber-bg: var(--badge-amber-bg);
+  --color-badge-amber-fg: var(--badge-amber-fg);
+  --color-badge-red-bg: var(--badge-red-bg);
+  --color-badge-red-fg: var(--badge-red-fg);
+  --color-badge-violet-bg: var(--badge-violet-bg);
+  --color-badge-violet-fg: var(--badge-violet-fg);
+  --color-accent-fg: var(--accent-fg);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-manrope);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(59, 130, 246, 0.28);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 8px;
+  border: 3px solid var(--bg);
 }

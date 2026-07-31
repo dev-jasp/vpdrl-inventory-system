@@ -78,5 +78,7 @@ data/     seed datasets standing in for the API
 
 ## Status
 
-Routes are placeholder pages that render the view name. No design
-implementation yet.
+The app shell is built — `app/(dashboard)/layout.tsx` with `components/layout/`
+(sidebar, nav, topbar, search, theme toggle, user menu) and the design tokens in
+`app/globals.css`. Every route below it is still a placeholder page that renders
+the view name.
