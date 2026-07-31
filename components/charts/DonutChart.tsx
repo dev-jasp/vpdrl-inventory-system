@@ -1,27 +1,27 @@
 // Tremor DonutChart [v1.0.0]
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-"use client"
+"use client";
 
-import React from "react"
+import React from "react";
 import {
   Pie,
   PieChart as ReChartsDonutChart,
   ResponsiveContainer,
   Sector,
   Tooltip,
-} from "recharts"
+} from "recharts";
 
 import {
   AvailableChartColors,
   type AvailableChartColorsKeys,
   constructCategoryColors,
   getColorClassName,
-} from "../../utils/chartColors"
-import { cx } from "../../utils/cx"
+} from "../../utils/chartColors";
+import { cx } from "../../utils/cx";
 
 const sumNumericArray = (arr: number[]): number =>
-  arr.reduce((sum, num) => sum + num, 0)
+  arr.reduce((sum, num) => sum + num, 0);
 
 const parseData = (
   data: Record<string, any>[],
@@ -35,32 +35,33 @@ const parseData = (
       categoryColors.get(dataPoint[category]) || AvailableChartColors[0],
       "fill",
     ),
-  }))
+  }));
 
 const calculateDefaultLabel = (data: any[], valueKey: string): number =>
-  sumNumericArray(data.map((dataPoint) => dataPoint[valueKey]))
+  sumNumericArray(data.map((dataPoint) => dataPoint[valueKey]));
 
 const parseLabelInput = (
   labelInput: string | undefined,
   valueFormatter: (value: number) => string,
   data: any[],
   valueKey: string,
-): string => labelInput || valueFormatter(calculateDefaultLabel(data, valueKey))
+): string =>
+  labelInput || valueFormatter(calculateDefaultLabel(data, valueKey));
 
 //#region Tooltip
 
-type TooltipProps = Pick<ChartTooltipProps, "active" | "payload">
+type TooltipProps = Pick<ChartTooltipProps, "active" | "payload">;
 
 type PayloadItem = {
-  category: string
-  value: number
-  color: AvailableChartColorsKeys
-}
+  category: string;
+  value: number;
+  color: AvailableChartColorsKeys;
+};
 
 interface ChartTooltipProps {
-  active: boolean | undefined
-  payload: PayloadItem[]
-  valueFormatter: (value: number) => string
+  active: boolean | undefined;
+  payload: PayloadItem[];
+  valueFormatter: (value: number) => string;
 }
 
 const ChartTooltip = ({
@@ -97,7 +98,7 @@ const ChartTooltip = ({
                 <p
                   className={cx(
                     // base
-                    "whitespace-nowrap text-right",
+                    "text-right whitespace-nowrap",
                     // text color
                     "text-gray-700 dark:text-gray-300",
                   )}
@@ -108,7 +109,7 @@ const ChartTooltip = ({
               <p
                 className={cx(
                   // base
-                  "whitespace-nowrap text-right font-medium tabular-nums",
+                  "text-right font-medium whitespace-nowrap tabular-nums",
                   // text color
                   "text-gray-900 dark:text-gray-50",
                 )}
@@ -119,14 +120,14 @@ const ChartTooltip = ({
           ))}
         </div>
       </div>
-    )
+    );
   }
-  return null
-}
+  return null;
+};
 
 const renderInactiveShape = (props: any) => {
   const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, className } =
-    props
+    props;
 
   return (
     <Sector
@@ -141,32 +142,32 @@ const renderInactiveShape = (props: any) => {
       opacity={0.3}
       style={{ outline: "none" }}
     />
-  )
-}
+  );
+};
 
-type DonutChartVariant = "donut" | "pie"
+type DonutChartVariant = "donut" | "pie";
 
 type BaseEventProps = {
-  eventType: "sector"
-  categoryClicked: string
-  [key: string]: number | string
-}
+  eventType: "sector";
+  categoryClicked: string;
+  [key: string]: number | string;
+};
 
-type DonutChartEventProps = BaseEventProps | null | undefined
+type DonutChartEventProps = BaseEventProps | null | undefined;
 
 interface DonutChartProps extends React.HTMLAttributes<HTMLDivElement> {
-  data: Record<string, any>[]
-  category: string
-  value: string
-  colors?: AvailableChartColorsKeys[]
-  variant?: DonutChartVariant
-  valueFormatter?: (value: number) => string
-  label?: string
-  showLabel?: boolean
-  showTooltip?: boolean
-  onValueChange?: (value: DonutChartEventProps) => void
-  tooltipCallback?: (tooltipCallbackContent: TooltipProps) => void
-  customTooltip?: React.ComponentType<TooltipProps>
+  data: Record<string, any>[];
+  category: string;
+  value: string;
+  colors?: AvailableChartColorsKeys[];
+  variant?: DonutChartVariant;
+  valueFormatter?: (value: number) => string;
+  label?: string;
+  showLabel?: boolean;
+  showTooltip?: boolean;
+  onValueChange?: (value: DonutChartEventProps) => void;
+  tooltipCallback?: (tooltipCallbackContent: TooltipProps) => void;
+  customTooltip?: React.ComponentType<TooltipProps>;
 }
 
 const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>(
@@ -189,39 +190,44 @@ const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>(
     },
     forwardedRef,
   ) => {
-    const CustomTooltip = customTooltip
+    const CustomTooltip = customTooltip;
     const [activeIndex, setActiveIndex] = React.useState<number | undefined>(
       undefined,
-    )
-    const isDonut = variant === "donut"
-    const parsedLabelInput = parseLabelInput(label, valueFormatter, data, value)
+    );
+    const isDonut = variant === "donut";
+    const parsedLabelInput = parseLabelInput(
+      label,
+      valueFormatter,
+      data,
+      value,
+    );
 
-    const categories = Array.from(new Set(data.map((item) => item[category])))
-    const categoryColors = constructCategoryColors(categories, colors)
+    const categories = Array.from(new Set(data.map((item) => item[category])));
+    const categoryColors = constructCategoryColors(categories, colors);
 
-    const prevActiveRef = React.useRef<boolean | undefined>(undefined)
-    const prevCategoryRef = React.useRef<string | undefined>(undefined)
+    const prevActiveRef = React.useRef<boolean | undefined>(undefined);
+    const prevCategoryRef = React.useRef<string | undefined>(undefined);
 
     const handleShapeClick = (
       data: any,
       index: number,
       event: React.MouseEvent,
     ) => {
-      event.stopPropagation()
-      if (!onValueChange) return
+      event.stopPropagation();
+      if (!onValueChange) return;
 
       if (activeIndex === index) {
-        setActiveIndex(undefined)
-        onValueChange(null)
+        setActiveIndex(undefined);
+        onValueChange(null);
       } else {
-        setActiveIndex(index)
+        setActiveIndex(index);
         onValueChange({
           eventType: "sector",
           categoryClicked: data.payload[category],
           ...data.payload,
-        })
+        });
       }
-    }
+    };
 
     return (
       <div
@@ -235,8 +241,8 @@ const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>(
             onClick={
               onValueChange && activeIndex !== undefined
                 ? () => {
-                    setActiveIndex(undefined)
-                    onValueChange(null)
+                    setActiveIndex(undefined);
+                    onValueChange(null);
                   }
                 : undefined
             }
@@ -288,9 +294,9 @@ const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>(
                           item.payload[category],
                         ) as AvailableChartColorsKeys,
                       }))
-                    : []
+                    : [];
 
-                  const payloadCategory: string = cleanPayload[0]?.category
+                  const payloadCategory: string = cleanPayload[0]?.category;
 
                   if (
                     tooltipCallback &&
@@ -300,9 +306,9 @@ const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>(
                     tooltipCallback({
                       active,
                       payload: cleanPayload,
-                    })
-                    prevActiveRef.current = active
-                    prevCategoryRef.current = payloadCategory
+                    });
+                    prevActiveRef.current = active;
+                    prevCategoryRef.current = payloadCategory;
                   }
 
                   return showTooltip && active ? (
@@ -315,17 +321,17 @@ const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>(
                         valueFormatter={valueFormatter}
                       />
                     )
-                  ) : null
+                  ) : null;
                 }}
               />
             )}
           </ReChartsDonutChart>
         </ResponsiveContainer>
       </div>
-    )
+    );
   },
-)
+);
 
-DonutChart.displayName = "DonutChart"
+DonutChart.displayName = "DonutChart";
 
-export { DonutChart, type DonutChartEventProps, type TooltipProps }
+export { DonutChart, type DonutChartEventProps, type TooltipProps };

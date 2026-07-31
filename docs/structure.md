@@ -1,30 +1,31 @@
 # Folder structure
 
-Derived from the `LabTrack Dashboard.dc.html` design (Claude Design project
-`9ee7c3ab-1c78-4af2-9af1-8b47dbe27429`). App Router, no `src/` folder, `@/*`
-resolves to the repo root.
+Derived from `design/LabTrack Dashboard.dc.html`, a vendored snapshot of the
+Claude Design project `9ee7c3ab-1c78-4af2-9af1-8b47dbe27429` — see
+`docs/agents/design.md` for how to read and refresh it. App Router, no `src/`
+folder, `@/*` resolves to the repo root.
 
 ## Routes
 
 Every view shares one shell (sidebar + topbar), so all pages live in a
 `(dashboard)` route group. The group name is omitted from the URL.
 
-| Path                                             | URL                     |
-| ------------------------------------------------ | ----------------------- |
-| `app/layout.tsx`                                 | root layout, fonts, metadata |
-| `app/(dashboard)/layout.tsx`                     | app shell               |
-| `app/(dashboard)/page.tsx`                       | `/`                     |
-| `app/(dashboard)/inventory/page.tsx`             | `/inventory`            |
-| `app/(dashboard)/inventory/new/page.tsx`         | `/inventory/new`        |
-| `app/(dashboard)/inventory/[itemId]/page.tsx`    | `/inventory/:itemId`    |
-| `app/(dashboard)/inventory/[itemId]/edit/page.tsx` | `/inventory/:itemId/edit` |
-| `app/(dashboard)/purchase-orders/page.tsx`       | `/purchase-orders`      |
-| `app/(dashboard)/staff/page.tsx`                 | `/staff`                |
-| `app/(dashboard)/suppliers/page.tsx`             | `/suppliers`            |
-| `app/(dashboard)/reports/page.tsx`               | `/reports`              |
-| `app/(dashboard)/support/page.tsx`               | `/support`              |
+| Path                                               | URL                          |
+| -------------------------------------------------- | ---------------------------- |
+| `app/layout.tsx`                                   | root layout, fonts, metadata |
+| `app/(dashboard)/layout.tsx`                       | app shell                    |
+| `app/(dashboard)/page.tsx`                         | `/`                          |
+| `app/(dashboard)/inventory/page.tsx`               | `/inventory`                 |
+| `app/(dashboard)/inventory/new/page.tsx`           | `/inventory/new`             |
+| `app/(dashboard)/inventory/[itemId]/page.tsx`      | `/inventory/:itemId`         |
+| `app/(dashboard)/inventory/[itemId]/edit/page.tsx` | `/inventory/:itemId/edit`    |
+| `app/(dashboard)/purchase-orders/page.tsx`         | `/purchase-orders`           |
+| `app/(dashboard)/staff/page.tsx`                   | `/staff`                     |
+| `app/(dashboard)/suppliers/page.tsx`               | `/suppliers`                 |
+| `app/(dashboard)/reports/page.tsx`                 | `/reports`                   |
+| `app/(dashboard)/support/page.tsx`                 | `/support`                   |
 
-### What is deliberately *not* a route
+### What is deliberately _not_ a route
 
 - **Chemicals, Equipment, Low stock, Expiring / due** — sidebar entries that in
   the design call `goList(...)` with a filter. They are `/inventory` with
