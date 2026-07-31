@@ -3,7 +3,12 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
-import { INVENTORY_CHILDREN, activeInventoryChild } from "./navItems";
+import {
+  INVENTORY_CHILDREN,
+  NAV_GROUPS,
+  activeChild,
+  isSectionActive,
+} from "./navItems";
 
 /**
  * The topbar heading. The design shows the active sidebar entry, so on
@@ -11,14 +16,7 @@ import { INVENTORY_CHILDREN, activeInventoryChild } from "./navItems";
  * falls back to the section name everywhere else.
  */
 const TITLES: Record<string, string> = {
-  "/": "Dashboard",
-  "/inventory": "Inventory",
   "/inventory/new": "New item",
-  "/purchase-orders": "Purchase Orders",
-  "/staff": "Staff List",
-  "/suppliers": "Suppliers",
-  "/reports": "Reports",
-  "/support": "Support",
 };
 
 function sectionTitle(pathname: string) {
@@ -27,7 +25,12 @@ function sectionTitle(pathname: string) {
   if (pathname.startsWith("/inventory/")) {
     return pathname.endsWith("/edit") ? "Edit item" : "Item detail";
   }
-  return "Dashboard";
+  // Anything else falls back to the section it sits in, so a route added
+  // without a title here reads as its section rather than as "Dashboard".
+  const item = NAV_GROUPS.flatMap((group) => group.items).find((candidate) =>
+    isSectionActive(candidate, pathname),
+  );
+  return item?.label ?? "";
 }
 
 export function PageTitle() {
@@ -48,8 +51,9 @@ export function PageTitle() {
 }
 
 function InventoryTitle({ fallback }: { fallback: string }) {
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const child = activeInventoryChild(searchParams);
+  const child = activeChild(INVENTORY_CHILDREN, pathname, searchParams);
   // "All items" is the unfiltered list, which the design titles "Inventory".
   const filtered = child && child.href !== INVENTORY_CHILDREN[0].href;
   return <>{filtered ? child.label : fallback}</>;

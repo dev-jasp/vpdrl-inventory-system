@@ -6,7 +6,7 @@ import { Suspense, useId, useState } from "react";
 
 import { Icon } from "@/components/ui/Icon";
 import { cx } from "@/utils/cx";
-import { InventoryNavLinks, InventoryNavList } from "./InventoryNavLinks";
+import { NavChildLinks, NavChildList } from "./NavChildLinks";
 import { UserMenu } from "./UserMenu";
 import { NAV_GROUPS, isSectionActive, type NavItem } from "./navItems";
 
@@ -17,8 +17,16 @@ import { NAV_GROUPS, isSectionActive, type NavItem } from "./navItems";
 export function Sidebar() {
   const pathname = usePathname();
   const [rail, setRail] = useState(false);
-  const [inventoryOpen, setInventoryOpen] = useState(true);
-  const subNavId = useId();
+  const [menuOpen, setMenuOpen] = useState(false);
+  // Sub-lists start open, as in the design; closing one is per nav item.
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+  const idPrefix = useId();
+
+  function toggleRail() {
+    setRail((value) => !value);
+    // The rail is too narrow to anchor the menu against.
+    setMenuOpen(false);
+  }
 
   return (
     <div
@@ -29,7 +37,7 @@ export function Sidebar() {
     >
       {rail ? (
         <div className="flex justify-center pt-4 pb-[18px]">
-          <RailToggle rail={rail} onToggle={() => setRail(false)} />
+          <RailToggle rail={rail} onToggle={toggleRail} />
         </div>
       ) : (
         <div className="flex items-center gap-[11px] px-4 pt-[18px] pb-5">
@@ -39,7 +47,7 @@ export function Sidebar() {
           <span className="min-w-0 text-[15px] font-extrabold tracking-[-0.015em]">
             VPDRL Inventory and Supplies
           </span>
-          <RailToggle rail={rail} onToggle={() => setRail(true)} />
+          <RailToggle rail={rail} onToggle={toggleRail} />
         </div>
       )}
 
@@ -60,34 +68,47 @@ export function Sidebar() {
               </div>
             )}
             <ul aria-label={group.label} className="flex flex-col gap-0.5">
-              {group.items.map((item) => (
-                <li key={item.href}>
-                  <NavRow
-                    item={item}
-                    rail={rail}
-                    active={isSectionActive(item, pathname)}
-                    subNavId={subNavId}
-                    subNavOpen={inventoryOpen}
-                    onToggleSubNav={() => setInventoryOpen((open) => !open)}
-                  />
-                  {item.children && inventoryOpen && !rail ? (
-                    <Suspense
-                      fallback={
-                        <InventoryNavList id={subNavId} active={null} />
+              {group.items.map((item) => {
+                const subNavId = `${idPrefix}${item.href}`;
+                const subNavOpen = !collapsed[item.href];
+                return (
+                  <li key={item.href}>
+                    <NavRow
+                      item={item}
+                      rail={rail}
+                      active={isSectionActive(item, pathname)}
+                      subNavId={subNavId}
+                      subNavOpen={subNavOpen}
+                      onToggleSubNav={() =>
+                        setCollapsed((value) => ({
+                          ...value,
+                          [item.href]: subNavOpen,
+                        }))
                       }
-                    >
-                      <InventoryNavLinks id={subNavId} />
-                    </Suspense>
-                  ) : null}
-                </li>
-              ))}
+                    />
+                    {item.children && subNavOpen && !rail ? (
+                      <Suspense
+                        fallback={
+                          <NavChildList
+                            id={subNavId}
+                            items={item.children}
+                            active={null}
+                          />
+                        }
+                      >
+                        <NavChildLinks id={subNavId} items={item.children} />
+                      </Suspense>
+                    ) : null}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}
       </nav>
 
       <div className="flex-none border-t border-border px-3 pt-3 pb-3.5">
-        <UserMenu rail={rail} />
+        <UserMenu rail={rail} open={menuOpen} onOpenChange={setMenuOpen} />
       </div>
     </div>
   );

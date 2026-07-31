@@ -72,26 +72,60 @@ export function isSectionActive(item: NavItem, pathname: string) {
   return pathname === item.href || pathname.startsWith(`${item.href}/`);
 }
 
+type ParsedChildren = {
+  children: { child: NavChild; path: string; filters: [string, string][] }[];
+  /** Every searchParam any preset in this list pins, e.g. `cat`, `flag`. */
+  keys: Set<string>;
+};
+
+// Nav lists are module constants, so parse each one once.
+const parsed = new WeakMap<NavChild[], ParsedChildren>();
+
+function parse(children: NavChild[]): ParsedChildren {
+  const cached = parsed.get(children);
+  if (cached) return cached;
+
+  const keys = new Set<string>();
+  const entries = children.map((child) => {
+    const [path, query = ""] = child.href.split("?");
+    const filters = [...new URLSearchParams(query)];
+    for (const [key] of filters) keys.add(key);
+    return { child, path, filters };
+  });
+
+  const result = { children: entries, keys };
+  parsed.set(children, result);
+  return result;
+}
+
 /**
- * Which Inventory filter the current query string represents, as the child's
- * own `href`, or `null` when the filters in the URL match no preset. Reading
- * the URL rather than tracking a selection keeps the filters bookmarkable.
+ * Which preset in `children` the current URL represents, or `null` when it
+ * matches none. Reading it back off the URL rather than tracking a selection
+ * is what keeps the filters bookmarkable.
+ *
+ * A preset matches only when it pins every filter the URL sets — otherwise
+ * `?cat=Chemicals&flag=low` would resolve to plain "Chemicals" — and an
+ * unfiltered preset ("All items") matches only a URL with no filters at all.
  */
-export function activeInventoryChild(search: URLSearchParams): NavChild | null {
-  for (const child of INVENTORY_CHILDREN) {
-    const params = [...new URLSearchParams(child.href.split("?")[1] ?? "")];
-    if (
-      params.length > 0 &&
-      params.every(([key, value]) => search.get(key) === value)
-    ) {
+export function activeChild(
+  children: NavChild[],
+  pathname: string,
+  search: URLSearchParams,
+): NavChild | null {
+  const { children: entries, keys } = parse(children);
+  const filtered = [...keys].some((key) => search.has(key));
+
+  for (const { child, path, filters } of entries) {
+    if (path !== pathname) continue;
+    if (filters.length === 0) {
+      if (!filtered) return child;
+      continue;
+    }
+    const own = new Set(filters.map(([key]) => key));
+    const exact = [...keys].every((key) => own.has(key) || !search.has(key));
+    if (exact && filters.every(([key, value]) => search.get(key) === value)) {
       return child;
     }
   }
-  const preset = new Set(
-    INVENTORY_CHILDREN.flatMap((child) => [
-      ...new URLSearchParams(child.href.split("?")[1] ?? "").keys(),
-    ]),
-  );
-  const filtered = [...preset].some((key) => search.has(key));
-  return filtered ? null : INVENTORY_CHILDREN[0];
+  return null;
 }

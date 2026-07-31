@@ -26,7 +26,9 @@ export default function RootLayout({
       lang="en"
       // `themeScript` sets data-theme before React hydrates.
       suppressHydrationWarning
-      className={`${manrope.variable} h-full antialiased`}
+      // Font smoothing and the page background live in globals.css, with the
+      // rest of the design's body styles.
+      className={`${manrope.variable} h-full`}
     >
       <body className="flex min-h-full flex-col font-sans">
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

@@ -125,10 +125,16 @@
 }
 
 body {
-  margin: 0;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Tailwind v4's Preflight dropped v3's `button { cursor: pointer }`. The
+   design sets `cursor:pointer` on every control it draws, so restore it. */
+button:not(:disabled),
+[role="button"]:not(:disabled) {
+  cursor: pointer;
 }
 
 ::selection {
