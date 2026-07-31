@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId } from "react";
 
 import { Icon, type IconName } from "@/components/ui/Icon";
+import { initials } from "@/lib/shared/names";
 import { cx } from "@/utils/cx";
 
 // Placeholder identity, taken from the design's `userName` prop. Replace with
@@ -15,33 +16,32 @@ const MENU_ITEMS: { label: string; icon: IconName }[] = [
   { label: "Notifications", icon: "bell" },
 ];
 
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/);
-  return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
-}
-
-export function UserMenu({ rail }: { rail: boolean }) {
-  const [requested, setRequested] = useState(false);
+export function UserMenu({
+  rail,
+  open,
+  onOpenChange,
+}: {
+  rail: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const menuId = useId();
-  // The rail is too narrow to anchor the menu against, so it never shows there.
-  const open = requested && !rail;
 
   useEffect(() => {
     if (!open) return;
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setRequested(false);
+      if (event.key === "Escape") onOpenChange(false);
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+  }, [open, onOpenChange]);
 
   return (
     <div className="relative">
       <button
         type="button"
-        onClick={() => setRequested((value) => !value)}
+        onClick={() => onOpenChange(!open)}
         aria-expanded={open}
-        aria-haspopup="menu"
         aria-controls={open ? menuId : undefined}
         className={cx(
           "flex w-full items-center gap-[10px] rounded-[10px] px-2 py-[7px] text-left hover:bg-bg",
@@ -65,16 +65,18 @@ export function UserMenu({ rail }: { rail: boolean }) {
         )}
       </button>
 
+      {/* Plain buttons rather than role="menu"/"menuitem": that contract owes a
+          screen reader arrow-key navigation and focus management, and Tab
+          through ordinary buttons is honest about what this does. */}
       {open ? (
         <>
           <div
             className="fixed inset-0 z-[19]"
-            onClick={() => setRequested(false)}
+            onClick={() => onOpenChange(false)}
             aria-hidden
           />
           <div
             id={menuId}
-            role="menu"
             className="absolute bottom-[52px] left-0 z-20 w-[200px] rounded-xl border border-border bg-surface p-1.5 shadow-[var(--shadow-2)]"
           >
             <div className="mb-1 border-b border-border-soft px-3 py-2.5">
@@ -87,7 +89,6 @@ export function UserMenu({ rail }: { rail: boolean }) {
               <button
                 key={item.label}
                 type="button"
-                role="menuitem"
                 className="flex w-full items-center gap-[10px] rounded-lg px-3 py-[9px] text-[13px] font-semibold text-text hover:bg-bg"
               >
                 <Icon name={item.icon} className="size-4 text-text-2" />
@@ -97,7 +98,6 @@ export function UserMenu({ rail }: { rail: boolean }) {
             <div className="mx-1 my-[5px] h-px bg-muted" />
             <button
               type="button"
-              role="menuitem"
               className="flex w-full items-center gap-[10px] rounded-lg px-3 py-[9px] text-[13px] font-semibold text-text hover:bg-bg"
             >
               <Icon name="logout" className="size-4" />

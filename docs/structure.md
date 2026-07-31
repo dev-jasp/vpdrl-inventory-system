@@ -44,7 +44,7 @@ Grouped by feature, not by type. `components/charts/` already existed.
 components/
 ├── ui/          buttons, badges, cards, dialogs, inputs, selects, tables, avatars,
 │                tooltips, pagination — no domain knowledge
-├── layout/      sidebar, nav groups, topbar, search, breadcrumb, user menu, theme toggle
+├── layout/      sidebar, nav groups, topbar, page title, search, user menu, theme toggle
 ├── charts/      AreaChart, BarChart, DonutChart, LineChart (pre-existing)
 ├── dashboard/   consumption trend, stock distribution, spend vs. budget, alerts,
 │                top consumed, stock status tracker, recent activity, upcoming

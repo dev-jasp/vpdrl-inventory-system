@@ -53,12 +53,20 @@ const GLYPHS = {
 
 export type IconName = keyof typeof GLYPHS;
 
+// Encoding a glyph is pure and the table is fixed, so each one is built once
+// rather than on every render of every icon.
+const maskUrls = new Map<IconName, string>();
+
 function maskUrl(name: IconName) {
+  const cached = maskUrls.get(name);
+  if (cached) return cached;
   const svg =
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' +
     GLYPHS[name] +
     "</svg>";
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  const url = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  maskUrls.set(name, url);
+  return url;
 }
 
 /**

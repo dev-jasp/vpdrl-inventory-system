@@ -12,19 +12,23 @@ export function TopbarSearch() {
   const router = useRouter();
   const [query, setQuery] = useState("");
 
+  function submit(event: React.FormEvent) {
+    event.preventDefault();
+    // Read the live URL here rather than with `useSearchParams` so the topbar
+    // doesn't have to suspend on every prerendered route just to search.
+    const params = new URLSearchParams(
+      window.location.pathname === "/inventory" ? window.location.search : "",
+    );
+    const trimmed = query.trim();
+    // Searching narrows whatever filter you are already on, as in the design.
+    if (trimmed) params.set("q", trimmed);
+    else params.delete("q");
+    const search = params.toString();
+    router.push(search ? `/inventory?${search}` : "/inventory");
+  }
+
   return (
-    <form
-      role="search"
-      onSubmit={(event) => {
-        event.preventDefault();
-        const trimmed = query.trim();
-        router.push(
-          trimmed
-            ? `/inventory?q=${encodeURIComponent(trimmed)}`
-            : "/inventory",
-        );
-      }}
-    >
+    <form role="search" onSubmit={submit}>
       <input
         type="search"
         name="q"
