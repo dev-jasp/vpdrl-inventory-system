@@ -7,6 +7,12 @@ import type { Item } from "@/types/item";
  *
  * Quantities and expiry dates are read against `TODAY` in
  * `lib/shared/dates.ts`, not the wall clock — see the note there.
+ *
+ * `photo` is the one field the design has no value for: it attaches photos at
+ * runtime through a file input, so the mockup starts with none. These point at
+ * the assets vendored under `public/`, matched to items by name. Hydrochloric
+ * acid 37% and Syringe filters 0.22 µm have no asset and stay unset, which is
+ * the case the category-glyph fallback in `ItemPhoto` exists for.
  */
 export const ITEMS: Item[] = [
   {
@@ -22,6 +28,7 @@ export const ITEMS: Item[] = [
     lot: "NaCl-2291",
     supplier: "Millipore Sigma",
     zone: "Bay A",
+    photo: "/reagents/Sodium-chloride-ACS.jpg",
   },
   {
     id: "RG-1088",
@@ -36,6 +43,7 @@ export const ITEMS: Item[] = [
     lot: "TRS-8830",
     supplier: "Thermo Fisher",
     zone: "Bay A",
+    photo: "/reagents/Tris-base.webp",
   },
   {
     id: "RG-1201",
@@ -50,6 +58,7 @@ export const ITEMS: Item[] = [
     lot: "AGR-7741",
     supplier: "Bio-Rad",
     zone: "Bay B",
+    photo: "/reagents/Agarose-LE.jpg",
   },
   {
     id: "RG-1240",
@@ -64,6 +73,7 @@ export const ITEMS: Item[] = [
     lot: "SYB-3390",
     supplier: "Thermo Fisher",
     zone: "Cold chain",
+    photo: "/reagents/SYBR-Safe.jpg",
   },
   {
     id: "RG-1266",
@@ -78,6 +88,7 @@ export const ITEMS: Item[] = [
     lot: "TAQ-6620",
     supplier: "New England Biolabs",
     zone: "Cold chain",
+    photo: "/reagents/Taq-DNA-Polymerase.png",
   },
   {
     id: "RG-1288",
@@ -92,6 +103,7 @@ export const ITEMS: Item[] = [
     lot: "DNT-2214",
     supplier: "New England Biolabs",
     zone: "Cold chain",
+    photo: "/reagents/dNTP-mix.jpg",
   },
   {
     id: "RG-1301",
@@ -106,6 +118,7 @@ export const ITEMS: Item[] = [
     lot: "DME-9931",
     supplier: "Gibco",
     zone: "Cold chain",
+    photo: "/reagents/DMEM-high-glucose.jpg",
   },
   {
     id: "RG-1333",
@@ -120,6 +133,7 @@ export const ITEMS: Item[] = [
     lot: "FBS-1180",
     supplier: "Gibco",
     zone: "Cold chain",
+    photo: "/reagents/Fetal-bovine-serum.jpg",
   },
   {
     id: "RG-1402",
@@ -134,6 +148,7 @@ export const ITEMS: Item[] = [
     lot: "TRY-7715",
     supplier: "Gibco",
     zone: "Cold chain",
+    photo: "/reagents/Trypsin-EDTA-0.25%.jpg",
   },
   {
     id: "RG-1470",
@@ -148,6 +163,7 @@ export const ITEMS: Item[] = [
     lot: "BRD-8802",
     supplier: "Bio-Rad",
     zone: "Cold chain",
+    photo: "/reagents/Bradford-reagent.jpg",
   },
   {
     id: "SV-1510",
@@ -162,6 +178,7 @@ export const ITEMS: Item[] = [
     lot: "ETH-4417",
     supplier: "VWR",
     zone: "Cabinets",
+    photo: "/chemicals-solvents/Ethanol-absolute.jpg",
   },
   {
     id: "SV-1522",
@@ -176,6 +193,7 @@ export const ITEMS: Item[] = [
     lot: "MEO-1902",
     supplier: "VWR",
     zone: "Cabinets",
+    photo: "/chemicals-solvents/Methanol-HPLC-grade.jpg",
   },
   {
     id: "SV-1534",
@@ -190,6 +208,7 @@ export const ITEMS: Item[] = [
     lot: "ACN-5531",
     supplier: "Honeywell",
     zone: "Cabinets",
+    photo: "/chemicals-solvents/Acetonitrile-HPLC-grade.jpeg",
   },
   {
     id: "SV-1546",
@@ -204,6 +223,7 @@ export const ITEMS: Item[] = [
     lot: "ACE-3320",
     supplier: "VWR",
     zone: "Cabinets",
+    photo: "/chemicals-solvents/Acetone-technical.jpg",
   },
   {
     id: "SV-1558",
@@ -218,6 +238,7 @@ export const ITEMS: Item[] = [
     lot: "IPA-7714",
     supplier: "Fisher Scientific",
     zone: "Bay B",
+    photo: "/chemicals-solvents/Isopropanol=70%.webp",
   },
   {
     id: "SV-1560",
@@ -232,6 +253,7 @@ export const ITEMS: Item[] = [
     lot: "DCM-6602",
     supplier: "Honeywell",
     zone: "Cabinets",
+    photo: "/chemicals-solvents/Dichloromethane.png",
   },
   {
     id: "SV-1572",
@@ -246,6 +268,7 @@ export const ITEMS: Item[] = [
     lot: "HEX-2218",
     supplier: "Honeywell",
     zone: "Cabinets",
+    photo: "/chemicals-solvents/Hexane-reagent-grade.jpg",
   },
   {
     id: "SV-1584",
@@ -274,6 +297,7 @@ export const ITEMS: Item[] = [
     lot: "TIP-A114",
     supplier: "Sartorius",
     zone: "Bay C",
+    photo: "/consumables/Filter-tips-10 µL.jpg",
   },
   {
     id: "CN-2015",
@@ -288,6 +312,7 @@ export const ITEMS: Item[] = [
     lot: "TIP-A208",
     supplier: "Sartorius",
     zone: "Bay C",
+    photo: "/consumables/Filter-tips-200 µL.jpg",
   },
   {
     id: "CN-2020",
@@ -302,6 +327,7 @@ export const ITEMS: Item[] = [
     lot: "TIP-A991",
     supplier: "Sartorius",
     zone: "Bay C",
+    photo: "/consumables/Filter-tips-1000 µL.jpg",
   },
   {
     id: "CN-2044",
@@ -316,6 +342,7 @@ export const ITEMS: Item[] = [
     lot: "TUB-3320",
     supplier: "Eppendorf",
     zone: "Bay C",
+    photo: "/consumables/Microtubes-1.5 mL.jpg",
   },
   {
     id: "CN-2050",
@@ -330,6 +357,7 @@ export const ITEMS: Item[] = [
     lot: "PLT-7702",
     supplier: "Eppendorf",
     zone: "Bay C",
+    photo: "/consumables/PCR-plates-96-well.jpg",
   },
   {
     id: "CN-2062",
@@ -344,6 +372,7 @@ export const ITEMS: Item[] = [
     lot: "SER-1140",
     supplier: "Corning",
     zone: "Bay C",
+    photo: "/consumables/Serological-pipettes 10 mL.jpg",
   },
   {
     id: "CN-2075",
@@ -358,6 +387,7 @@ export const ITEMS: Item[] = [
     lot: "GLV-M220",
     supplier: "Kimberly-Clark",
     zone: "Cabinets",
+    photo: "/consumables/Nitrile-gloves-M.jpg",
   },
   {
     id: "CN-2076",
@@ -372,6 +402,7 @@ export const ITEMS: Item[] = [
     lot: "GLV-L221",
     supplier: "Kimberly-Clark",
     zone: "Cabinets",
+    photo: "/consumables/Nitrile -gloves-L.jpg",
   },
   {
     id: "CN-2090",
@@ -386,6 +417,7 @@ export const ITEMS: Item[] = [
     lot: "FLK-7503",
     supplier: "Corning",
     zone: "Bay C",
+    photo: "/consumables/Culture-flasks-T-75.jpg",
   },
   {
     id: "CN-2101",
@@ -400,6 +432,7 @@ export const ITEMS: Item[] = [
     lot: "CRY-2010",
     supplier: "Thermo Fisher",
     zone: "Bay C",
+    photo: "/consumables/Cryovials-2-mL.jpg",
   },
   {
     id: "CN-2118",
@@ -428,6 +461,7 @@ export const ITEMS: Item[] = [
     lot: "WBT-4400",
     supplier: "VWR",
     zone: "Cabinets",
+    photo: "/consumables/Weigh-boats-medium.jpg",
   },
   {
     id: "EQ-3002",
@@ -442,6 +476,7 @@ export const ITEMS: Item[] = [
     lot: "SN-1002B",
     supplier: "Gilson",
     zone: "Bench",
+    photo: "/equipment/Pipette-P200.jpg",
   },
   {
     id: "EQ-3003",
@@ -456,6 +491,7 @@ export const ITEMS: Item[] = [
     lot: "SN-1003C",
     supplier: "Gilson",
     zone: "Bench",
+    photo: "/equipment/Pipette-P1000.jpg",
   },
   {
     id: "EQ-3010",
@@ -470,6 +506,7 @@ export const ITEMS: Item[] = [
     lot: "SN-2210",
     supplier: "Mettler Toledo",
     zone: "Bench",
+    photo: "/equipment/Analytical-balance.jpg",
   },
   {
     id: "EQ-3022",
@@ -484,6 +521,7 @@ export const ITEMS: Item[] = [
     lot: "SN-3340",
     supplier: "Eppendorf",
     zone: "Bench",
+    photo: "/equipment/Benchtop-centrifuge.jpg",
   },
   {
     id: "EQ-3030",
@@ -498,6 +536,7 @@ export const ITEMS: Item[] = [
     lot: "SN-4415",
     supplier: "Bio-Rad",
     zone: "Bench",
+    photo: "/equipment/Thermal-cycler.jpg",
   },
   {
     id: "EQ-3041",
@@ -512,6 +551,7 @@ export const ITEMS: Item[] = [
     lot: "SN-5502",
     supplier: "Mettler Toledo",
     zone: "Bench",
+    photo: "/equipment/pH-meter.png",
   },
   {
     id: "EQ-3077",
@@ -526,6 +566,7 @@ export const ITEMS: Item[] = [
     lot: "SN-8830",
     supplier: "Thermo Fisher",
     zone: "Room 214",
+    photo: "/equipment/−80°C-freezer.jpg",
   },
   {
     id: "ST-4001",
@@ -540,6 +581,7 @@ export const ITEMS: Item[] = [
     lot: "STD-4011",
     supplier: "Mettler Toledo",
     zone: "Bench",
+    photo: "/standards/NIST-pH-standard-4.01.jpg",
   },
   {
     id: "ST-4002",
@@ -554,6 +596,7 @@ export const ITEMS: Item[] = [
     lot: "STD-7001",
     supplier: "Mettler Toledo",
     zone: "Bench",
+    photo: "/standards/NIST-pH-standard-7.00.jpg",
   },
   {
     id: "ST-4010",
@@ -568,6 +611,7 @@ export const ITEMS: Item[] = [
     lot: "STD-1413",
     supplier: "Mettler Toledo",
     zone: "Bench",
+    photo: "/standards/Conductivity-standard-1413 µS.png",
   },
   {
     id: "ST-4020",
@@ -582,5 +626,6 @@ export const ITEMS: Item[] = [
     lot: "STD-2200",
     supplier: "Bio-Rad",
     zone: "Cold chain",
+    photo: "/standards/Protein-assay-standard set.jpg",
   },
 ];

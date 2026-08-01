@@ -1,13 +1,8 @@
 import Link from "next/link";
 
+import { ItemPhoto } from "@/components/inventory/ItemPhoto";
 import { Card, CardTitle } from "@/components/ui/Card";
-import { Icon } from "@/components/ui/Icon";
-import {
-  CATEGORY_COLORS,
-  CATEGORY_ICONS,
-  CATEGORY_TINTS,
-  STATUS_BADGES,
-} from "@/lib/inventory/palette";
+import { STATUS_BADGES } from "@/lib/inventory/palette";
 import { statusReason } from "@/lib/inventory/status";
 import { flagged, type TrackedItem } from "@/lib/inventory/summary";
 
@@ -39,24 +34,12 @@ export function Alerts({ items }: { items: TrackedItem[] }) {
                 href={`/inventory/${item.id}`}
                 className="-mx-1.5 flex items-center gap-[11px] rounded-[9px] border-t border-border-soft px-1.5 py-[11px] hover:bg-muted"
               >
-                <span
-                  aria-hidden
-                  className="relative grid size-[38px] flex-none place-items-center overflow-hidden rounded-[9px]"
-                  style={{ background: CATEGORY_TINTS[item.category] }}
-                >
-                  {item.photo ? (
-                    <span
-                      className="absolute inset-0 bg-cover bg-center"
-                      style={{ backgroundImage: `url(${item.photo})` }}
-                    />
-                  ) : (
-                    <Icon
-                      name={CATEGORY_ICONS[item.category]}
-                      className="size-[18px] opacity-55"
-                      style={{ color: CATEGORY_COLORS[item.category] }}
-                    />
-                  )}
-                </span>
+                <ItemPhoto
+                  category={item.category}
+                  photo={item.photo}
+                  size={38}
+                  className="rounded-[9px]"
+                />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[13px] font-bold">
                     {item.name}

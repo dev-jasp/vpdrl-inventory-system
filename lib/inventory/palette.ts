@@ -1,5 +1,6 @@
 import type { Category, StatusKind } from "@/types/item";
 import type { IconName } from "@/components/ui/Icon";
+import type { LotStatusKind } from "./lots";
 
 /**
  * The design's colour and icon mapping for inventory. Presentational, but it
@@ -66,6 +67,36 @@ export const STATUS_BADGES: Record<
     border: "var(--tint-red)",
   },
   "Cal. Overdue": {
+    background: "var(--badge-red-bg)",
+    color: "var(--badge-red-fg)",
+    border: "var(--tint-red)",
+  },
+};
+
+/**
+ * Badges for a single lot on the item detail's Lots table.
+ *
+ * The design writes these three as literal hex while using the badge tokens
+ * everywhere else, which would strand them light-on-light in dark mode. The
+ * fills and text it names are the exact values those tokens already hold, so
+ * this reaches for the tokens and picks up the dark set for free; only the
+ * borders differ, the design's being a shade stronger than the tints.
+ */
+export const LOT_BADGES: Record<
+  LotStatusKind,
+  { background: string; color: string; border: string }
+> = {
+  Good: {
+    background: "var(--badge-green-bg)",
+    color: "var(--badge-green-fg)",
+    border: "var(--tint-green)",
+  },
+  Expiring: {
+    background: "var(--badge-violet-bg)",
+    color: "var(--badge-violet-fg)",
+    border: "var(--tint-violet)",
+  },
+  Expired: {
     background: "var(--badge-red-bg)",
     color: "var(--badge-red-fg)",
     border: "var(--tint-red)",
