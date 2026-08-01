@@ -7,7 +7,7 @@ import { ItemLots } from "@/components/inventory/ItemLots";
 import { ItemSpecification } from "@/components/inventory/ItemSpecification";
 import { StockPosition } from "@/components/inventory/StockPosition";
 import { Withdrawals } from "@/components/inventory/Withdrawals";
-import { ITEMS } from "@/data/items";
+import { allItems } from "@/lib/inventory/store";
 import { activityOf } from "@/lib/inventory/activity";
 import { listHref, parseInventoryQuery } from "@/lib/inventory/filters";
 import { lotsOf } from "@/lib/inventory/lots";
@@ -34,7 +34,9 @@ export default async function InventoryItemPage({
   const { itemId } = await params;
   const query = parseInventoryQuery(await searchParams);
 
-  const item = track(ITEMS, TODAY).find((candidate) => candidate.id === itemId);
+  const item = track(allItems(), TODAY).find(
+    (candidate) => candidate.id === itemId,
+  );
   if (!item) notFound();
 
   const badge = STATUS_BADGES[item.status.kind];

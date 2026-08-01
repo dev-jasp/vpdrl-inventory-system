@@ -1,42 +1,48 @@
 import Link from "next/link";
 
 import { NavSelect } from "@/components/ui/NavSelect";
-import {
-  PER_PAGE_OPTIONS,
-  type InventoryQuery,
-  inventoryHref,
-} from "@/lib/inventory/filters";
 import { cx } from "@/utils/cx";
 
 const stepClass =
   "flex h-[34px] items-center rounded-[9px] border border-border-strong bg-surface px-[13px] text-[12.5px] font-bold";
 
 /**
- * The pager, in the shape the design gives the staff list — the inventory list
+ * The pager, in the shape the design gives the staff list. The inventory list
  * in the mockup shows every item at once, so this is the same control applied
  * to a longer table.
  *
  * Every step is a link, so a page is somewhere you can be sent rather than a
- * state you have to arrive at by clicking.
+ * state you have to arrive at by clicking. What a step *means* is the caller's
+ * — each list builds its own URLs — which is all `href` is.
  */
-export function InventoryPagination({
-  query,
+export function Pagination({
+  label,
   page,
   pages,
   total,
+  per,
+  perOptions,
+  href,
+  empty,
 }: {
-  query: InventoryQuery;
+  /** Accessible name for the nav, e.g. "Inventory pages". */
+  label: string;
   /** Clamped page, which may differ from the one asked for in the URL. */
   page: number;
   pages: number;
   total: number;
+  per: number;
+  perOptions: number[];
+  href: (patch: { page?: number; per?: number }) => string;
+  /** What to say in place of a range when nothing matched. */
+  empty: string;
 }) {
-  const from = (page - 1) * query.per + 1;
-  const to = Math.min(page * query.per, total);
+  const from = (page - 1) * per + 1;
+  const to = Math.min(page * per, total);
 
   return (
     <nav
-      aria-label="Inventory pages"
+      aria-label={label}
       className="mt-[18px] flex flex-wrap items-center gap-3"
     >
       <span className="text-[12.5px] font-semibold text-text-3">
@@ -44,18 +50,16 @@ export function InventoryPagination({
       </span>
       <NavSelect
         label="Rows per page"
-        value={String(query.per)}
-        options={PER_PAGE_OPTIONS.map((per) => ({
-          value: String(per),
-          label: String(per),
-          href: inventoryHref(query, { per }),
+        value={String(per)}
+        options={perOptions.map((option) => ({
+          value: String(option),
+          label: String(option),
+          href: href({ per: option }),
         }))}
         className="h-[34px] rounded-[9px] px-2.5"
       />
       <span className="ml-1.5 text-[12.5px] font-semibold text-text-4">
-        {total === 0
-          ? "No items match these filters"
-          : `${from}–${to} of ${total}`}
+        {total === 0 ? empty : `${from}–${to} of ${total}`}
       </span>
 
       <div className="ml-auto flex items-center gap-2">
@@ -65,7 +69,7 @@ export function InventoryPagination({
           </span>
         ) : (
           <Link
-            href={inventoryHref(query, { page: page - 1 })}
+            href={href({ page: page - 1 })}
             rel="prev"
             className={cx(stepClass, "text-text-2 hover:bg-muted")}
           >
@@ -79,7 +83,7 @@ export function InventoryPagination({
             return (
               <Link
                 key={number}
-                href={inventoryHref(query, { page: number })}
+                href={href({ page: number })}
                 aria-label={`Page ${number}`}
                 aria-current={current ? "page" : undefined}
                 className={cx(
@@ -101,7 +105,7 @@ export function InventoryPagination({
           </span>
         ) : (
           <Link
-            href={inventoryHref(query, { page: page + 1 })}
+            href={href({ page: page + 1 })}
             rel="next"
             className={cx(stepClass, "text-text-2 hover:bg-muted")}
           >

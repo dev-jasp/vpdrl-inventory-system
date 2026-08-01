@@ -5,7 +5,7 @@ import { SpendVsBudget } from "@/components/dashboard/SpendVsBudget";
 import { StockDistribution } from "@/components/dashboard/StockDistribution";
 import { StockStatusTracker } from "@/components/dashboard/StockStatusTracker";
 import { TopConsumed } from "@/components/dashboard/TopConsumed";
-import { ITEMS } from "@/data/items";
+import { allItems } from "@/lib/inventory/store";
 import { track } from "@/lib/inventory/summary";
 import { TODAY } from "@/lib/shared/dates";
 
@@ -14,7 +14,7 @@ import { TODAY } from "@/lib/shared/dates";
 
 export default function DashboardPage() {
   // Resolved once here and passed down, so every card agrees on the statuses.
-  const items = track(ITEMS, TODAY);
+  const items = track(allItems(), TODAY);
 
   return (
     <div className="flex flex-col gap-3">

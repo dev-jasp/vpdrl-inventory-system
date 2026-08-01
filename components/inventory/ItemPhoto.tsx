@@ -6,7 +6,7 @@ import {
   CATEGORY_ICONS,
   CATEGORY_TINTS,
 } from "@/lib/inventory/palette";
-import { photoUrl } from "@/lib/inventory/photos";
+import { isDataUrl, photoUrl } from "@/lib/inventory/photos";
 import type { Category } from "@/types/item";
 import { cx } from "@/utils/cx";
 
@@ -51,8 +51,11 @@ export function ItemPhoto({
           src={photoUrl(photo)}
           alt=""
           fill
-          // A tile this small never needs the full-resolution asset.
+          // A tile this small never needs the full-resolution asset. A photo
+          // attached in the item form is already an inline data URL, though,
+          // with no file for the optimiser to fetch and resize.
           sizes={`${size}px`}
+          unoptimized={isDataUrl(photo)}
           className="object-cover"
         />
       ) : (
