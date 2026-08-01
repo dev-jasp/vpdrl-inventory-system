@@ -122,6 +122,30 @@
   --color-accent-fg: var(--accent-fg);
 
   --font-sans: var(--font-manrope);
+
+  /* The design's dialog entrance: the scrim fades, the panel rises. */
+  --animate-lt-fade: lt-fade 0.16s ease-out;
+  --animate-lt-pop: lt-pop 0.2s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@keyframes lt-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lt-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 body {

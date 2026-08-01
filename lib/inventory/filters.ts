@@ -1,5 +1,9 @@
+import { first, oneOf, type RawSearchParams } from "@/lib/shared/params";
 import type { Category } from "@/types/item";
 import type { TrackedItem } from "./summary";
+
+export { paginate } from "@/lib/shared/pagination";
+export type { RawSearchParams };
 
 /**
  * Reading the inventory list's state off the URL rather than out of component
@@ -74,20 +78,6 @@ export const DEFAULT_QUERY: InventoryQuery = {
   page: 1,
   per: 25,
 };
-
-export type RawSearchParams = Record<string, string | string[] | undefined>;
-
-function first(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
-}
-
-function oneOf<T extends string>(
-  value: string | undefined,
-  allowed: readonly T[],
-  fallback: T,
-): T {
-  return allowed.includes(value as T) ? (value as T) : fallback;
-}
 
 /** Anything unrecognised falls back to the default rather than erroring. */
 export function parseInventoryQuery(params: RawSearchParams): InventoryQuery {
@@ -255,18 +245,4 @@ export function nextSort(query: InventoryQuery, key: SortKey) {
 /** Every zone in use, in the order the catalogue introduces them. */
 export function zonesOf(items: TrackedItem[]) {
   return ["All", ...new Set(items.map((item) => item.zone))];
-}
-
-export function paginate<T>(rows: T[], query: InventoryQuery) {
-  const pages = Math.max(1, Math.ceil(rows.length / query.per));
-  // Clamped rather than trusted: `?page=99` should show the last page, and a
-  // filter that shrinks the list shouldn't be able to strand you on an empty
-  // one either.
-  const page = Math.min(query.page, pages);
-  return {
-    page,
-    pages,
-    total: rows.length,
-    rows: rows.slice((page - 1) * query.per, page * query.per),
-  };
 }

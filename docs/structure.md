@@ -25,6 +25,26 @@ Every view shares one shell (sidebar + topbar), so all pages live in a
 | `app/(dashboard)/reports/page.tsx`                 | `/reports`                   |
 | `app/(dashboard)/support/page.tsx`                 | `/support`                   |
 
+### Modals
+
+The design draws the item form as a dialog over the list, but a dialog with no
+URL cannot be linked, refreshed or backed out of. Both are true here through a
+parallel slot and intercepting routes:
+
+```
+app/(dashboard)/@modal/default.tsx                       nothing, on every other route
+app/(dashboard)/@modal/(.)inventory/new/page.tsx         modal over the list
+app/(dashboard)/@modal/(.)inventory/[itemId]/edit/page.tsx
+app/(dashboard)/inventory/new/page.tsx                   the same form as a page
+app/(dashboard)/inventory/[itemId]/edit/page.tsx
+```
+
+A navigation from inside the app is intercepted and lays the dialog over
+whatever was behind it; a direct visit, a refresh or a shared link falls
+through to the page. `(.)` matches the level below the group because a slot is
+not a route segment. Dismissing the dialog is `router.back()`, so the URL it
+masked goes away with it.
+
 ### What is deliberately _not_ a route
 
 - **Chemicals, Equipment, Low stock, Expiring / due** — sidebar entries that in
@@ -33,10 +53,17 @@ Every view shares one shell (sidebar + topbar), so all pages live in a
   filters stay shareable and bookmarkable without duplicating the list page.
   `lib/inventory/filters.ts` is the one place that reads and writes them; the
   param names and sort keys are the design's own.
-- **Staff profile, add/edit staff, add/edit supplier, photo capture** — dialogs
-  driven by local state in the design (`staffProfileOpen`, `staffFormOpen`,
-  `supFormOpen`, `camOn`). If they should become linkable later, intercepting
-  routes are the upgrade path.
+- **All staff / Lab technicians / Support staff** — tabs in the design, and
+  `/staff` with searchParams (`group`, `q`, `full`, `mode`, `page`, `per`) here,
+  for the same reason the inventory filters are. `lib/staff/filters.ts` owns
+  them. The design holds this in component state and so has no param names to
+  inherit; unlike the inventory list's, these are ours.
+- **Staff profile, add/edit staff, add/edit supplier** — dialogs driven by local
+  state in the design (`staffProfileOpen`, `staffFormOpen`, `supFormOpen`). If
+  they should become linkable later, the item form's parallel slot above is the
+  pattern to copy.
+- **Photo capture** — the camera lives inside the item form (`camOn` in the
+  design), not at a URL of its own.
 
 ## Components
 
@@ -70,9 +97,10 @@ lib/
 │               sorting, chart aggregation, and the synthetic stand-ins the
 │               design derives from an item id — lots, weekly usage, activity —
 │               which stay put until those become real records
-├── staff/      grouping by type, working-day helpers
+├── staff/      grouping by type, working-day helpers, list filtering
 ├── suppliers/  on-time and lead-time derivation
-└── shared/     currency (₱), dates, units
+└── shared/     currency (₱), dates, units, and the pieces both lists share —
+                paginating a list, and reading typed values off searchParams
 data/     seed datasets standing in for the API
 ```
 
@@ -98,6 +126,29 @@ Built on top of it:
   specification and the dated control. Unknown ids `notFound()`. Rows link to
   it carrying the list's searchParams, which is the only way "← Back to
   inventory" can return to the filtered list the design never left.
+- **`/staff`** — the list: group filter, search over name / role / email /
+  phone, the full-time chip, and the design's two view modes (table and cards)
+  behind `?mode=`. The design's row opens the staff profile dialog and carries a
+  ⋯ menu for "View staff profile" and "Edit info"; neither dialog exists yet, so
+  the rows and cards are presentational rather than controls that lead nowhere,
+  and "Add staff" is inert for the same reason.
+- **`/inventory/new`, `/inventory/:itemId/edit`** — the item form, as a modal
+  or a page (see Modals above), with photo attach and camera capture. Saving
+  goes through the `saveItem` server action in
+  `app/(dashboard)/inventory/actions.ts`.
+
+Items are read through `lib/inventory/store.ts`, not from `data/items.ts`
+directly. The store is a mutable module-level copy of the seed: it gives the
+form somewhere to write, survives navigations and refreshes, and resets when
+the server does. It is the one seam to replace with a real API.
+
+Because the store changes under them, the routes that read it are not served
+from a build-time render. `/inventory` and the item pages are dynamic already,
+having searchParams or a dynamic segment to resolve; the two `new` routes say
+`force-dynamic` outright, because a zone picker built from the store would
+otherwise be frozen at the seed. `/` is the exception — it takes no request
+input, so it prerenders, and `saveItem` calls `revalidatePath("/")` to have it
+rebuilt on the next visit rather than serving yesterday's counts.
 
 Every other route is still a placeholder page that renders the view name.
 

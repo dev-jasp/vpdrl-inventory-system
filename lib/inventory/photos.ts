@@ -13,6 +13,14 @@
  * renders one, which keeps this the single place that has to remember.
  */
 export function photoUrl(path: string) {
+  // A photo attached or captured in the item form is already a `data:` URL,
+  // not a file on disk. It is its own encoding — escaping it would destroy it.
+  if (isDataUrl(path)) return path;
   // Per segment: `encodeURIComponent` would escape the separators too.
   return path.split("/").map(encodeURIComponent).join("/");
+}
+
+/** True for a photo carried inline rather than served from `public/`. */
+export function isDataUrl(path: string) {
+  return path.startsWith("data:");
 }

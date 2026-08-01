@@ -1,9 +1,11 @@
 import { InventoryFilters } from "@/components/inventory/InventoryFilters";
-import { InventoryPagination } from "@/components/inventory/InventoryPagination";
 import { InventoryTable } from "@/components/inventory/InventoryTable";
-import { ITEMS } from "@/data/items";
+import { Pagination } from "@/components/ui/Pagination";
+import { allItems } from "@/lib/inventory/store";
 import {
+  PER_PAGE_OPTIONS,
   filterItems,
+  inventoryHref,
   paginate,
   parseInventoryQuery,
   sortItems,
@@ -27,7 +29,7 @@ export default async function InventoryPage({
 }) {
   const query = parseInventoryQuery(await searchParams);
 
-  const items = track(ITEMS, TODAY);
+  const items = track(allItems(), TODAY);
   const matched = sortItems(filterItems(items, query), query);
   const { rows, page, pages, total } = paginate(matched, query);
 
@@ -43,11 +45,15 @@ export default async function InventoryPage({
         </div>
       </div>
 
-      <InventoryPagination
-        query={query}
+      <Pagination
+        label="Inventory pages"
         page={page}
         pages={pages}
         total={total}
+        per={query.per}
+        perOptions={PER_PAGE_OPTIONS}
+        href={(patch) => inventoryHref(query, patch)}
+        empty="No items match these filters"
       />
     </div>
   );
