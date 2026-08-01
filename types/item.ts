@@ -25,6 +25,11 @@ export type Item = {
   supplier: string;
   /** Coarser than `location` — the zone filter on the inventory list. */
   zone: string;
+  /**
+   * Path to the item's photo under `public/`, exactly as the file is named on
+   * disk — several carry spaces, `%` and `µ`, so render it through
+   * `photoUrl` in `lib/inventory/photos.ts` rather than dropping it into a URL.
+   */
   photo?: string;
 };
 

@@ -29,8 +29,10 @@ Every view shares one shell (sidebar + topbar), so all pages live in a
 
 - **Chemicals, Equipment, Low stock, Expiring / due** — sidebar entries that in
   the design call `goList(...)` with a filter. They are `/inventory` with
-  searchParams (`cat`, `flag`, `zone`, `q`, `sort`), so filters stay
-  shareable and bookmarkable without duplicating the list page.
+  searchParams (`cat`, `flag`, `zone`, `q`, `sort`, `dir`, `page`, `per`), so
+  filters stay shareable and bookmarkable without duplicating the list page.
+  `lib/inventory/filters.ts` is the one place that reads and writes them; the
+  param names and sort keys are the design's own.
 - **Staff profile, add/edit staff, add/edit supplier, photo capture** — dialogs
   driven by local state in the design (`staffProfileOpen`, `staffFormOpen`,
   `supFormOpen`, `camOn`). If they should become linkable later, intercepting
@@ -80,5 +82,20 @@ data/     seed datasets standing in for the API
 
 The app shell is built — `app/(dashboard)/layout.tsx` with `components/layout/`
 (sidebar, nav, topbar, search, theme toggle, user menu) and the design tokens in
-`app/globals.css`. Every route below it is still a placeholder page that renders
-the view name.
+`app/globals.css`.
+
+Built on top of it:
+
+- **`/`** — on duty, consumption trend, stock distribution, spend vs. budget,
+  alerts, top consumed, stock status tracker. Still to come: handover note,
+  to-do list, recent activity, upcoming calibrations.
+- **`/inventory`** — the list: category / flag / zone filters, sortable
+  columns, paging, and the photo tile. The row's tile is a file input in the
+  design; that lands with the item form and photo capture.
+
+Every other route is still a placeholder page that renders the view name.
+
+Item photos are vendored under `public/<category-folder>/` and wired to items
+by `Item.photo` in `data/items.ts`. The filenames are as downloaded — spaces,
+`%`, `µ`, a U+2212 minus — so anything rendering one goes through
+`photoUrl` in `lib/inventory/photos.ts`, which `ItemPhoto` already does.
