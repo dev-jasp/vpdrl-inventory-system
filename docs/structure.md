@@ -67,7 +67,9 @@ types/    domain types — Item, Lot, Staff, Supplier, Report, Alert, Activity,
 lib/
 ├── inventory/  status derivation (Available / Low Stock / Out of Stock /
 │               Expiring Soon / Expired / Cal. Due / Cal. Overdue), filtering,
-│               sorting, chart aggregation
+│               sorting, chart aggregation, and the synthetic stand-ins the
+│               design derives from an item id — lots, weekly usage, activity —
+│               which stay put until those become real records
 ├── staff/      grouping by type, working-day helpers
 ├── suppliers/  on-time and lead-time derivation
 └── shared/     currency (₱), dates, units
@@ -92,6 +94,10 @@ Built on top of it:
 - **`/inventory`** — the list: category / flag / zone filters, sortable
   columns, paging, and the photo tile. The row's tile is a file input in the
   design; that lands with the item form and photo capture.
+- **`/inventory/:itemId`** — stock position, lots, withdrawals, activity,
+  specification and the dated control. Unknown ids `notFound()`. Rows link to
+  it carrying the list's searchParams, which is the only way "← Back to
+  inventory" can return to the filtered list the design never left.
 
 Every other route is still a placeholder page that renders the view name.
 

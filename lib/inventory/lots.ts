@@ -70,3 +70,15 @@ export function lotsOf(item: Item, on: Date): Lot[] {
 
   return lots.sort((a, b) => a.expiry.localeCompare(b.expiry));
 }
+
+export type LotStatusKind = "Good" | "Expiring" | "Expired";
+
+/**
+ * A lot's own state, which is not the item's: an item can read Available while
+ * the oldest lot on its shelf is already past its date. Same 30-day warning
+ * window `statusOf` uses.
+ */
+export function lotStatus(lot: Lot): LotStatusKind {
+  if (lot.days < 0) return "Expired";
+  return lot.days <= 30 ? "Expiring" : "Good";
+}

@@ -5,6 +5,7 @@ import {
   SORT_COLUMNS,
   type InventoryQuery,
   inventoryHref,
+  itemHref,
   nextSort,
 } from "@/lib/inventory/filters";
 import { lotsOf } from "@/lib/inventory/lots";
@@ -117,7 +118,7 @@ export function InventoryTable({
                     />
                     <div className="min-w-0">
                       <Link
-                        href={`/inventory/${item.id}`}
+                        href={itemHref(query, item.id)}
                         className="block truncate text-[13.5px] font-bold after:absolute after:inset-0 after:content-['']"
                       >
                         {item.name}

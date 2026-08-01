@@ -149,6 +149,25 @@ export function inventoryHref(
   return search ? `/inventory?${search}` : "/inventory";
 }
 
+/** The list exactly as `query` describes it, the page it is on included. */
+export function listHref(query: InventoryQuery) {
+  return inventoryHref(query, { page: query.page });
+}
+
+/**
+ * An item's detail page, carrying the list state that led to it.
+ *
+ * The design's "← Back to inventory" drops you back into the list you left,
+ * filters and all, because it never left it — the detail is a view swap over
+ * the same component state. A route has no such memory, so the way back rides
+ * along in the URL.
+ */
+export function itemHref(query: InventoryQuery, id: string) {
+  const [, search] = listHref(query).split("?");
+  const path = `/inventory/${encodeURIComponent(id)}`;
+  return search ? `${path}?${search}` : path;
+}
+
 export function filterItems(items: TrackedItem[], query: InventoryQuery) {
   const needle = query.q.toLowerCase();
 
