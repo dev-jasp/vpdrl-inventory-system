@@ -54,10 +54,10 @@ export function StockDistribution({ items }: { items: TrackedItem[] }) {
           ))}
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-[26px] font-extrabold tracking-[-0.03em]">
+          <span className="font-mono text-[26px] font-extrabold">
             {items.length}
           </span>
-          <span className="text-[11px] font-semibold text-text-3">
+          <span className="text-[11px] font-medium text-text-3">
             Total SKUs
           </span>
         </div>
@@ -71,7 +71,7 @@ export function StockDistribution({ items }: { items: TrackedItem[] }) {
               className="size-2 flex-none rounded-full"
               style={{ background: CATEGORY_COLORS[arc.category] }}
             />
-            <span className="flex-1 text-[12.5px] font-semibold">
+            <span className="flex-1 text-[12.5px] font-medium">
               {arc.label}
             </span>
             <span
@@ -86,7 +86,7 @@ export function StockDistribution({ items }: { items: TrackedItem[] }) {
                 }}
               />
             </span>
-            <span className="w-[38px] text-right text-xs font-bold text-text-2">
+            <span className="w-[38px] text-right font-mono text-xs font-semibold text-text-2">
               {arc.rounded}%
             </span>
           </li>

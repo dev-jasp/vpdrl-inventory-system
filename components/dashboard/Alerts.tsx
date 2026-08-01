@@ -20,7 +20,7 @@ export function Alerts({ items }: { items: TrackedItem[] }) {
         {/* "View all" is the inventory list sorted by priority, descending. */}
         <Link
           href="/inventory?sort=p&dir=-1"
-          className="ml-auto text-[12.5px] font-bold text-[#3b82f6] hover:text-[#2563eb]"
+          className="ml-auto text-[12.5px] font-semibold text-[#3b82f6] hover:text-[#2563eb]"
         >
           View all
         </Link>
@@ -41,15 +41,15 @@ export function Alerts({ items }: { items: TrackedItem[] }) {
                   className="rounded-[9px]"
                 />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[13px] font-bold">
+                  <span className="block truncate text-[13px] font-semibold">
                     {item.name}
                   </span>
-                  <span className="mt-0.5 block text-[11.5px] font-medium text-text-3">
+                  <span className="mt-0.5 block text-[11.5px] font-normal text-text-3">
                     {statusReason(item, item.status, item.days)}
                   </span>
                 </span>
                 <span
-                  className="rounded-full border px-[9px] py-1 text-[11px] font-bold whitespace-nowrap"
+                  className="rounded-full border px-[9px] py-1 text-[11px] font-semibold whitespace-nowrap"
                   style={{
                     background: badge.background,
                     color: badge.color,

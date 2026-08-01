@@ -22,12 +22,12 @@ export function StaffAreas({
     <>
       <span
         title={areas.length > 1 ? areas.join(", ") : undefined}
-        className={cx("truncate text-[12.5px] font-semibold", className)}
+        className={cx("truncate text-[12.5px] font-medium", className)}
       >
         {main ?? "—"}
       </span>
       {rest.length > 0 ? (
-        <span className="flex-none text-[12px] font-bold text-accent-fg">
+        <span className="flex-none text-[12px] font-semibold text-accent-fg">
           +{rest.length}
           <span className="sr-only"> more: {rest.join(", ")}</span>
         </span>

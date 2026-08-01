@@ -40,7 +40,7 @@ export function TopConsumed({
           <select
             value={weeks}
             onChange={(event) => setWeeks(Number(event.target.value))}
-            className="h-7 rounded-lg border border-border-strong bg-surface px-2 text-xs font-semibold text-text outline-none"
+            className="h-7 rounded-lg border border-border-strong bg-surface px-2 text-xs font-medium text-text outline-none"
           >
             {WINDOWS.map((option) => (
               <option key={option.weeks} value={option.weeks}>
@@ -64,11 +64,11 @@ export function TopConsumed({
                   className="absolute inset-y-0 left-0 rounded bg-tint-blue"
                   style={{ width: `${Math.round((used / max) * 100)}%` }}
                 />
-                <span className="absolute inset-0 flex items-center truncate px-[9px] text-xs font-medium text-text">
+                <span className="absolute inset-0 flex items-center truncate px-[9px] text-xs font-normal text-text">
                   {item.name}
                 </span>
               </span>
-              <span className="flex-none text-right text-xs font-semibold whitespace-nowrap text-text-3">
+              <span className="flex-none text-right font-mono text-xs font-medium whitespace-nowrap text-text-3">
                 {used} {item.unit} / {weeks} wk
               </span>
             </Link>

@@ -24,7 +24,7 @@ export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
 
   return (
     <div className="mt-[18px] border-t border-border-soft pt-3.5">
-      <h3 className="text-[10px] font-bold tracking-[0.12em] text-text-4">
+      <h3 className="text-[10px] font-semibold tracking-[0.12em] text-text-4">
         STOCK STATUS
       </h3>
 
@@ -36,8 +36,10 @@ export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
               className="size-[7px] flex-none rounded-full"
               style={{ background: bucket.color }}
             />
-            <span className="flex-1 text-xs font-semibold">{bucket.label}</span>
-            <span className="text-[12.5px] font-extrabold">{bucket.count}</span>
+            <span className="flex-1 text-xs font-medium">{bucket.label}</span>
+            <span className="font-mono text-[12.5px] font-extrabold">
+              {bucket.count}
+            </span>
           </li>
         ))}
       </ul>
@@ -61,7 +63,8 @@ export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
         ))}
       </ul>
 
-      <div className="mt-[9px] flex justify-between text-[11px] font-medium text-text-3">
+      <div className="mt-[9px] flex justify-between text-[11px] font-normal text-text-3">
+        {/* Both of these are phrases, so they stay in the sans. */}
         <span>
           {available} of {items.length} available
         </span>

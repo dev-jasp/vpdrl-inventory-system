@@ -46,19 +46,19 @@ export default async function InventoryItemPage({
     <div className="flex flex-col gap-5">
       <Link
         href={listHref(query)}
-        className="self-start text-[12.5px] font-bold text-[#3b82f6] hover:text-[#2563eb]"
+        className="self-start text-[12.5px] font-semibold text-[#3b82f6] hover:text-[#2563eb]"
       >
         ← Back to inventory
       </Link>
 
       <div className="flex items-end gap-4">
         <div>
-          <h2 className="text-[26px] font-extrabold tracking-[-0.03em]">
+          <h2 className="text-[26px] font-semibold tracking-[-0.03em]">
             {item.name}
           </h2>
           <div className="mt-[9px]">
             <span
-              className="inline-flex rounded-full border px-2.5 py-1 text-[11px] font-bold"
+              className="inline-flex rounded-full border px-2.5 py-1 text-[11px] font-semibold"
               style={{
                 background: badge.background,
                 color: badge.color,
@@ -75,13 +75,13 @@ export default async function InventoryItemPage({
               repo routes them, so it points at the section that will own it. */}
           <Link
             href="/purchase-orders"
-            className="flex h-10 items-center rounded-[10px] border border-border-strong bg-surface px-4 text-[13px] font-bold text-text hover:bg-muted"
+            className="flex h-10 items-center rounded-[10px] border border-border-strong bg-surface px-4 text-[13px] font-semibold text-text hover:bg-muted"
           >
             Request order
           </Link>
           <Link
             href={`/inventory/${item.id}/edit`}
-            className="flex h-10 items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-bold text-white hover:bg-[#2563eb]"
+            className="flex h-10 items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-semibold text-white hover:bg-[#2563eb]"
           >
             Edit item
           </Link>

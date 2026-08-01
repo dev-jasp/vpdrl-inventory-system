@@ -44,7 +44,7 @@ export function StaffList({ rows }: { rows: Staff[] }) {
               <th
                 key={column.label}
                 scope="col"
-                className="px-[18px] py-[11px] text-[10.5px] font-bold tracking-[0.1em] whitespace-nowrap text-text-4"
+                className="px-[18px] py-[11px] text-[10.5px] font-semibold tracking-[0.1em] whitespace-nowrap text-text-4"
               >
                 {column.label}
               </th>
@@ -57,7 +57,7 @@ export function StaffList({ rows }: { rows: Staff[] }) {
             <tr>
               <td
                 colSpan={COLUMNS.length}
-                className="px-[18px] py-10 text-center text-[13px] font-medium text-text-3"
+                className="px-[18px] py-10 text-center text-[13px] font-normal text-text-3"
               >
                 Nobody matches these filters.
               </td>
@@ -78,10 +78,10 @@ export function StaffList({ rows }: { rows: Staff[] }) {
                     className="size-[38px] text-[12.5px]"
                   />
                   <div className="min-w-0">
-                    <div className="truncate text-[13.5px] font-bold">
+                    <div className="truncate text-[13.5px] font-semibold">
                       {person.name}
                     </div>
-                    <div className="mt-0.5 truncate text-[11.5px] font-medium text-text-3">
+                    <div className="mt-0.5 truncate text-[11.5px] font-normal text-text-3">
                       {person.role}
                     </div>
                   </div>
@@ -89,12 +89,10 @@ export function StaffList({ rows }: { rows: Staff[] }) {
               </td>
 
               <td className="px-[18px] py-3">
-                <div className="text-[12.5px] font-semibold">
-                  {person.phone}
-                </div>
+                <div className="text-[12.5px] font-medium">{person.phone}</div>
                 <a
                   href={`mailto:${person.email}`}
-                  className="mt-0.5 block truncate text-[12px] font-medium text-accent-fg hover:underline"
+                  className="mt-0.5 block truncate text-[12px] font-normal text-accent-fg hover:underline"
                 >
                   {person.email}
                 </a>
@@ -110,7 +108,7 @@ export function StaffList({ rows }: { rows: Staff[] }) {
                 </div>
               </td>
 
-              <td className="px-[18px] py-3 text-[10.5px] font-bold tracking-[0.04em] whitespace-nowrap uppercase">
+              <td className="px-[18px] py-3 text-[10.5px] font-semibold tracking-[0.04em] whitespace-nowrap uppercase">
                 {person.employment}
               </td>
             </tr>

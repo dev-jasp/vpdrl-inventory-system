@@ -41,10 +41,10 @@ export function Sidebar() {
         </div>
       ) : (
         <div className="flex items-center gap-[11px] px-4 pt-[18px] pb-5">
-          <span className="grid size-[34px] flex-none place-items-center rounded-[10px] bg-[#3b82f6] text-sm font-extrabold tracking-[-0.02em] text-white">
+          <span className="grid size-[34px] flex-none place-items-center rounded-[10px] bg-[#3b82f6] text-sm font-semibold tracking-[-0.02em] text-white">
             VI
           </span>
-          <span className="min-w-0 text-[15px] font-extrabold tracking-[-0.015em]">
+          <span className="min-w-0 text-[15px] font-semibold tracking-[-0.015em]">
             VPDRL Inventory and Supplies
           </span>
           <RailToggle rail={rail} onToggle={toggleRail} />
@@ -63,7 +63,7 @@ export function Sidebar() {
             {rail ? (
               <div className="mx-1.5 mb-[7px] h-px bg-muted" />
             ) : (
-              <div className="px-2.5 pb-[7px] text-[10px] font-medium tracking-[0.13em] text-text">
+              <div className="px-2.5 pb-[7px] text-[10px] font-normal tracking-[0.13em] text-text">
                 {group.label}
               </div>
             )}
@@ -181,7 +181,7 @@ function NavRow({
         {rail ? (
           <span className="sr-only">{item.label}</span>
         ) : (
-          <span className="flex-1 text-[13.5px] font-semibold whitespace-nowrap">
+          <span className="flex-1 text-[13.5px] font-medium whitespace-nowrap">
             {item.label}
           </span>
         )}

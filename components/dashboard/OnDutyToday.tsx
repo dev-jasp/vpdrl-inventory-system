@@ -19,7 +19,7 @@ export function OnDutyToday() {
 
   return (
     <div className="flex flex-wrap items-center gap-3.5">
-      <span className="text-[11px] font-bold tracking-[0.1em] text-text-4">
+      <span className="text-[11px] font-semibold tracking-[0.1em] text-text-4">
         ON DUTY TODAY
       </span>
       <ul
@@ -40,7 +40,7 @@ export function OnDutyToday() {
           <li>
             <Link
               href="/staff"
-              className="grid size-[34px] flex-none place-items-center rounded-full bg-muted text-[11px] font-bold text-text-2"
+              className="grid size-[34px] flex-none place-items-center rounded-full bg-muted text-[11px] font-semibold text-text-2"
             >
               <span aria-hidden>+{overflow}</span>
               <span className="sr-only">

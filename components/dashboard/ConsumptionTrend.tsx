@@ -60,7 +60,7 @@ export function ConsumptionTrend() {
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-controls={menuOpen ? menuId : undefined}
-            className="flex h-[34px] items-center gap-2 rounded-[9px] border border-border-strong bg-surface px-3 text-[12.5px] font-semibold text-text outline-none"
+            className="flex h-[34px] items-center gap-2 rounded-[9px] border border-border-strong bg-surface px-3 text-[12.5px] font-medium text-text outline-none"
           >
             Last {months} months
             <Icon name="chevron" className="size-3.5 text-text-3" />
@@ -89,7 +89,7 @@ export function ConsumptionTrend() {
                       }}
                       className={cx(
                         "flex w-full items-center justify-between gap-2.5 rounded-lg px-2.5 py-[9px] text-[13px] text-text hover:bg-bg",
-                        selected ? "font-bold" : "font-medium",
+                        selected ? "font-semibold" : "font-normal",
                       )}
                     >
                       Last {option} months
@@ -109,16 +109,17 @@ export function ConsumptionTrend() {
       </div>
 
       <div className="mt-[18px]">
-        <div className="text-[10px] font-bold tracking-[0.12em] text-text-4">
+        <div className="text-[10px] font-semibold tracking-[0.12em] text-text-4">
           TOTAL UNITS WITHDRAWN
         </div>
         <div className="mt-1 flex items-baseline gap-2">
-          <span className="text-[27px] font-extrabold tracking-[-0.03em]">
+          {/* Tight tracking belonged to the sans; mono sets its own rhythm. */}
+          <span className="font-mono text-[27px] font-extrabold">
             {numbers.format(total)}
           </span>
           <span
             className={cx(
-              "rounded-full px-2 py-[3px] text-[11.5px] font-semibold",
+              "rounded-full px-2 py-[3px] font-mono text-[11.5px] font-medium",
               positive
                 ? "bg-badge-green-bg text-badge-green-fg"
                 : "bg-badge-red-bg text-badge-red-fg",
@@ -133,7 +134,7 @@ export function ConsumptionTrend() {
         {series.map((entry) => (
           <span
             key={entry.key}
-            className="flex items-center gap-[7px] text-[11.5px] font-medium text-text-3"
+            className="flex items-center gap-[7px] text-[11.5px] font-normal text-text-3"
           >
             <span
               aria-hidden
@@ -215,7 +216,7 @@ export function ConsumptionTrend() {
           {AXIS_TICKS.map((tick) => (
             <div
               key={tick}
-              className="absolute right-0 -translate-y-1/2 text-[11px] font-medium text-text-3"
+              className="absolute right-0 -translate-y-1/2 font-mono text-[11px] font-normal text-text-3"
               style={{ top: percentDown(tickY(tick)) }}
             >
               {tick}
@@ -228,7 +229,7 @@ export function ConsumptionTrend() {
             <div
               key={label}
               aria-hidden
-              className="absolute bottom-0 -translate-x-1/2 text-[11px] font-medium whitespace-nowrap text-text-3"
+              className="absolute bottom-0 -translate-x-1/2 text-[11px] font-normal whitespace-nowrap text-text-3"
               style={{ left: `${(index / (labels.length - 1)) * 100}%` }}
             >
               {label}
@@ -237,13 +238,13 @@ export function ConsumptionTrend() {
 
           {hover !== null && leadPoints[hover] ? (
             <div
-              className="absolute z-5 -translate-x-1/2 rounded-lg border border-grid bg-surface px-3 py-2.5 text-[11.5px] font-medium whitespace-nowrap text-text shadow-[var(--shadow-2)]"
+              className="absolute z-5 -translate-x-1/2 rounded-lg border border-grid bg-surface px-3 py-2.5 text-[11.5px] font-normal whitespace-nowrap text-text shadow-[var(--shadow-2)]"
               style={{
                 left: `${(hover / (labels.length - 1)) * 100}%`,
                 top: `calc(${percentDown(leadPoints[hover].y)} - 78px)`,
               }}
             >
-              <div className="mb-[7px] text-[10.5px] font-medium text-text-3">
+              <div className="mb-[7px] text-[10.5px] font-normal text-text-3">
                 {labels[hover]}
               </div>
               {series.map((entry, index) => (
@@ -259,7 +260,7 @@ export function ConsumptionTrend() {
                     style={{ background: entry.color }}
                   />
                   <span className="text-text-3">{entry.label}</span>
-                  <span className="ml-auto pl-3.5 font-bold">
+                  <span className="ml-auto pl-3.5 font-mono font-semibold">
                     {entry.values[hover]}
                   </span>
                 </div>

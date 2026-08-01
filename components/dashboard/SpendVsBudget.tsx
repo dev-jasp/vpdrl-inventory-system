@@ -25,29 +25,29 @@ export function SpendVsBudget() {
 
       <div className="mt-4 flex gap-[34px]">
         <div>
-          <div className="text-[10px] font-bold tracking-[0.12em] text-text-4">
+          <div className="text-[10px] font-semibold tracking-[0.12em] text-text-4">
             TOTAL SPEND
           </div>
-          <div className="mt-[3px] text-[21px] font-extrabold tracking-[-0.025em]">
+          <div className="mt-[3px] font-mono text-[21px] font-extrabold">
             {peso(totalSpend)}
           </div>
         </div>
         <div>
-          <div className="text-[10px] font-bold tracking-[0.12em] text-text-4">
+          <div className="text-[10px] font-semibold tracking-[0.12em] text-text-4">
             TOTAL BUDGET
           </div>
-          <div className="mt-[3px] text-[21px] font-extrabold tracking-[-0.025em] text-text-3">
+          <div className="mt-[3px] font-mono text-[21px] font-extrabold text-text-3">
             {peso(totalBudget)}
           </div>
         </div>
       </div>
 
       <div className="mt-3.5 flex justify-end gap-[18px]">
-        <span className="flex items-center gap-[7px] text-[11.5px] font-medium text-text-3">
+        <span className="flex items-center gap-[7px] text-[11.5px] font-normal text-text-3">
           <span aria-hidden className="size-[9px] rounded-sm bg-[#3b82f6]" />
           Spend
         </span>
-        <span className="flex items-center gap-[7px] text-[11.5px] font-medium text-text-3">
+        <span className="flex items-center gap-[7px] text-[11.5px] font-normal text-text-3">
           <span aria-hidden className="size-[9px] rounded-sm bg-grid" />
           Budget
         </span>
@@ -63,7 +63,7 @@ export function SpendVsBudget() {
           {AXIS_TICKS.map((tick, index) => (
             <div
               key={tick}
-              className="absolute right-0 -translate-y-1/2 text-[11px] font-medium text-text-3"
+              className="absolute right-0 -translate-y-1/2 font-mono text-[11px] font-normal text-text-3"
               style={{ top: `${(index / (AXIS_TICKS.length - 1)) * 100}%` }}
             >
               {pesoShort(tick)}
@@ -104,7 +104,7 @@ export function SpendVsBudget() {
           {SPEND.map((month) => (
             <div
               key={month.label}
-              className="flex-1 text-center text-[11px] font-medium text-text-3"
+              className="flex-1 text-center text-[11px] font-normal text-text-3"
             >
               {month.label}
             </div>

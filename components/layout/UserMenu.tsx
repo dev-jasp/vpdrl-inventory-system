@@ -48,17 +48,17 @@ export function UserMenu({
           rail ? "justify-center" : "justify-start",
         )}
       >
-        <span className="grid size-[34px] flex-none place-items-center rounded-full bg-[#3b82f6] text-xs font-extrabold text-white">
+        <span className="grid size-[34px] flex-none place-items-center rounded-full bg-[#3b82f6] text-xs font-semibold text-white">
           {initials(USER.name)}
         </span>
         {rail ? (
           <span className="sr-only">{USER.name}</span>
         ) : (
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-[12.5px] leading-[1.25] font-bold">
+            <span className="block truncate text-[12.5px] leading-[1.25] font-semibold">
               {USER.name}
             </span>
-            <span className="block text-[10.5px] font-medium text-text-3">
+            <span className="block text-[10.5px] font-normal text-text-3">
               {USER.role}
             </span>
           </span>
@@ -80,8 +80,8 @@ export function UserMenu({
             className="absolute bottom-[52px] left-0 z-20 w-[200px] rounded-xl border border-border bg-surface p-1.5 shadow-[var(--shadow-2)]"
           >
             <div className="mb-1 border-b border-border-soft px-3 py-2.5">
-              <div className="text-[12.5px] font-bold">{USER.name}</div>
-              <div className="mt-px text-[11px] font-medium text-text-3">
+              <div className="text-[12.5px] font-semibold">{USER.name}</div>
+              <div className="mt-px text-[11px] font-normal text-text-3">
                 {USER.role}
               </div>
             </div>
@@ -89,7 +89,7 @@ export function UserMenu({
               <button
                 key={item.label}
                 type="button"
-                className="flex w-full items-center gap-[10px] rounded-lg px-3 py-[9px] text-[13px] font-semibold text-text hover:bg-bg"
+                className="flex w-full items-center gap-[10px] rounded-lg px-3 py-[9px] text-[13px] font-medium text-text hover:bg-bg"
               >
                 <Icon name={item.icon} className="size-4 text-text-2" />
                 {item.label}
@@ -98,7 +98,7 @@ export function UserMenu({
             <div className="mx-1 my-[5px] h-px bg-muted" />
             <button
               type="button"
-              className="flex w-full items-center gap-[10px] rounded-lg px-3 py-[9px] text-[13px] font-semibold text-text hover:bg-bg"
+              className="flex w-full items-center gap-[10px] rounded-lg px-3 py-[9px] text-[13px] font-medium text-text hover:bg-bg"
             >
               <Icon name="logout" className="size-4" />
               Log out

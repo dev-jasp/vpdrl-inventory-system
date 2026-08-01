@@ -411,7 +411,7 @@ const ChartTooltip = ({
           <p
             className={cx(
               // base
-              "font-medium",
+              "font-normal",
               // text color
               "text-gray-900 dark:text-gray-50",
             )}
@@ -447,7 +447,7 @@ const ChartTooltip = ({
               <p
                 className={cx(
                   // base
-                  "text-right font-medium whitespace-nowrap tabular-nums",
+                  "text-right font-normal whitespace-nowrap tabular-nums",
                   // text color
                   "text-gray-900 dark:text-gray-50",
                 )}
@@ -664,7 +664,7 @@ const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
                 <Label
                   position="insideBottom"
                   offset={-20}
-                  className="fill-gray-800 text-sm font-medium dark:fill-gray-200"
+                  className="fill-gray-800 text-sm font-normal dark:fill-gray-200"
                 >
                   {xAxisLabel}
                 </Label>
@@ -695,7 +695,7 @@ const LineChart = React.forwardRef<HTMLDivElement, LineChartProps>(
                   style={{ textAnchor: "middle" }}
                   angle={-90}
                   offset={-15}
-                  className="fill-gray-800 text-sm font-medium dark:fill-gray-200"
+                  className="fill-gray-800 text-sm font-normal dark:fill-gray-200"
                 >
                   {yAxisLabel}
                 </Label>

@@ -40,7 +40,7 @@ export default async function InventoryPage({
             picking one never empties the menu you picked it from. */}
         <InventoryFilters query={query} zones={zonesOf(items)} />
         <InventoryTable rows={rows} query={query} today={TODAY} />
-        <div className="border-t border-border-soft px-[18px] py-3 text-[12px] font-medium text-text-3">
+        <div className="border-t border-border-soft px-[18px] py-3 text-[12px] font-normal text-text-3">
           {total} of {items.length} items
         </div>
       </div>

@@ -38,7 +38,8 @@ export function PageTitle() {
   const title = sectionTitle(pathname);
 
   return (
-    <h1 className="text-[23px] font-extrabold tracking-[-0.025em]">
+    // 600 rather than the design's 800 — see `CardTitle`.
+    <h1 className="text-[23px] font-semibold tracking-[-0.025em]">
       {pathname === "/inventory" ? (
         <Suspense fallback={title}>
           <InventoryTitle fallback={title} />
