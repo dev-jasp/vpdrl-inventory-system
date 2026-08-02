@@ -1,17 +1,6 @@
-import { DAY_NAMES } from "@/lib/staff/schedule";
+import { DAY_LABELS, DAY_NAMES } from "@/lib/staff/schedule";
 import type { WorkingDays } from "@/types/staff";
 import { cx } from "@/utils/cx";
-
-/** Spoken form of the rota, since "T" and "S" each stand for two days. */
-const SPOKEN = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
 
 /**
  * A weekly rota as seven dots, filled on the days worked.
@@ -19,8 +8,15 @@ const SPOKEN = [
  * The letters are ambiguous read aloud, so the whole row carries one readable
  * summary and the dots themselves are decoration.
  */
-export function StaffDays({ days }: { days: WorkingDays }) {
-  const worked = SPOKEN.filter((_, index) => days[index] === "1");
+export function StaffDays({
+  days,
+  large,
+}: {
+  days: WorkingDays;
+  /** The profile draws the same rota a size up, as the design does. */
+  large?: boolean;
+}) {
+  const worked = DAY_LABELS.filter((_, index) => days[index] === "1");
 
   return (
     <span
@@ -28,14 +24,15 @@ export function StaffDays({ days }: { days: WorkingDays }) {
       aria-label={
         worked.length > 0 ? `Works ${worked.join(", ")}` : "No days assigned"
       }
-      className="flex gap-[5px]"
+      className={cx("flex", large ? "gap-1.5" : "gap-[5px]")}
     >
       {DAY_NAMES.map((letter, index) => (
         <span
           key={letter}
           aria-hidden
           className={cx(
-            "grid size-6 flex-none place-items-center rounded-full text-[9.5px] font-semibold",
+            "grid flex-none place-items-center rounded-full font-semibold",
+            large ? "size-[26px] text-[10px]" : "size-6 text-[9.5px]",
             days[index] === "1"
               ? "bg-[#3b82f6] text-white"
               : "bg-muted text-text-4",

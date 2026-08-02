@@ -4,6 +4,21 @@ import type { Staff } from "@/types/staff";
 export const DAY_NAMES = ["M", "T", "W", "Th", "F", "S", "Su"] as const;
 
 /**
+ * The same seven days spoken in full, for anything that has to name one:
+ * "T" and "S" each stand for two days, so the initials are only ever legible
+ * as a row.
+ */
+export const DAY_LABELS = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+] as const;
+
+/**
  * Index into a `days` string for a date. `Date#getDay()` counts from Sunday
  * and the rota counts from Monday, hence the shift.
  */

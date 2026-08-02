@@ -64,27 +64,48 @@ export function parseStaffQuery(params: RawSearchParams): StaffQuery {
 }
 
 /**
- * The staff list with `patch` applied.
+ * Any staff route, carrying the list exactly as it stands.
  *
  * Only what differs from the default is written, so the unfiltered list stays
  * `/staff` and the link the sidebar draws is the same one an empty toolbar
- * builds. Any change other than paging resets to page 1 — narrowing the list
- * from page 3 would otherwise land you past the end of it.
+ * builds.
+ *
+ * The profile and the form travel with these params for the same reason the
+ * item detail travels with the inventory list's: they are the only way Close
+ * and Cancel can return to the list somebody actually opened them from rather
+ * than to an unfiltered page 1.
+ */
+export function staffPath(path: string, query: StaffQuery) {
+  const params = new URLSearchParams();
+  if (query.q) params.set("q", query.q);
+  if (query.group !== DEFAULT_QUERY.group) params.set("group", query.group);
+  if (query.fullTime) params.set("full", "1");
+  if (query.mode !== DEFAULT_QUERY.mode) params.set("mode", query.mode);
+  if (query.per !== DEFAULT_QUERY.per) params.set("per", String(query.per));
+  if (query.page !== DEFAULT_QUERY.page) params.set("page", String(query.page));
+
+  const search = params.toString();
+  return search ? `${path}?${search}` : path;
+}
+
+/**
+ * The staff list with `patch` applied. Any change other than paging resets to
+ * page 1 — narrowing the list from page 3 would otherwise land you past the
+ * end of it.
  */
 export function staffHref(query: StaffQuery, patch: Partial<StaffQuery> = {}) {
   const next = { ...query, ...patch };
   if (!("page" in patch)) next.page = 1;
+  return staffPath("/staff", next);
+}
 
-  const params = new URLSearchParams();
-  if (next.q) params.set("q", next.q);
-  if (next.group !== DEFAULT_QUERY.group) params.set("group", next.group);
-  if (next.fullTime) params.set("full", "1");
-  if (next.mode !== DEFAULT_QUERY.mode) params.set("mode", next.mode);
-  if (next.per !== DEFAULT_QUERY.per) params.set("per", String(next.per));
-  if (next.page !== DEFAULT_QUERY.page) params.set("page", String(next.page));
+/** A person's profile, and the form that edits them. */
+export function staffProfileHref(query: StaffQuery, id: string) {
+  return staffPath(`/staff/${encodeURIComponent(id)}`, query);
+}
 
-  const search = params.toString();
-  return search ? `/staff?${search}` : "/staff";
+export function staffEditHref(query: StaffQuery, id: string) {
+  return staffPath(`/staff/${encodeURIComponent(id)}/edit`, query);
 }
 
 /**

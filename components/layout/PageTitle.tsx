@@ -17,6 +17,7 @@ import {
  */
 const TITLES: Record<string, string> = {
   "/inventory/new": "New item",
+  "/staff/new": "New staff member",
 };
 
 function sectionTitle(pathname: string) {
@@ -24,6 +25,9 @@ function sectionTitle(pathname: string) {
   if (known) return known;
   if (pathname.startsWith("/inventory/")) {
     return pathname.endsWith("/edit") ? "Edit item" : "Item detail";
+  }
+  if (pathname.startsWith("/staff/")) {
+    return pathname.endsWith("/edit") ? "Edit staff" : "Staff profile";
   }
   // Anything else falls back to the section it sits in, so a route added
   // without a title here reads as its section rather than as "Dashboard".
