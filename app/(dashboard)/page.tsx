@@ -24,21 +24,24 @@ export default function DashboardPage() {
         <OnDutyToday />
       </div>
 
-      {/* Two three-column grids, as the design lays them out: the trend spans
-          two columns beside Stock Distribution, then Spend / Alerts / Top
-          Consumed. The design has no media queries, so narrow screens stay a
-          whole-shell follow-up. */}
+      {/* One three-column grid, as the design lays it out: the trend spans two
+          columns beside Stock Distribution, then Spend / Alerts / Top Consumed
+          wrap onto the second row. A single grid rather than one per row so the
+          gutter between rows is the same 20px as the gutter between columns.
+          The design has no media queries, so narrow screens stay a whole-shell
+          follow-up. */}
       <div className="grid grid-cols-3 gap-5">
         <ConsumptionTrend />
         <StockDistribution items={items} />
-      </div>
-
-      <div className="grid grid-cols-3 gap-5">
         <SpendVsBudget />
         <Alerts items={items} />
-        <TopConsumed items={items}>
+        {/* Top Consumed and Stock Status share the third column, stacked at
+            the same 20px gutter the grid uses, so the split reads as two cards
+            in one slot rather than as a new column. */}
+        <div className="flex flex-col gap-5">
+          <TopConsumed items={items} />
           <StockStatusTracker items={items} />
-        </TopConsumed>
+        </div>
       </div>
     </div>
   );

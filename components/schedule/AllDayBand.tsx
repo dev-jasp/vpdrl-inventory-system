@@ -11,7 +11,11 @@ import { EventRow } from "./EventCard";
  * to the lab, not to whoever happens to be in. Pinning a window is what moves
  * a card out of here and into a column.
  *
- * It scrolls at four rows. A quiet week shows one or two; the day a quarter's
+ * The chips flow along the band and wrap, rather than stacking one per line.
+ * A date-only event carries about four words, so a line of them holds two or
+ * three — stacked, each one spent the band's whole width to say very little.
+ *
+ * It scrolls at four lines. A quiet week shows one; the day a quarter's
  * calibrations all come due it must not push the grid off the screen.
  */
 export function AllDayBand({ events }: { events: ScheduleEvent[] }) {
@@ -22,7 +26,7 @@ export function AllDayBand({ events }: { events: ScheduleEvent[] }) {
       <span className="w-[52px] flex-none pt-1 text-[10px] font-medium tracking-[0.06em] text-text-4 uppercase">
         All day
       </span>
-      <div className="flex max-h-[132px] min-w-0 flex-1 flex-col gap-1 overflow-y-auto">
+      <div className="flex max-h-[132px] min-w-0 flex-1 flex-wrap items-start gap-1.5 overflow-y-auto">
         {events.map((event) => (
           <EventRow key={event.id} event={event} />
         ))}
