@@ -62,7 +62,7 @@ export function StaffToolbar({
           href={staffHref(query, { fullTime: !query.fullTime })}
           aria-pressed={query.fullTime}
           className={cx(
-            "flex h-[38px] items-center rounded-[10px] border px-3.5 text-[12.5px] font-semibold whitespace-nowrap",
+            "flex h-[38px] items-center rounded-md border px-3.5 text-[12.5px] font-semibold whitespace-nowrap",
             query.fullTime
               ? "border-tint-blue bg-tint-blue text-accent-fg"
               : "border-border-strong bg-surface text-text hover:bg-muted",
@@ -71,7 +71,7 @@ export function StaffToolbar({
           Full-time only
         </Link>
 
-        <div className="flex overflow-hidden rounded-[10px] border border-border-strong">
+        <div className="flex overflow-hidden rounded-md border border-border-strong">
           {MODES.map((mode, index) => {
             const active = query.mode === mode.value;
             return (
@@ -99,7 +99,7 @@ export function StaffToolbar({
             dialog. */}
         <Link
           href={staffPath("/staff/new", query)}
-          className="flex h-[38px] items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-semibold text-white hover:bg-[#2563eb]"
+          className="flex h-9.5 items-center rounded-md bg-[#4258eb] px-4.5 text-[13px] font-medium text-white hover:bg-[#4258eb] capitalize"
         >
           Add staff
         </Link>

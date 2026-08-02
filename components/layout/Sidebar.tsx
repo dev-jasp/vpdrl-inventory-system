@@ -91,12 +91,12 @@ export function Sidebar() {
                         fallback={
                           <NavChildList
                             id={subNavId}
-                            items={item.children}
+                            groups={item.children}
                             active={null}
                           />
                         }
                       >
-                        <NavChildLinks id={subNavId} items={item.children} />
+                        <NavChildLinks id={subNavId} groups={item.children} />
                       </Suspense>
                     ) : null}
                   </li>
@@ -176,12 +176,12 @@ function NavRow({
       >
         <Icon
           name={item.icon}
-          className={rail ? "size-[22px]" : "size-[17px]"}
+          className={rail ? "size-[22px]" : "size-[18px]"}
         />
         {rail ? (
           <span className="sr-only">{item.label}</span>
         ) : (
-          <span className="flex-1 text-[13.5px] font-medium whitespace-nowrap">
+          <span className="flex-1 text-[14px] font-medium whitespace-nowrap">
             {item.label}
           </span>
         )}

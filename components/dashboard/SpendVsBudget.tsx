@@ -23,9 +23,9 @@ export function SpendVsBudget() {
     <Card className="h-full pb-4">
       <CardTitle>Spend vs. Budget</CardTitle>
 
-      <div className="mt-4 flex gap-[34px]">
+      <div className="mt-[26px] flex gap-[34px]">
         <div>
-          <div className="text-[10px] font-semibold tracking-[0.12em] text-text-4">
+          <div className="text-xs font-semibold tracking-[0.12em] text-text-4">
             TOTAL SPEND
           </div>
           <div className="mt-[3px] font-mono text-[21px] font-extrabold">
@@ -33,7 +33,7 @@ export function SpendVsBudget() {
           </div>
         </div>
         <div>
-          <div className="text-[10px] font-semibold tracking-[0.12em] text-text-4">
+          <div className="text-xs font-semibold tracking-[0.12em] text-text-4">
             TOTAL BUDGET
           </div>
           <div className="mt-[3px] font-mono text-[21px] font-extrabold text-text-3">

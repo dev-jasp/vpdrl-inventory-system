@@ -97,7 +97,7 @@ export function SuppliersTable({ rows }: { rows: SupplierRow[] }) {
                   <div className="min-w-0">
                     <Link
                       href={inventoryHref(DEFAULT_QUERY, { q: supplier.name })}
-                      className="block truncate text-[13.5px] font-semibold after:absolute after:inset-0 after:content-['']"
+                      className="block truncate text-[13.5px] font-normal after:absolute after:inset-0 after:content-['']"
                     >
                       {supplier.name}
                       {/* The row leads somewhere the name alone doesn't

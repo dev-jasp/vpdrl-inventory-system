@@ -30,7 +30,7 @@ export default function SuppliersPage() {
 
         <Link
           href="/suppliers/new"
-          className="ml-auto flex h-[38px] items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-semibold text-white hover:bg-[#2563eb]"
+          className="ml-auto flex h-9.5 items-center rounded-md bg-[#4258eb] px-4.5 text-[13px] font-medium text-white hover:bg-[#4258eb] capitalize"
         >
           + Add supplier
         </Link>

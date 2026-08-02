@@ -93,7 +93,7 @@ export function InventoryFilters({
 
       <Link
         href="/inventory/new"
-        className="inline-flex h-[31px] items-center rounded-full bg-[#3b82f6] px-3.5 text-[12.5px] font-semibold text-white hover:bg-[#2563eb]"
+        className="inline-flex h-9.5 items-center rounded-md bg-[#4258eb] px-4.5 text-[13px] font-medium text-white hover:bg-[#4258eb] capitalize"
       >
         + Add item
       </Link>

@@ -25,7 +25,7 @@ export default async function EditSupplierPage({
   return (
     <div className="mx-auto w-full max-w-[680px] overflow-hidden rounded-[18px] border border-border bg-surface shadow-[var(--shadow-1)]">
       <div className="border-b border-border-soft px-[26px] pt-[22px] pb-[18px]">
-        <h2 className="text-xl font-semibold tracking-[-0.025em]">
+        <h2 className="text-xl font-normal tracking-[-0.025em]">
           {supplier.name}
         </h2>
       </div>
