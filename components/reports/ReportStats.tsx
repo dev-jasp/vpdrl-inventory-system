@@ -22,7 +22,7 @@ export function ReportStats({ stats }: { stats: Stat[] }) {
     <div className="grid grid-cols-4 gap-5">
       {stats.map((stat) => (
         <Card key={stat.label} className="py-[18px]">
-          <div className="text-[10px] font-semibold tracking-[0.12em] text-text-4">
+          <div className="text-xs font-semibold tracking-[0.12em] text-text-4">
             {stat.label}
           </div>
           <div

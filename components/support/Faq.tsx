@@ -15,7 +15,7 @@ import type { FaqEntry } from "@/data/support";
  */
 export function Faq({ entries }: { entries: FaqEntry[] }) {
   return (
-    <div className="rounded-[14px] border border-border bg-surface px-[22px] py-2 shadow-[var(--shadow-1)]">
+    <div className="rounded-sm border border-border bg-surface px-[22px] py-2 shadow-[var(--shadow-1)]">
       <h2 className="sr-only">Frequently asked questions</h2>
       {entries.map((entry, index) => (
         <details
@@ -25,7 +25,7 @@ export function Faq({ entries }: { entries: FaqEntry[] }) {
           className="group border-b border-border-soft"
         >
           <summary className="flex cursor-pointer list-none items-center gap-3.5 py-4 [&::-webkit-details-marker]:hidden">
-            <span className="flex-1 text-[13.5px] font-semibold">
+            <span className="flex-1 text-[13.5px] font-normal">
               {entry.question}
             </span>
             {/* The design's chevron never turns; it does here, because a

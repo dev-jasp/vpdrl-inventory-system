@@ -24,7 +24,7 @@ export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
 
   return (
     <div className="mt-[18px] border-t border-border-soft pt-3.5">
-      <h3 className="text-[10px] font-semibold tracking-[0.12em] text-text-4">
+      <h3 className="text-xs font-semibold tracking-[0.12em] text-text-4">
         STOCK STATUS
       </h3>
 
@@ -36,8 +36,8 @@ export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
               className="size-[7px] flex-none rounded-full"
               style={{ background: bucket.color }}
             />
-            <span className="flex-1 text-xs font-medium">{bucket.label}</span>
-            <span className="font-mono text-[12.5px] font-extrabold">
+            <span className="flex-1 text-xs font-normal">{bucket.label}</span>
+            <span className="font-mono text-[12.5px] font-normal">
               {bucket.count}
             </span>
           </li>

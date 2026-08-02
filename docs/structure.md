@@ -91,7 +91,11 @@ row menu and decoded back by the route.
   searchParams (`cat`, `flag`, `zone`, `q`, `sort`, `dir`, `page`, `per`), so
   filters stay shareable and bookmarkable without duplicating the list page.
   `lib/inventory/filters.ts` is the one place that reads and writes them; the
-  param names and sort keys are the design's own.
+  param names and sort keys are the design's own. The sidebar sorts them under
+  **Categories** and **Status** headings where the design lists all five flat —
+  grouping is presentation only, and `activeChild` still resolves against every
+  preset at once (`INVENTORY_CHILD_GROUPS` and the flat `INVENTORY_CHILDREN` in
+  `components/layout/navItems.ts`).
 - **All staff / Lab technicians / Support staff** — tabs in the design, and
   `/staff` with searchParams (`group`, `q`, `full`, `mode`, `page`, `per`) here,
   for the same reason the inventory filters are. `lib/staff/filters.ts` owns

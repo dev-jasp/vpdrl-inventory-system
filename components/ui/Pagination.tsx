@@ -89,7 +89,7 @@ export function Pagination({
                 className={cx(
                   "flex h-[34px] min-w-[34px] items-center justify-center rounded-[9px] border px-2.5 text-[12.5px] font-semibold",
                   current
-                    ? "border-[#3b82f6] bg-[#3b82f6] text-white"
+                    ? "border-accent bg-accent text-white"
                     : "border-border-strong bg-surface text-text-2 hover:bg-muted",
                 )}
               >

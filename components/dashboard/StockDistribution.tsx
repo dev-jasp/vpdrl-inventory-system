@@ -71,7 +71,7 @@ export function StockDistribution({ items }: { items: TrackedItem[] }) {
               className="size-2 flex-none rounded-full"
               style={{ background: CATEGORY_COLORS[arc.category] }}
             />
-            <span className="flex-1 text-[12.5px] font-medium">
+            <span className="flex-1 text-[12.5px] font-normal">
               {arc.label}
             </span>
             <span
@@ -86,7 +86,7 @@ export function StockDistribution({ items }: { items: TrackedItem[] }) {
                 }}
               />
             </span>
-            <span className="w-[38px] text-right font-mono text-xs font-semibold text-text-2">
+            <span className="w-[38px] text-right font-mono text-xs font-normal text-text-2">
               {arc.rounded}%
             </span>
           </li>

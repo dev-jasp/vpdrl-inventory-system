@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { NavSelect } from "@/components/ui/NavSelect";
+import { primaryButton } from "@/components/ui/buttons";
 import {
   CATEGORY_FILTERS,
   FLAG_FILTERS,
@@ -91,10 +92,7 @@ export function InventoryFilters({
         className="ml-auto h-[31px] rounded-full"
       />
 
-      <Link
-        href="/inventory/new"
-        className="inline-flex h-[31px] items-center rounded-full bg-[#3b82f6] px-3.5 text-[12.5px] font-semibold text-white hover:bg-[#2563eb]"
-      >
+      <Link href="/inventory/new" className={primaryButton}>
         + Add item
       </Link>
     </div>

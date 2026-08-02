@@ -43,7 +43,7 @@ export function ExpiryHorizon({ buckets }: { buckets: HorizonBucket[] }) {
                 {bucket.count}
               </div>
               <div
-                className="mt-1.5 w-full rounded-t-[4px] bg-[#3b82f6]"
+                className="mt-1.5 w-full rounded-t-[4px] bg-accent"
                 style={{
                   // A zero bucket draws nothing; anything else keeps a
                   // minimum sliver so "1 of 200" is still visible.

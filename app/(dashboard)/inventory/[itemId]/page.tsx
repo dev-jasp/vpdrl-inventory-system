@@ -7,6 +7,7 @@ import { ItemLots } from "@/components/inventory/ItemLots";
 import { ItemSpecification } from "@/components/inventory/ItemSpecification";
 import { StockPosition } from "@/components/inventory/StockPosition";
 import { Withdrawals } from "@/components/inventory/Withdrawals";
+import { primaryButton } from "@/components/ui/buttons";
 import { allItems } from "@/lib/inventory/store";
 import { activityOf } from "@/lib/inventory/activity";
 import { listHref, parseInventoryQuery } from "@/lib/inventory/filters";
@@ -46,7 +47,7 @@ export default async function InventoryItemPage({
     <div className="flex flex-col gap-5">
       <Link
         href={listHref(query)}
-        className="self-start text-[12.5px] font-semibold text-[#3b82f6] hover:text-[#2563eb]"
+        className="self-start text-[12.5px] font-normal text-accent-fg hover:text-accent-hover"
       >
         ← Back to inventory
       </Link>
@@ -79,10 +80,7 @@ export default async function InventoryItemPage({
           >
             Request order
           </Link>
-          <Link
-            href={`/inventory/${item.id}/edit`}
-            className="flex h-10 items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-semibold text-white hover:bg-[#2563eb]"
-          >
+          <Link href={`/inventory/${item.id}/edit`} className={primaryButton}>
             Edit item
           </Link>
         </div>

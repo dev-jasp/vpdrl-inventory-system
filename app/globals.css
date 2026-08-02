@@ -19,8 +19,8 @@
   --text: #1c2033;
   --text-2: #5c6379;
   --text-3: #8b91a6;
-  --text-4: #a8adbd;
-  --tint-blue: #dbeafe;
+  --text-4: #6b7280;
+  --tint-blue: #e9f0fb;
   --tint-green: #d1fae5;
   --tint-red: #fee2e2;
   --tint-violet: #ddd6fe;
@@ -38,7 +38,13 @@
   --shadow-3: 0 26px 64px rgba(16, 24, 40, 0.26);
   --scrim: rgba(22, 26, 44, 0.34);
   --scroll-thumb: #dfe2e8;
-  --accent-fg: #1d4ed8;
+  /* `--accent` is the solid fill a primary button wears, with white on it.
+     `--accent-fg` is the accent as *ink* — an active nav label, a link, a
+     figure. They are separate because they invert differently: the fill stays
+     saturated in both themes, while the ink has to go light on a dark surface. */
+  --accent: #4258eb;
+  --accent-hover: oklch(48% 0.221 270);
+  --accent-fg: #4258eb;
   --av-1: #dbeafe;
   --av-2: #e6f7f0;
   --av-3: #fff1e2;
@@ -61,7 +67,7 @@
   --text-2: oklch(80% 0.012 265);
   --text-3: oklch(66% 0.016 265);
   --text-4: oklch(56% 0.018 265);
-  --tint-blue: oklch(38% 0.09 262);
+  --tint-blue: oklch(38% 0.1 270);
   --tint-green: oklch(37% 0.08 155);
   --tint-red: oklch(37% 0.09 25);
   --tint-violet: oklch(38% 0.09 292);
@@ -79,7 +85,11 @@
   --shadow-3: 0 26px 64px rgba(0, 0, 0, 0.6);
   --scrim: rgba(6, 8, 16, 0.58);
   --scroll-thumb: oklch(36% 0.016 265);
-  --accent-fg: #93c5fd;
+  /* Hue 270, matching the light accent. The old dark values sat at hue 252 —
+     the previous accent's family — and stayed there when the light one moved. */
+  --accent: oklch(58% 0.2 270);
+  --accent-hover: oklch(63% 0.19 270);
+  --accent-fg: oklch(80% 0.12 270);
   --av-1: oklch(36% 0.08 262);
   --av-2: oklch(35% 0.07 158);
   --av-3: oklch(36% 0.08 70);
@@ -119,6 +129,8 @@
   --color-badge-red-fg: var(--badge-red-fg);
   --color-badge-violet-bg: var(--badge-violet-bg);
   --color-badge-violet-fg: var(--badge-violet-fg);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-fg: var(--accent-fg);
 
   /* Both families are wired up in `app/layout.tsx`, which is also where the
@@ -168,7 +180,7 @@ button:not(:disabled),
 }
 
 ::selection {
-  background: rgba(59, 130, 246, 0.28);
+  background: color-mix(in oklch, var(--accent) 28%, transparent);
 }
 
 ::-webkit-scrollbar {

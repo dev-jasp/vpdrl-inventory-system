@@ -48,7 +48,7 @@ export function UserMenu({
           rail ? "justify-center" : "justify-start",
         )}
       >
-        <span className="grid size-[34px] flex-none place-items-center rounded-full bg-[#3b82f6] text-xs font-semibold text-white">
+        <span className="grid size-[34px] flex-none place-items-center rounded-full bg-accent text-xs font-semibold text-white">
           {initials(USER.name)}
         </span>
         {rail ? (

@@ -18,11 +18,11 @@ export function fileSize(bytes: number) {
  */
 export function ReportCard({ report, size }: { report: Report; size: number }) {
   return (
-    <article className="flex flex-col gap-3 rounded-[14px] border border-border bg-surface px-[22px] py-5 shadow-[var(--shadow-1)]">
+    <article className="flex flex-col gap-3 rounded-sm border border-border bg-surface px-[22px] py-5 shadow-[var(--shadow-1)]">
       <div className="flex items-start gap-3">
         <span
           aria-hidden
-          className="grid size-9 flex-none place-items-center rounded-[9px] bg-[#3b82f6] text-[10px] font-semibold tracking-[0.02em] text-white"
+          className="grid size-9 flex-none place-items-center rounded-md bg-accent text-[10px] font-semibold tracking-[0.02em] text-white"
         >
           {report.format}
         </span>
@@ -47,7 +47,7 @@ export function ReportCard({ report, size }: { report: Report; size: number }) {
         <a
           href={`/reports/${report.id}/download`}
           download={`${report.id}.csv`}
-          className="flex h-8 items-center rounded-lg bg-tint-blue px-3.5 text-xs font-semibold text-accent-fg hover:brightness-95"
+          className="flex h-8 items-center rounded-md bg-tint-blue px-3.5 text-xs font-medium text-accent-fg hover:brightness-95"
         >
           Download
           {/* The card's heading is the only thing naming the report, and a

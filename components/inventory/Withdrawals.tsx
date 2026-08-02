@@ -99,7 +99,9 @@ export function Withdrawals({
                     // bar reads as empty rather than as missing.
                     height: `${Math.max(4, Math.round((value / peak) * 100))}%`,
                     background:
-                      index === WEEKS - 1 ? "#3b82f6" : "var(--tint-blue)",
+                      index === WEEKS - 1
+                        ? "var(--accent)"
+                        : "var(--tint-blue)",
                   }}
                 />
                 {hover === index ? (
@@ -110,7 +112,7 @@ export function Withdrawals({
                     <div className="flex items-center gap-2">
                       <span
                         aria-hidden
-                        className="size-2 flex-none rounded-sm bg-[#3b82f6]"
+                        className="size-2 flex-none rounded-sm bg-accent"
                       />
                       <span className="text-text-3">Withdrawn</span>
                       <span className="ml-auto pl-3.5 font-mono font-semibold">

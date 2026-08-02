@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { StaffDays } from "@/components/staff/StaffDays";
 import { Avatar } from "@/components/ui/Avatar";
+import { primaryButton } from "@/components/ui/buttons";
 import type { Staff } from "@/types/staff";
 import { cx } from "@/utils/cx";
 
@@ -93,7 +94,7 @@ export function StaffProfile({
         {close}
         <Link
           href={editHref}
-          className="flex h-10 flex-1 items-center justify-center rounded-[10px] bg-[#3b82f6] text-[13px] font-semibold text-white hover:bg-[#2563eb]"
+          className={cx(primaryButton, "flex-1 justify-center")}
         >
           Edit info
         </Link>

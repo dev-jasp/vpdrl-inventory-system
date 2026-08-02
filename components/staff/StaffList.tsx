@@ -62,7 +62,7 @@ export function StaffList({
               <th
                 key={column.label}
                 scope="col"
-                className="px-[18px] py-[11px] text-[10.5px] font-semibold tracking-[0.1em] whitespace-nowrap text-text-4"
+                className="px-[18px] py-[11px] text-[10.5px] font-normal tracking-[0.1em] whitespace-nowrap text-text-4"
               >
                 {column.unlabelled ? (
                   <span className="sr-only">{column.label}</span>
@@ -105,7 +105,7 @@ export function StaffList({
                   <div className="min-w-0">
                     <Link
                       href={staffProfileHref(query, person.id)}
-                      className="block truncate text-[13.5px] font-semibold after:absolute after:inset-0 after:content-['']"
+                      className="block truncate text-[13.5px] font-normal after:absolute after:inset-0 after:content-['']"
                     >
                       {person.name}
                     </Link>
@@ -137,7 +137,7 @@ export function StaffList({
                 </div>
               </td>
 
-              <td className="px-[18px] py-3 text-[10.5px] font-semibold tracking-[0.04em] whitespace-nowrap uppercase">
+              <td className="px-[18px] py-3 text-[10.5px] font-normal tracking-[0.04em] whitespace-nowrap uppercase">
                 {person.employment}
               </td>
 

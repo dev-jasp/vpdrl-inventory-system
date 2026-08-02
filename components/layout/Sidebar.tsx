@@ -41,7 +41,7 @@ export function Sidebar() {
         </div>
       ) : (
         <div className="flex items-center gap-[11px] px-4 pt-[18px] pb-5">
-          <span className="grid size-[34px] flex-none place-items-center rounded-[10px] bg-[#3b82f6] text-sm font-semibold tracking-[-0.02em] text-white">
+          <span className="grid size-[34px] flex-none place-items-center rounded-md bg-accent text-sm font-semibold tracking-[-0.02em] text-white">
             VI
           </span>
           <span className="min-w-0 text-[15px] font-semibold tracking-[-0.015em]">
@@ -91,12 +91,12 @@ export function Sidebar() {
                         fallback={
                           <NavChildList
                             id={subNavId}
-                            items={item.children}
+                            groups={item.children}
                             active={null}
                           />
                         }
                       >
-                        <NavChildLinks id={subNavId} items={item.children} />
+                        <NavChildLinks id={subNavId} groups={item.children} />
                       </Suspense>
                     ) : null}
                   </li>
@@ -176,12 +176,12 @@ function NavRow({
       >
         <Icon
           name={item.icon}
-          className={rail ? "size-[22px]" : "size-[17px]"}
+          className={rail ? "size-[22px]" : "size-[18px]"}
         />
         {rail ? (
           <span className="sr-only">{item.label}</span>
         ) : (
-          <span className="flex-1 text-[13.5px] font-medium whitespace-nowrap">
+          <span className="flex-1 text-[14.5px] font-medium whitespace-nowrap">
             {item.label}
           </span>
         )}

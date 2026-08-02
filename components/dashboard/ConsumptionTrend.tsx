@@ -109,7 +109,7 @@ export function ConsumptionTrend() {
       </div>
 
       <div className="mt-[18px]">
-        <div className="text-[10px] font-semibold tracking-[0.12em] text-text-4">
+        <div className="text-xs font-semibold tracking-[0.12em] text-text-4">
           TOTAL UNITS WITHDRAWN
         </div>
         <div className="mt-1 flex items-baseline gap-2">

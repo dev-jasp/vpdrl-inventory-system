@@ -34,7 +34,7 @@ export function StaffDays({
             "grid flex-none place-items-center rounded-full font-semibold",
             large ? "size-[26px] text-[10px]" : "size-6 text-[9.5px]",
             days[index] === "1"
-              ? "bg-[#3b82f6] text-white"
+              ? "bg-accent text-white"
               : "bg-muted text-text-4",
           )}
         >

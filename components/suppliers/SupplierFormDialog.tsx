@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { SupplierForm } from "@/components/suppliers/SupplierForm";
 import { Dialog } from "@/components/ui/Dialog";
+import { secondaryButton } from "@/components/ui/buttons";
 import type { Supplier } from "@/types/supplier";
 
 /**
@@ -28,11 +29,7 @@ export function SupplierFormDialog({ supplier }: { supplier?: Supplier }) {
       <SupplierForm
         supplier={supplier}
         cancel={
-          <button
-            type="button"
-            onClick={close}
-            className="flex h-10 items-center rounded-[10px] border border-border-strong bg-surface px-4 text-[13px] font-semibold text-text hover:bg-muted"
-          >
+          <button type="button" onClick={close} className={secondaryButton}>
             Cancel
           </button>
         }

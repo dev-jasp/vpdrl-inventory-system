@@ -69,7 +69,7 @@ export function InventoryTable({
                 >
                   <Link
                     href={inventoryHref(query, nextSort(query, column.key))}
-                    className="block px-[18px] py-[11px] text-[10.5px] tracking-[0.1em] whitespace-nowrap text-text-4 hover:text-[#3b82f6]"
+                    className="block px-[18px] py-[11px] text-[10.5px] tracking-[0.1em] whitespace-nowrap text-text-4 hover:text-accent-fg"
                   >
                     {column.label}{" "}
                     <span aria-hidden>
@@ -119,7 +119,7 @@ export function InventoryTable({
                     <div className="min-w-0">
                       <Link
                         href={itemHref(query, item.id)}
-                        className="block truncate text-[13.5px] font-semibold after:absolute after:inset-0 after:content-['']"
+                        className="block truncate text-[13.5px] font-normal after:absolute after:inset-0 after:content-['']"
                       >
                         {item.name}
                       </Link>
@@ -139,7 +139,7 @@ export function InventoryTable({
                 </td>
 
                 <td className="px-[18px] py-3 font-mono whitespace-nowrap">
-                  <div className="text-[13px] font-semibold">
+                  <div className="text-[13px] font-normal">
                     {item.quantity} {item.unit}
                   </div>
                   {lots > 1 ? (
@@ -158,7 +158,7 @@ export function InventoryTable({
 
                 <td className="px-[18px] py-3">
                   <span
-                    className="inline-flex rounded-full border px-[9px] py-1 text-[11px] font-semibold whitespace-nowrap"
+                    className="inline-flex rounded-full border px-[9px] py-1 text-[11px] font-normal whitespace-nowrap"
                     style={{
                       background: badge.background,
                       color: badge.color,

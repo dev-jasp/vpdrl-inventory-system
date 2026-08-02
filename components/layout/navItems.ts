@@ -13,11 +13,20 @@ export type NavChild = {
   badge?: string;
 };
 
+/**
+ * A run of sub-nav entries under one heading. `label` absent means the run is
+ * unheaded, which is how "All items" sits on its own above the rest.
+ */
+export type NavChildGroup = {
+  label?: string;
+  items: NavChild[];
+};
+
 export type NavItem = {
   label: string;
   href: string;
   icon: IconName;
-  children?: NavChild[];
+  children?: NavChildGroup[];
 };
 
 export type NavGroup = {
@@ -25,13 +34,41 @@ export type NavGroup = {
   items: NavItem[];
 };
 
-export const INVENTORY_CHILDREN: NavChild[] = [
-  { label: "All items", href: "/inventory" },
-  { label: "Chemicals", href: "/inventory?cat=Chemicals" },
-  { label: "Equipment", href: "/inventory?cat=Equipment" },
-  { label: "Low stock", href: "/inventory?flag=low" },
-  { label: "Expiring / due", href: "/inventory?flag=exp" },
+/**
+ * The Inventory sub-nav, sorted into what each filter actually asks about.
+ *
+ * The design lists all five flat. Splitting them says which axis each one is
+ * on — Chemicals and Equipment narrow the catalogue by what a thing *is*, Low
+ * stock and Expiring / due by what has *happened* to it — and the two are
+ * combinable (`?cat=Chemicals&flag=low`), which a flat list gives no hint of.
+ * The hrefs and the order within each run are the design's, untouched.
+ */
+export const INVENTORY_CHILD_GROUPS: NavChildGroup[] = [
+  { items: [{ label: "All items", href: "/inventory" }] },
+  {
+    label: "Categories",
+    items: [
+      { label: "Chemicals", href: "/inventory?cat=Chemicals" },
+      { label: "Equipment", href: "/inventory?cat=Equipment" },
+    ],
+  },
+  {
+    label: "Status",
+    items: [
+      { label: "Low stock", href: "/inventory?flag=low" },
+      { label: "Expiring / due", href: "/inventory?flag=exp" },
+    ],
+  },
 ];
+
+/**
+ * The same entries flat, which is what resolving the active one works on —
+ * `activeChild` compares against every preset regardless of how it is grouped,
+ * and `PageTitle` reads the result to title the page.
+ */
+export const INVENTORY_CHILDREN: NavChild[] = INVENTORY_CHILD_GROUPS.flatMap(
+  (group) => group.items,
+);
 
 export const NAV_GROUPS: NavGroup[] = [
   {
@@ -42,7 +79,7 @@ export const NAV_GROUPS: NavGroup[] = [
         label: "Inventory",
         href: "/inventory",
         icon: "package",
-        children: INVENTORY_CHILDREN,
+        children: INVENTORY_CHILD_GROUPS,
       },
     ],
   },

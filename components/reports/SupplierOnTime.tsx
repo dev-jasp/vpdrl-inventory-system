@@ -43,12 +43,12 @@ export function SupplierOnTime({ suppliers }: { suppliers: SupplierRow[] }) {
                   className="h-[9px] flex-1 overflow-hidden rounded-full bg-muted"
                 >
                   <span
-                    className="block h-full rounded-full bg-[#3b82f6]"
+                    className="block h-full rounded-full bg-accent"
                     style={{ width: `${supplier.onTime}%` }}
                   />
                 </span>
                 <span
-                  className="w-[42px] shrink-0 text-right font-mono text-[12.5px] font-semibold"
+                  className="w-[42px] shrink-0 text-right font-mono text-[12.5px] font-normal"
                   style={{ color: band.color }}
                 >
                   {supplier.onTime}%
