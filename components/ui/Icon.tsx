@@ -20,7 +20,7 @@ const GLYPHS = {
   hourglass:
     '<circle cx="12" cy="12" r="8.6"/><line x1="12" y1="7.2" x2="12" y2="12"/><line x1="12" y1="12" x2="15.6" y2="14.2"/>',
   calendar:
-    '<rect x="3.6" y="5.2" width="16.8" height="15.2" rx="2.2"/><line x1="3.6" y1="9.8" x2="20.4" y2="9.8"/><line x1="8.4" y1="3.2" x2="8.4" y2="6.4"/><line x1="15.6" y1="3.2" x2="15.6" y2="6.4"/>',
+    '<path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/>',
   note: '<path d="M6 3.6h12v16.8l-3.4-2.6-2.6 2.6-2.6-2.6-3.4 2.6Z"/><line x1="8.6" y1="8.4" x2="15.4" y2="8.4"/><line x1="8.6" y1="12" x2="15.4" y2="12"/>',
   todo: '<rect x="3.6" y="4" width="16.8" height="16" rx="2.2"/><polyline points="7 12 9.4 14.4 14 9.4"/><line x1="7" y1="17.6" x2="17" y2="17.6"/>',
   clipboard:
@@ -71,6 +71,7 @@ export type IconName = keyof typeof GLYPHS;
 const HEROICONS = new Set<IconName>([
   "layout-dashboard",
   "package",
+  "calendar",
   "users",
   "clipboard",
   "truck",
