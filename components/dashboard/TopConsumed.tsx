@@ -35,7 +35,7 @@ export function TopConsumed({ items }: { items: TrackedItem[] }) {
             label: option.label,
           }))}
           align="end"
-          className="ml-auto h-7 rounded-lg px-2 text-xs"
+          className="ml-auto h-7 w-35 rounded-lg px-2.5 text-xs font-normal"
         />
       </div>
 
