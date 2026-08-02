@@ -30,9 +30,10 @@ Every view shares one shell (sidebar + topbar), so all pages live in a
 
 ### Modals
 
-The design draws the item form, the staff profile and the staff form as dialogs
-over the list, but a dialog with no URL cannot be linked, refreshed or backed
-out of. Both are true here through a parallel slot and intercepting routes:
+The design draws the item form, the staff profile, the staff form and the
+supplier form as dialogs over the list, but a dialog with no URL cannot be
+linked, refreshed or backed out of. Both are true here through a parallel slot
+and intercepting routes:
 
 ```
 app/(dashboard)/@modal/default.tsx                       nothing, on a full page load
@@ -49,6 +50,11 @@ app/(dashboard)/@modal/(.)staff/[staffId]/edit/page.tsx
 app/(dashboard)/staff/new/page.tsx                       the same views as pages
 app/(dashboard)/staff/[staffId]/page.tsx
 app/(dashboard)/staff/[staffId]/edit/page.tsx
+
+app/(dashboard)/@modal/(.)suppliers/new/page.tsx         modal over the table
+app/(dashboard)/@modal/(.)suppliers/[supplier]/edit/page.tsx
+app/(dashboard)/suppliers/new/page.tsx                   the same form as a page
+app/(dashboard)/suppliers/[supplier]/edit/page.tsx
 ```
 
 A navigation from inside the app is intercepted and lays the dialog over
@@ -71,6 +77,11 @@ carries the inventory list's, and for the same reason: it is the only way Close,
 Cancel and a finished save can return to the filtered page somebody opened them
 from rather than to an unfiltered page 1. `staffPath` in `lib/staff/filters.ts`
 builds them.
+
+The two supplier routes carry nothing, because `/suppliers` has no filters,
+search or paging to come back to. Their segment is the supplier's **name** — the
+identity, since a supplier has no id (`types/supplier.ts`) — URL-encoded by the
+row menu and decoded back by the route.
 
 ### What is deliberately _not_ a route
 
@@ -108,8 +119,9 @@ components/
 │                withdrawals, activity, specification), item form, photo capture
 ├── staff/       staff table + cards, tabs/filters, row menu, profile, staff form
 │                and its photo field, each wrapped in a dialog for the modal route
-├── suppliers/   supplier table (contact, catalogue, delivery performance);
-│                supplier form dialog still to come
+├── suppliers/   supplier table (contact, catalogue, delivery performance),
+│                row menu, and the supplier form wrapped in a dialog for the
+│                modal route
 ├── reports/     report list rows, download actions
 └── support/     FAQ accordion, contact channels, status card
 ```
@@ -127,7 +139,8 @@ lib/
 │               which stay put until those become real records
 ├── staff/      grouping by type, working-day helpers, list filtering, the
 │               searchParams the list travels on, and reading the form back
-├── suppliers/  on-time banding, and joining a supplier to what it supplies
+├── suppliers/  on-time banding, joining a supplier to what it supplies, the
+│               store, and reading the form back
 └── shared/     currency (₱), dates, units, and the pieces both lists share —
                 paginating a list, and reading typed values off searchParams
 data/     seed datasets standing in for the API
@@ -179,13 +192,22 @@ Built on top of it:
   `onTime` and `lead` on every supplier, edits both in its form, computes a
   colour band for the percentage, and then stops the table at ITEMS. No
   filters, search or paging: the design gives this list none. "+ Add supplier"
-  is inert and there is no ⋯ menu until the supplier form exists.
+  opens the form, and the row's ⋯ menu holds the design's single "Edit
+  supplier".
+- **`/suppliers/new`, `/suppliers/:supplier/edit`** — the supplier form, as a
+  modal or a page (see Modals above). Saving goes through the `saveSupplier`
+  server action in `app/(dashboard)/suppliers/actions.ts`. Because the name is
+  the identity and `Item.supplier` joins on it, that action does two writes: the
+  record, and `renameItemSupplier` for the catalogue when the name changed. The
+  name is required and has to be unique, where the design allows a blank one and
+  falls back to "Untitled supplier".
 
-Items are read through `lib/inventory/store.ts` and people through
-`lib/staff/store.ts`, not from `data/items.ts` or `data/staff.ts` directly. A
-store is a mutable module-level copy of the seed: it gives the form somewhere to
-write, survives navigations and refreshes, and resets when the server does. The
-two are the seams to replace with a real API.
+Items are read through `lib/inventory/store.ts`, people through
+`lib/staff/store.ts` and suppliers through `lib/suppliers/store.ts`, not from
+`data/items.ts`, `data/staff.ts` or `data/suppliers.ts` directly. A store is a
+mutable module-level copy of the seed: it gives the form somewhere to write,
+survives navigations and refreshes, and resets when the server does. The three
+are the seams to replace with a real API.
 
 Because the stores change under them, the routes that read them are not served
 from a build-time render. `/inventory`, `/staff` and everything under them are
@@ -193,12 +215,12 @@ dynamic already, having searchParams or a dynamic segment to resolve; the two
 inventory `new` routes say `force-dynamic` outright, because a zone picker built
 from the store would otherwise be frozen at the seed.
 
-`/` and `/suppliers` are the exceptions — neither takes request input, so both
-prerender, and `saveItem` and `saveStaff` revalidate them: `revalidatePath("/")`
-for the dashboard's counts and on-duty row, and `revalidatePath("/suppliers")`
-for the ITEMS column, which counts what each supplier supplies. Suppliers
-themselves are still read straight from `data/suppliers.ts` — there is no
-supplier store because nothing writes one yet.
+`/`, `/suppliers` and `/suppliers/new` are the exceptions — none takes request
+input, so all three prerender, and the actions revalidate them: `saveItem` and
+`saveStaff` call `revalidatePath("/")` for the dashboard's counts and on-duty
+row, both call `revalidatePath("/suppliers")` for the ITEMS column, and
+`saveSupplier` calls it for the supplier's own row. A rename also revalidates
+`/inventory` and the item pages, because the items carry the name it changed.
 
 Every other route is still a placeholder page that renders the view name.
 

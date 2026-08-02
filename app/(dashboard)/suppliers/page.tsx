@@ -1,7 +1,9 @@
+import Link from "next/link";
+
 import { SuppliersTable } from "@/components/suppliers/SuppliersTable";
-import { SUPPLIERS } from "@/data/suppliers";
 import { allItems } from "@/lib/inventory/store";
 import { supplierRows } from "@/lib/suppliers/performance";
+import { allSuppliers } from "@/lib/suppliers/store";
 
 // Suppliers — who the lab buys from, what they supply, and how well they
 // deliver. Ported from `LabTrack Dashboard.dc.html`, plus the two performance
@@ -10,18 +12,13 @@ import { supplierRows } from "@/lib/suppliers/performance";
 //
 // No filters, search or paging: the design gives this list none, and sixteen
 // suppliers ordered by how much of the catalogue rides on them is a page you
-// read rather than one you query.
-//
-// TODO: the design opens the supplier form dialog from "+ Add supplier"
-// (`supFormOpen`) and offers "Edit supplier" from a ⋯ menu on the row. Neither
-// exists yet, so the button is inert and there is no ⋯ column — a menu whose
-// only entry goes nowhere is worse than no menu.
+// read rather than one you query. Nothing to carry back either, which is why
+// the form's routes take no searchParams where the staff form's do.
 
 export default function SuppliersPage() {
-  // Item counts come from the store rather than the seed, so a supplier picked
-  // in the item form starts counting immediately. `saveItem` revalidates this
-  // path for the same reason it revalidates the dashboard.
-  const rows = supplierRows(SUPPLIERS, allItems());
+  // Both sides come from their stores rather than the seeds, so a supplier
+  // added in the form and an item pointed at one both count immediately.
+  const rows = supplierRows(allSuppliers(), allItems());
 
   return (
     // The shell's 14px lands 12px short of the design's 26px here.
@@ -31,13 +28,12 @@ export default function SuppliersPage() {
           {rows.length} suppliers on record
         </p>
 
-        <button
-          type="button"
-          disabled
-          className="ml-auto flex h-[38px] items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-semibold text-white disabled:opacity-60"
+        <Link
+          href="/suppliers/new"
+          className="ml-auto flex h-[38px] items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-semibold text-white hover:bg-[#2563eb]"
         >
           + Add supplier
-        </button>
+        </Link>
       </div>
 
       <div className="overflow-hidden rounded-[14px] border border-border bg-surface shadow-[var(--shadow-1)]">

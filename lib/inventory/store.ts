@@ -36,3 +36,24 @@ export function upsertItem(item: Item) {
 export function knownZones() {
   return [...new Set(items.map((item) => item.zone))];
 }
+
+/**
+ * Point every item held against `from` at `to`, and say how many moved.
+ *
+ * `Item.supplier` is a name, not a reference — it is the join the supplier
+ * table reads (`lib/suppliers/performance.ts`) — so renaming a supplier
+ * anywhere but here would leave its whole catalogue behind under the old
+ * string: the renamed row would show zero items and the items would point at a
+ * supplier no longer on record. Called by `saveSupplier` in the same breath as
+ * the store write.
+ */
+export function renameItemSupplier(from: string, to: string) {
+  if (from === to) return 0;
+  let moved = 0;
+  items = items.map((item) => {
+    if (item.supplier !== from) return item;
+    moved += 1;
+    return { ...item, supplier: to };
+  });
+  return moved;
+}

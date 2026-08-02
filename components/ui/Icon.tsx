@@ -6,7 +6,8 @@ import { cx } from "@/utils/cx";
 //
 // Entries are a verbatim port of the `glyphs` table in
 // `design/LabTrack Dashboard.dc.html`, except for the ones listed in
-// `HEROICONS`, which the design's set is deliberately overridden for.
+// `HEROICONS`, which come from Heroicons outline (MIT, Tailwind Labs) instead.
+// That divergence from the design is deliberate — see `docs/adr/0002-icons.md`.
 const GLYPHS = {
   "layout-dashboard":
     '<path d="M2.25 7.125C2.25 6.504 2.754 6 3.375 6h6c.621 0 1.125.504 1.125 1.125v3.75c0 .621-.504 1.125-1.125 1.125h-6a1.125 1.125 0 0 1-1.125-1.125v-3.75ZM14.25 8.625c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v8.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-8.25ZM3.75 16.125c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125h-5.25a1.125 1.125 0 0 1-1.125-1.125v-2.25Z"/>',
@@ -64,6 +65,8 @@ export type IconName = keyof typeof GLYPHS;
  * are drawn for a 1.5 stroke and carry finer detail than the design's own
  * geometry — a rocket or a checklist at the design's 1.7 fills in at 17px — so
  * stroke weight is a property of the glyph, not of the icon set.
+ *
+ * A new icon belongs here, not in the design's set. See `docs/adr/0002-icons.md`.
  */
 const HEROICONS = new Set<IconName>([
   "layout-dashboard",

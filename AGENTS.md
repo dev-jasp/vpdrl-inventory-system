@@ -20,3 +20,16 @@ property that diverges.
 
 See `docs/adr/0001-typography.md` before changing a font, a weight, or where the
 mono face lands.
+
+# Icons
+
+**New icons come from Heroicons outline**, not from the design's glyph table.
+Add the key to `GLYPHS` in `components/ui/Icon.tsx` and to the `HEROICONS` set
+beside it, which is what gives it Heroicons' 1.5 stroke instead of the design's
+1.7. The nav, the notification bell and the row menu have already moved; the
+design's own glyphs are still there for everything else.
+
+Keys are semantic slots, not drawing names — `package` is a cube, `support` is a
+rocket. Don't rename a key to match its artwork.
+
+See `docs/adr/0002-icons.md` before adding a glyph or changing a stroke weight.

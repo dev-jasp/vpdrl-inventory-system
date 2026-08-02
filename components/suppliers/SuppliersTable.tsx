@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { SupplierRowMenu } from "@/components/suppliers/SupplierRowMenu";
 import { DEFAULT_QUERY, inventoryHref } from "@/lib/inventory/filters";
 import { onTimeBand, type SupplierRow } from "@/lib/suppliers/performance";
 
@@ -19,6 +20,8 @@ const COLUMNS = [
   { label: "ITEMS", width: 100 },
   { label: "ON-TIME", width: 132 },
   { label: "LEAD TIME", width: 110 },
+  // The ⋯ column, which the design leaves headed by an empty box.
+  { label: "Row actions", width: 56, unlabelled: true },
 ];
 
 /**
@@ -36,7 +39,7 @@ export function SuppliersTable({ rows }: { rows: SupplierRow[] }) {
     // The design pins the columns and lets the table scroll rather than
     // reflow, so a narrow window slides across it instead of crushing it.
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[1172px] table-fixed border-collapse text-left">
+      <table className="w-full min-w-[1228px] table-fixed border-collapse text-left">
         <caption className="sr-only">
           Suppliers, with delivery performance, most-supplied first
         </caption>
@@ -57,7 +60,11 @@ export function SuppliersTable({ rows }: { rows: SupplierRow[] }) {
                 scope="col"
                 className="px-[18px] py-[11px] text-[10.5px] font-semibold tracking-[0.1em] whitespace-nowrap text-text-4"
               >
-                {column.label}
+                {column.unlabelled ? (
+                  <span className="sr-only">{column.label}</span>
+                ) : (
+                  column.label
+                )}
               </th>
             ))}
           </tr>
@@ -143,6 +150,19 @@ export function SuppliersTable({ rows }: { rows: SupplierRow[] }) {
 
                 <td className="px-[18px] py-3 font-mono text-[13px] font-medium whitespace-nowrap text-text-2">
                   {supplier.leadDays} d
+                </td>
+
+                {/* Raised above the row's cover, like the email link, so the
+                    menu opens instead of following the row to the catalogue.
+                    The name is the identity, so it is what the edit route
+                    carries — encoded, since these have spaces and dots. */}
+                <td className="relative px-2.5 py-3">
+                  <div className="flex justify-center">
+                    <SupplierRowMenu
+                      name={supplier.name}
+                      editHref={`/suppliers/${encodeURIComponent(supplier.name)}/edit`}
+                    />
+                  </div>
                 </td>
               </tr>
             );
