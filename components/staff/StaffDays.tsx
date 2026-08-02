@@ -35,7 +35,7 @@ export function StaffDays({ days }: { days: WorkingDays }) {
           key={letter}
           aria-hidden
           className={cx(
-            "grid size-6 flex-none place-items-center rounded-full text-[9.5px] font-bold",
+            "grid size-6 flex-none place-items-center rounded-full text-[9.5px] font-semibold",
             days[index] === "1"
               ? "bg-[#3b82f6] text-white"
               : "bg-muted text-text-4",

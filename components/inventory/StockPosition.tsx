@@ -12,10 +12,13 @@ export function StockPosition({ item }: { item: Item }) {
       <CardTitle>Stock position</CardTitle>
 
       <div className="mt-3 flex items-baseline gap-3">
-        <span className="text-[40px] leading-none font-extrabold tracking-[-0.04em]">
+        {/* The design's tight tracking is tuned for the sans; mono digits
+            already carry their own fixed rhythm. */}
+        <span className="font-mono text-[40px] leading-none font-extrabold">
           {item.quantity}
         </span>
-        <span className="text-[13px] font-semibold text-text-3">
+        {/* A sentence, so it stays in the sans. */}
+        <span className="text-[13px] font-medium text-text-3">
           {item.unit} on hand · reorder at {item.min} {item.unit}
         </span>
       </div>
@@ -37,7 +40,7 @@ export function StockPosition({ item }: { item: Item }) {
         />
         <div
           aria-hidden
-          className="absolute top-4 -translate-x-1/2 text-[11px] font-semibold whitespace-nowrap text-text"
+          className="absolute top-4 -translate-x-1/2 font-mono text-[11px] font-medium whitespace-nowrap text-text"
           style={{ left: marker }}
         >
           {item.quantity} {item.unit}
@@ -52,13 +55,14 @@ export function StockPosition({ item }: { item: Item }) {
 
       <div
         aria-hidden
-        className="mt-9 flex justify-between text-[11px] font-medium text-text-3"
+        className="mt-9 flex justify-between text-[11px] font-normal text-text-3"
       >
-        <span>0</span>
+        {/* The two ends of the scale are readings; the middle is a label. */}
+        <span className="font-mono">0</span>
         <span>
           Reorder point · {item.min} {item.unit}
         </span>
-        <span>
+        <span className="font-mono">
           {scale} {item.unit}
         </span>
       </div>
@@ -67,7 +71,7 @@ export function StockPosition({ item }: { item: Item }) {
         {STOCK_BANDS.map((band) => (
           <div
             key={band.label}
-            className="flex items-center gap-[7px] text-[11.5px] font-medium text-text-3"
+            className="flex items-center gap-[7px] text-[11.5px] font-normal text-text-3"
           >
             <span
               aria-hidden

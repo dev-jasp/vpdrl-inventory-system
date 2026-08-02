@@ -4,7 +4,7 @@ import { NavSelect } from "@/components/ui/NavSelect";
 import { cx } from "@/utils/cx";
 
 const stepClass =
-  "flex h-[34px] items-center rounded-[9px] border border-border-strong bg-surface px-[13px] text-[12.5px] font-bold";
+  "flex h-[34px] items-center rounded-[9px] border border-border-strong bg-surface px-[13px] text-[12.5px] font-semibold";
 
 /**
  * The pager, in the shape the design gives the staff list. The inventory list
@@ -45,7 +45,7 @@ export function Pagination({
       aria-label={label}
       className="mt-[18px] flex flex-wrap items-center gap-3"
     >
-      <span className="text-[12.5px] font-semibold text-text-3">
+      <span className="text-[12.5px] font-medium text-text-3">
         Rows per page
       </span>
       <NavSelect
@@ -58,7 +58,7 @@ export function Pagination({
         }))}
         className="h-[34px] rounded-[9px] px-2.5"
       />
-      <span className="ml-1.5 text-[12.5px] font-semibold text-text-4">
+      <span className="ml-1.5 text-[12.5px] font-medium text-text-4">
         {total === 0 ? empty : `${from}–${to} of ${total}`}
       </span>
 
@@ -87,7 +87,7 @@ export function Pagination({
                 aria-label={`Page ${number}`}
                 aria-current={current ? "page" : undefined}
                 className={cx(
-                  "flex h-[34px] min-w-[34px] items-center justify-center rounded-[9px] border px-2.5 text-[12.5px] font-bold",
+                  "flex h-[34px] min-w-[34px] items-center justify-center rounded-[9px] border px-2.5 text-[12.5px] font-semibold",
                   current
                     ? "border-[#3b82f6] bg-[#3b82f6] text-white"
                     : "border-border-strong bg-surface text-text-2 hover:bg-muted",

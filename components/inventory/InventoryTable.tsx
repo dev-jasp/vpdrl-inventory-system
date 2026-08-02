@@ -65,7 +65,7 @@ export function InventoryTable({
                         : "descending"
                       : "none"
                   }
-                  className="font-bold"
+                  className="font-semibold"
                 >
                   <Link
                     href={inventoryHref(query, nextSort(query, column.key))}
@@ -87,7 +87,7 @@ export function InventoryTable({
             <tr>
               <td
                 colSpan={SORT_COLUMNS.length}
-                className="px-[18px] py-10 text-center text-[13px] font-medium text-text-3"
+                className="px-[18px] py-10 text-center text-[13px] font-normal text-text-3"
               >
                 No items match these filters.
               </td>
@@ -119,46 +119,46 @@ export function InventoryTable({
                     <div className="min-w-0">
                       <Link
                         href={itemHref(query, item.id)}
-                        className="block truncate text-[13.5px] font-bold after:absolute after:inset-0 after:content-['']"
+                        className="block truncate text-[13.5px] font-semibold after:absolute after:inset-0 after:content-['']"
                       >
                         {item.name}
                       </Link>
-                      <div className="mt-0.5 truncate text-[11.5px] font-medium text-text-3">
+                      <div className="mt-0.5 truncate font-mono text-[11.5px] font-normal text-text-3">
                         {item.id} · {item.lot}
                       </div>
                     </div>
                   </div>
                 </td>
 
-                <td className="px-[18px] py-3 text-[12.5px] font-semibold text-text-2">
+                <td className="px-[18px] py-3 text-[12.5px] font-medium text-text-2">
                   {item.category}
                 </td>
 
-                <td className="truncate px-[18px] py-3 text-[12.5px] font-medium text-text-2">
+                <td className="truncate px-[18px] py-3 text-[12.5px] font-normal text-text-2">
                   {item.location}
                 </td>
 
-                <td className="px-[18px] py-3 whitespace-nowrap">
-                  <div className="text-[13px] font-bold">
+                <td className="px-[18px] py-3 font-mono whitespace-nowrap">
+                  <div className="text-[13px] font-semibold">
                     {item.quantity} {item.unit}
                   </div>
                   {lots > 1 ? (
-                    <div className="mt-0.5 text-[11px] font-semibold text-text-3">
+                    <div className="mt-0.5 text-[11px] font-medium text-text-3">
                       {lots} lots
                     </div>
                   ) : null}
                 </td>
 
-                <td className="px-[18px] py-3 text-[12.5px] font-medium whitespace-nowrap text-text-2">
+                <td className="px-[18px] py-3 font-mono text-[12.5px] font-normal whitespace-nowrap text-text-2">
                   {expiryText(item)}{" "}
-                  <span className="font-semibold text-text-4">
+                  <span className="font-medium text-text-4">
                     {daysText(item.days)}
                   </span>
                 </td>
 
                 <td className="px-[18px] py-3">
                   <span
-                    className="inline-flex rounded-full border px-[9px] py-1 text-[11px] font-bold whitespace-nowrap"
+                    className="inline-flex rounded-full border px-[9px] py-1 text-[11px] font-semibold whitespace-nowrap"
                     style={{
                       background: badge.background,
                       color: badge.color,

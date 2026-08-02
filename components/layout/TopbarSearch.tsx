@@ -36,7 +36,7 @@ export function TopbarSearch() {
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Search anything here…"
         aria-label="Search inventory"
-        className="h-[38px] w-[288px] rounded-[10px] border border-transparent bg-bg px-3.5 text-[13px] font-medium text-text placeholder:text-text-4 focus:border-[#c7d3fd] focus:bg-surface focus:outline-none"
+        className="h-[38px] w-[288px] rounded-[10px] border border-transparent bg-bg px-3.5 text-[13px] font-normal text-text placeholder:text-text-4 focus:border-[#c7d3fd] focus:bg-surface focus:outline-none"
       />
     </form>
   );

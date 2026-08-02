@@ -48,11 +48,12 @@ export function Withdrawals({
       <div className="flex items-start">
         <div>
           <CardTitle>Withdrawals</CardTitle>
-          <p className="mt-[3px] text-[12px] font-medium text-text-3">
+          <p className="mt-[3px] text-[12px] font-normal text-text-3">
             Last {WEEKS} weeks
           </p>
         </div>
-        <div className="ml-auto text-[12.5px] font-bold text-text-2">
+        {/* A phrase, so it stays in the sans. */}
+        <div className="ml-auto text-[12.5px] font-semibold text-text-2">
           {total} {unit} withdrawn
         </div>
       </div>
@@ -65,7 +66,7 @@ export function Withdrawals({
           {ticks.map((tick) => (
             <div
               key={tick.top}
-              className="absolute right-0 -translate-y-1/2 text-[11px] font-medium text-text-3"
+              className="absolute right-0 -translate-y-1/2 font-mono text-[11px] font-normal text-text-3"
               style={{ top: tick.top }}
             >
               {tick.value}
@@ -102,7 +103,7 @@ export function Withdrawals({
                   }}
                 />
                 {hover === index ? (
-                  <div className="pointer-events-none absolute bottom-[calc(100%_+_6px)] left-1/2 z-6 -translate-x-1/2 rounded-lg border border-grid bg-surface px-[11px] py-2 text-[11.5px] font-medium whitespace-nowrap shadow-[var(--shadow-2)]">
+                  <div className="pointer-events-none absolute bottom-[calc(100%_+_6px)] left-1/2 z-6 -translate-x-1/2 rounded-lg border border-grid bg-surface px-[11px] py-2 text-[11.5px] font-normal whitespace-nowrap shadow-[var(--shadow-2)]">
                     <div className="mb-[5px] text-[10.5px] text-text-3">
                       {weekName(index)}
                     </div>
@@ -112,7 +113,7 @@ export function Withdrawals({
                         className="size-2 flex-none rounded-sm bg-[#3b82f6]"
                       />
                       <span className="text-text-3">Withdrawn</span>
-                      <span className="ml-auto pl-3.5 font-bold">
+                      <span className="ml-auto pl-3.5 font-mono font-semibold">
                         {value} {unit}
                       </span>
                     </div>
@@ -127,7 +128,7 @@ export function Withdrawals({
           {usage.map((_, index) => (
             <div
               key={index}
-              className="flex-1 text-center text-[10.5px] font-medium text-text-3"
+              className="flex-1 text-center text-[10.5px] font-normal text-text-3"
             >
               {weekLabel(index)}
             </div>

@@ -60,12 +60,12 @@ export function Dialog({
         <div>
           <h2
             id="dialog-title"
-            className="text-xl font-extrabold tracking-[-0.025em]"
+            className="text-xl font-semibold tracking-[-0.025em]"
           >
             {title}
           </h2>
           {subtitle ? (
-            <p className="mt-1 text-[10px] font-bold tracking-[0.12em] text-text-4">
+            <p className="mt-1 text-[10px] font-semibold tracking-[0.12em] text-text-4">
               {subtitle}
             </p>
           ) : null}
@@ -74,7 +74,7 @@ export function Dialog({
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="ml-auto flex size-[34px] flex-none items-center justify-center rounded-[9px] border border-border-strong bg-surface text-base leading-none font-bold text-text-2 hover:bg-muted"
+          className="ml-auto flex size-[34px] flex-none items-center justify-center rounded-[9px] border border-border-strong bg-surface text-base leading-none font-semibold text-text-2 hover:bg-muted"
         >
           ×
         </button>

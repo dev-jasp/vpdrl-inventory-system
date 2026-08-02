@@ -32,7 +32,7 @@ export function Avatar({
   return (
     <span
       className={cx(
-        "relative grid size-[34px] flex-none place-items-center overflow-hidden rounded-full text-[11.5px] font-extrabold",
+        "relative grid size-[34px] flex-none place-items-center overflow-hidden rounded-full text-[11.5px] font-semibold",
         className,
       )}
       style={{ background, color }}

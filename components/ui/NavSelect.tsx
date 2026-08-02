@@ -43,7 +43,7 @@ export function NavSelect({
       // Height and corner radius are the caller's: the design rounds this one
       // fully in the filter bar and to 9px in the pager.
       className={cx(
-        "cursor-pointer border border-border-strong bg-surface px-3 text-[12.5px] font-semibold text-text outline-none",
+        "cursor-pointer border border-border-strong bg-surface px-3 text-[12.5px] font-medium text-text outline-none",
         className,
       )}
     >

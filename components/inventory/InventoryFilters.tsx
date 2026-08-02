@@ -16,7 +16,7 @@ import { cx } from "@/utils/cx";
  */
 function chipClass(active: boolean) {
   return cx(
-    "inline-flex h-[31px] items-center rounded-full border px-[13px] text-[12.5px] font-semibold whitespace-nowrap",
+    "inline-flex h-[31px] items-center rounded-full border px-[13px] text-[12.5px] font-medium whitespace-nowrap",
     active
       ? "border-tint-blue bg-tint-blue text-accent-fg"
       : "border-border-strong bg-surface text-text-2 hover:bg-muted",
@@ -93,7 +93,7 @@ export function InventoryFilters({
 
       <Link
         href="/inventory/new"
-        className="inline-flex h-[31px] items-center rounded-full bg-[#3b82f6] px-3.5 text-[12.5px] font-bold text-white hover:bg-[#2563eb]"
+        className="inline-flex h-[31px] items-center rounded-full bg-[#3b82f6] px-3.5 text-[12.5px] font-semibold text-white hover:bg-[#2563eb]"
       >
         + Add item
       </Link>

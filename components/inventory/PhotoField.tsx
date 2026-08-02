@@ -14,7 +14,7 @@ const CAMERA_BLOCKED =
   "Camera blocked or unavailable — attach a photo file instead.";
 
 const buttonClass =
-  "flex h-[34px] items-center rounded-[9px] border border-border-strong bg-surface px-3.5 text-[12.5px] font-bold text-text hover:bg-muted";
+  "flex h-[34px] items-center rounded-[9px] border border-border-strong bg-surface px-3.5 text-[12.5px] font-semibold text-text hover:bg-muted";
 
 /**
  * The item photo: attach a file, or take one with the device camera.
@@ -129,15 +129,15 @@ export function PhotoField({ initial }: { initial?: string }) {
             className="absolute inset-0 size-full object-cover"
           />
         ) : (
-          <span className="px-2 text-center text-[10.5px] leading-tight font-bold text-text-4">
+          <span className="px-2 text-center text-[10.5px] leading-tight font-semibold text-text-4">
             No photo yet
           </span>
         )}
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="text-[12.5px] font-bold">Item photo</p>
-        <p className="mt-[3px] max-w-[420px] text-[11.5px] font-medium text-text-3">
+        <p className="text-[12.5px] font-semibold">Item photo</p>
+        <p className="mt-[3px] max-w-[420px] text-[11.5px] font-normal text-text-3">
           Attach a file or take a photo so technicians can recognise the
           container on the shelf.
         </p>
@@ -155,7 +155,7 @@ export function PhotoField({ initial }: { initial?: string }) {
               <button
                 type="button"
                 onClick={capture}
-                className="flex h-[34px] items-center rounded-[9px] bg-[#3b82f6] px-4 text-[12.5px] font-bold text-white hover:bg-[#2563eb]"
+                className="flex h-[34px] items-center rounded-[9px] bg-[#3b82f6] px-4 text-[12.5px] font-semibold text-white hover:bg-[#2563eb]"
               >
                 Capture
               </button>
@@ -170,7 +170,7 @@ export function PhotoField({ initial }: { initial?: string }) {
           </div>
         ) : (
           <div className="mt-3 flex flex-wrap items-center gap-2">
-            <label className="flex h-[34px] cursor-pointer items-center rounded-[9px] border border-tint-blue bg-tint-blue px-3.5 text-[12.5px] font-bold text-accent-fg">
+            <label className="flex h-[34px] cursor-pointer items-center rounded-[9px] border border-tint-blue bg-tint-blue px-3.5 text-[12.5px] font-semibold text-accent-fg">
               Attach photo
               <input
                 type="file"
@@ -186,7 +186,7 @@ export function PhotoField({ initial }: { initial?: string }) {
               <button
                 type="button"
                 onClick={() => setPhoto("")}
-                className="flex h-[34px] items-center rounded-[9px] px-3 text-[12.5px] font-bold text-[#dc2626] hover:bg-badge-red-bg"
+                className="flex h-[34px] items-center rounded-[9px] px-3 text-[12.5px] font-semibold text-[#dc2626] hover:bg-badge-red-bg"
               >
                 Remove
               </button>
@@ -197,7 +197,7 @@ export function PhotoField({ initial }: { initial?: string }) {
         {error ? (
           <p
             role="status"
-            className="mt-2.5 text-[11.5px] font-semibold text-[#dc2626]"
+            className="mt-2.5 text-[11.5px] font-medium text-[#dc2626]"
           >
             {error}
           </p>
@@ -206,7 +206,7 @@ export function PhotoField({ initial }: { initial?: string }) {
         {/* An item that came with a vendored asset keeps it until it is
             replaced; only then does the field carry a data URL. */}
         {photo && !isDataUrl(photo) ? (
-          <p className="mt-2.5 text-[11.5px] font-medium text-text-3">
+          <p className="mt-2.5 text-[11.5px] font-normal text-text-3">
             Using the photo already on file.
           </p>
         ) : null}

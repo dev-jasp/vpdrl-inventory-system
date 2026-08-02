@@ -109,7 +109,7 @@ const ChartTooltip = ({
               <p
                 className={cx(
                   // base
-                  "text-right font-medium whitespace-nowrap tabular-nums",
+                  "text-right font-normal whitespace-nowrap tabular-nums",
                   // text color
                   "text-gray-900 dark:text-gray-50",
                 )}

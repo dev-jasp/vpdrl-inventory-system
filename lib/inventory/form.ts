@@ -9,6 +9,11 @@ import { CATEGORIES } from "./summary";
  * identified by a serial number and dated by a calibration due date, where
  * everything else has a lot number and a shelf life. That is the same
  * distinction `expiryKind` carries on the item itself.
+ *
+ * `mono` marks the fields holding a code, a date or a count — the ones the UI
+ * sets in the mono face wherever it reads them back, so typing them matches.
+ * It is not the same as `numeric`, which is about the phone keypad: a lot
+ * number is mono but not numeric.
  */
 export const ITEM_FORM_FIELDS = [
   {
@@ -17,7 +22,7 @@ export const ITEM_FORM_FIELDS = [
     placeholder: "e.g. Tris base, 1 kg",
     span: 2,
   },
-  { name: "id", label: "Item ID", placeholder: "RG-0000", span: 1 },
+  { name: "id", label: "Item ID", placeholder: "RG-0000", span: 1, mono: true },
   {
     name: "location",
     label: "Storage location",
@@ -31,6 +36,7 @@ export const ITEM_FORM_FIELDS = [
     calibrationLabel: "Serial number",
     placeholder: "LOT-0000",
     span: 1,
+    mono: true,
   },
   {
     name: "quantity",
@@ -38,6 +44,7 @@ export const ITEM_FORM_FIELDS = [
     placeholder: "0",
     span: 1,
     numeric: true,
+    mono: true,
   },
   { name: "unit", label: "Unit", placeholder: "vial", span: 1 },
   {
@@ -46,6 +53,7 @@ export const ITEM_FORM_FIELDS = [
     placeholder: "0",
     span: 1,
     numeric: true,
+    mono: true,
   },
   {
     name: "expiry",
@@ -53,6 +61,7 @@ export const ITEM_FORM_FIELDS = [
     calibrationLabel: "Calibration due",
     placeholder: "YYYY-MM-DD",
     span: 1,
+    mono: true,
   },
   {
     name: "supplier",

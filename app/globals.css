@@ -121,7 +121,13 @@
   --color-badge-violet-fg: var(--badge-violet-fg);
   --color-accent-fg: var(--accent-fg);
 
-  --font-sans: var(--font-manrope);
+  /* Both families are wired up in `app/layout.tsx`, which is also where the
+     reasoning for each lives. `font-mono` is the lab's data face — lot
+     numbers, expiry dates, quantities, peso amounts — not a code face. It goes
+     on a whole data cell, never on a figure inside a sentence; see
+     `docs/adr/0001-typography.md`. */
+  --font-sans: var(--font-uncut-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-chivo-mono), ui-monospace, monospace;
 
   /* The design's dialog entrance: the scrim fades, the panel rises. */
   --animate-lt-fade: lt-fade 0.16s ease-out;

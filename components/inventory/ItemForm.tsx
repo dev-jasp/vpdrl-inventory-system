@@ -14,11 +14,11 @@ import type { Category, Item } from "@/types/item";
 import { cx } from "@/utils/cx";
 
 const inputClass =
-  "h-10 w-full rounded-[10px] border border-border-strong bg-surface px-[13px] text-[13px] font-medium text-text outline-none focus:border-[#3b82f6] focus:shadow-[0_0_0_3px_rgba(59,130,246,.16)]";
+  "h-10 w-full rounded-[10px] border border-border-strong bg-surface px-[13px] text-[13px] font-normal text-text outline-none focus:border-[#3b82f6] focus:shadow-[0_0_0_3px_rgba(59,130,246,.16)]";
 
 function chipClass(active: boolean) {
   return cx(
-    "inline-flex h-[33px] items-center rounded-full border px-3.5 text-[12.5px] font-semibold",
+    "inline-flex h-[33px] items-center rounded-full border px-3.5 text-[12.5px] font-medium",
     active
       ? "border-tint-blue bg-tint-blue text-accent-fg"
       : "border-border-strong bg-surface text-text-2 hover:bg-muted",
@@ -82,7 +82,7 @@ export function ItemForm({
       <input type="hidden" name="category" value={category} />
 
       <fieldset>
-        <legend className="text-[10px] font-bold tracking-[0.12em] text-text-4">
+        <legend className="text-[10px] font-semibold tracking-[0.12em] text-text-4">
           CATEGORY
         </legend>
         <div className="mt-[11px] flex flex-wrap gap-2">
@@ -103,7 +103,7 @@ export function ItemForm({
       {state.errors?.form ? (
         <p
           role="alert"
-          className="mt-5 rounded-[10px] bg-badge-red-bg px-3 py-2.5 text-[12.5px] font-semibold text-badge-red-fg"
+          className="mt-5 rounded-[10px] bg-badge-red-bg px-3 py-2.5 text-[12.5px] font-medium text-badge-red-fg"
         >
           {state.errors.form}
         </p>
@@ -122,7 +122,7 @@ export function ItemForm({
             >
               <label
                 htmlFor={`${errorId}-${field.name}-input`}
-                className="mb-1.5 block text-[12px] font-semibold text-text-2"
+                className="mb-1.5 block text-[12px] font-medium text-text-2"
               >
                 {label}
               </label>
@@ -155,6 +155,7 @@ export function ItemForm({
                   aria-describedby={describedBy}
                   className={cx(
                     inputClass,
+                    "mono" in field && field.mono && "font-mono",
                     error && "border-[#dc2626] focus:border-[#dc2626]",
                   )}
                 />
@@ -163,7 +164,7 @@ export function ItemForm({
               {error ? (
                 <p
                   id={describedBy}
-                  className="mt-1.5 text-[11.5px] font-semibold text-[#dc2626]"
+                  className="mt-1.5 text-[11.5px] font-medium text-[#dc2626]"
                 >
                   {error}
                 </p>
@@ -175,7 +176,7 @@ export function ItemForm({
         <div className="col-span-3">
           <label
             htmlFor={`${errorId}-notes-input`}
-            className="mb-1.5 block text-[12px] font-semibold text-text-2"
+            className="mb-1.5 block text-[12px] font-medium text-text-2"
           >
             Handling notes
           </label>
@@ -194,7 +195,7 @@ export function ItemForm({
         <button
           type="submit"
           disabled={pending}
-          className="flex h-10 items-center rounded-[10px] bg-[#3b82f6] px-5 text-[13px] font-bold text-white hover:bg-[#2563eb] disabled:opacity-60"
+          className="flex h-10 items-center rounded-[10px] bg-[#3b82f6] px-5 text-[13px] font-semibold text-white hover:bg-[#2563eb] disabled:opacity-60"
         >
           {pending ? "Saving…" : "Save item"}
         </button>

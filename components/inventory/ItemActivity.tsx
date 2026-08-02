@@ -12,9 +12,11 @@ export function ItemActivity({ entries }: { entries: ActivityEntry[] }) {
             key={`${entry.date}-${entry.text}`}
             className="grid grid-cols-[112px_minmax(0,1fr)_140px] gap-3 border-t border-border-soft py-[11px] text-[12.5px]"
           >
-            <span className="font-semibold text-text-3">{entry.date}</span>
-            <span className="font-medium">{entry.text}</span>
-            <span className="text-right font-semibold text-text-3">
+            <span className="font-mono font-medium text-text-3">
+              {entry.date}
+            </span>
+            <span className="font-normal">{entry.text}</span>
+            <span className="text-right font-medium text-text-3">
               {entry.who}
             </span>
           </li>

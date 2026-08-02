@@ -60,7 +60,7 @@ export function NavChildList({
               <span
                 className={cx(
                   "flex-1 text-[12.5px] whitespace-nowrap",
-                  isActive ? "font-bold" : "font-medium",
+                  isActive ? "font-semibold" : "font-normal",
                 )}
               >
                 {item.label}
@@ -71,7 +71,7 @@ export function NavChildList({
               {item.badge ? (
                 <span
                   className={cx(
-                    "text-[11px] font-bold",
+                    "text-[11px] font-semibold",
                     isActive ? "text-accent-fg" : "text-text-3",
                   )}
                 >

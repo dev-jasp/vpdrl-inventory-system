@@ -33,10 +33,10 @@ export function StaffToolbar({
     <div className="flex flex-wrap items-center gap-3.5 pt-5 pb-[18px]">
       <div className="flex items-center gap-2.5 text-text-2">
         <Icon name="users" className="size-5" />
-        <span className="text-xl font-extrabold tracking-[-0.025em] text-text">
+        <span className="text-xl font-semibold tracking-[-0.025em] text-text">
           {total}
         </span>
-        <span className="text-[13px] font-semibold text-text-4">
+        <span className="text-[13px] font-medium text-text-4">
           {countLabel(total, query.group)}
         </span>
       </div>
@@ -61,7 +61,7 @@ export function StaffToolbar({
           href={staffHref(query, { fullTime: !query.fullTime })}
           aria-pressed={query.fullTime}
           className={cx(
-            "flex h-[38px] items-center rounded-[10px] border px-3.5 text-[12.5px] font-bold whitespace-nowrap",
+            "flex h-[38px] items-center rounded-[10px] border px-3.5 text-[12.5px] font-semibold whitespace-nowrap",
             query.fullTime
               ? "border-tint-blue bg-tint-blue text-accent-fg"
               : "border-border-strong bg-surface text-text hover:bg-muted",
@@ -98,7 +98,7 @@ export function StaffToolbar({
         <button
           type="button"
           disabled
-          className="flex h-[38px] items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-bold text-white disabled:opacity-60"
+          className="flex h-[38px] items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-semibold text-white disabled:opacity-60"
         >
           Add staff
         </button>

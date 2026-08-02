@@ -34,7 +34,7 @@ export function ItemFormDialog({
           <button
             type="button"
             onClick={close}
-            className="flex h-10 items-center rounded-[10px] border border-border-strong bg-surface px-4 text-[13px] font-bold text-text hover:bg-muted"
+            className="flex h-10 items-center rounded-[10px] border border-border-strong bg-surface px-4 text-[13px] font-semibold text-text hover:bg-muted"
           >
             Cancel
           </button>
