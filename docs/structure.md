@@ -108,7 +108,8 @@ components/
 │                withdrawals, activity, specification), item form, photo capture
 ├── staff/       staff table + cards, tabs/filters, row menu, profile, staff form
 │                and its photo field, each wrapped in a dialog for the modal route
-├── suppliers/   supplier table, supplier form dialog
+├── suppliers/   supplier table (contact, catalogue, delivery performance);
+│                supplier form dialog still to come
 ├── reports/     report list rows, download actions
 └── support/     FAQ accordion, contact channels, status card
 ```
@@ -126,7 +127,7 @@ lib/
 │               which stay put until those become real records
 ├── staff/      grouping by type, working-day helpers, list filtering, the
 │               searchParams the list travels on, and reading the form back
-├── suppliers/  on-time and lead-time derivation
+├── suppliers/  on-time banding, and joining a supplier to what it supplies
 └── shared/     currency (₱), dates, units, and the pieces both lists share —
                 paginating a list, and reading typed values off searchParams
 data/     seed datasets standing in for the API
@@ -171,6 +172,14 @@ Built on top of it:
   or a page (see Modals above), with photo attach and camera capture. Saving
   goes through the `saveItem` server action in
   `app/(dashboard)/inventory/actions.ts`.
+- **`/suppliers`** — the supplier table: contact details, what each one
+  supplies, and how well they deliver. Rows open `/inventory` filtered to that
+  supplier, which is what the design's row click does. The two performance
+  columns are ours in the sense that the design draws neither — it carries
+  `onTime` and `lead` on every supplier, edits both in its form, computes a
+  colour band for the percentage, and then stops the table at ITEMS. No
+  filters, search or paging: the design gives this list none. "+ Add supplier"
+  is inert and there is no ⋯ menu until the supplier form exists.
 
 Items are read through `lib/inventory/store.ts` and people through
 `lib/staff/store.ts`, not from `data/items.ts` or `data/staff.ts` directly. A
@@ -182,10 +191,14 @@ Because the stores change under them, the routes that read them are not served
 from a build-time render. `/inventory`, `/staff` and everything under them are
 dynamic already, having searchParams or a dynamic segment to resolve; the two
 inventory `new` routes say `force-dynamic` outright, because a zone picker built
-from the store would otherwise be frozen at the seed. `/` is the exception — it
-takes no request input, so it prerenders, and both save actions call
-`revalidatePath("/")` to have it rebuilt on the next visit rather than serving
-yesterday's counts and an out-of-date on-duty row.
+from the store would otherwise be frozen at the seed.
+
+`/` and `/suppliers` are the exceptions — neither takes request input, so both
+prerender, and `saveItem` and `saveStaff` revalidate them: `revalidatePath("/")`
+for the dashboard's counts and on-duty row, and `revalidatePath("/suppliers")`
+for the ITEMS column, which counts what each supplier supplies. Suppliers
+themselves are still read straight from `data/suppliers.ts` — there is no
+supplier store because nothing writes one yet.
 
 Every other route is still a placeholder page that renders the view name.
 

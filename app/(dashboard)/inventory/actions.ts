@@ -60,10 +60,12 @@ export async function saveItem(
 
   upsertItem(parsed.item);
 
-  // The dashboard, the list and this item's own page all read the store.
+  // The dashboard, the list and this item's own page all read the store, and
+  // so does the supplier list — its ITEMS column counts what each one supplies.
   revalidatePath("/");
   revalidatePath("/inventory");
   revalidatePath(`/inventory/${parsed.item.id}`);
+  revalidatePath("/suppliers");
 
   redirect(`/inventory/${encodeURIComponent(parsed.item.id)}`);
 }
