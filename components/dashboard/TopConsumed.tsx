@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { Card, CardTitle } from "@/components/ui/Card";
+import { Select } from "@/components/ui/Select";
 import { topConsumed, type TrackedItem } from "@/lib/inventory/summary";
 
 const WINDOWS = [
@@ -18,7 +19,7 @@ const WINDOWS = [
  *
  * `children` is the stock status section, which the design hangs off the
  * bottom of this card. Taking it as a prop keeps it server-rendered instead of
- * dragging the whole 41-item tracker into the client bundle for a `<select>`.
+ * dragging the whole 41-item tracker into the client bundle for one dropdown.
  */
 export function TopConsumed({
   items,
@@ -35,20 +36,17 @@ export function TopConsumed({
     <Card>
       <div className="flex items-start">
         <CardTitle>Top Consumed</CardTitle>
-        <label className="ml-auto">
-          <span className="sr-only">Consumption window</span>
-          <select
-            value={weeks}
-            onChange={(event) => setWeeks(Number(event.target.value))}
-            className="h-7 rounded-lg border border-border-strong bg-surface px-2 text-xs font-medium text-text outline-none"
-          >
-            {WINDOWS.map((option) => (
-              <option key={option.weeks} value={option.weeks}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Select
+          label="Consumption window"
+          value={String(weeks)}
+          onValueChange={(next) => setWeeks(Number(next))}
+          options={WINDOWS.map((option) => ({
+            value: String(option.weeks),
+            label: option.label,
+          }))}
+          align="end"
+          className="ml-auto h-7 rounded-lg px-2 text-xs"
+        />
       </div>
 
       <ul className="mt-4 flex flex-col gap-1.5">

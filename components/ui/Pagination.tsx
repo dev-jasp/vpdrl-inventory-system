@@ -1,15 +1,20 @@
 import Link from "next/link";
 
+import { Icon } from "@/components/ui/Icon";
 import { NavSelect } from "@/components/ui/NavSelect";
 import { cx } from "@/utils/cx";
 
 const stepClass =
-  "flex h-[34px] items-center rounded-[9px] border border-border-strong bg-surface px-[13px] text-[12.5px] font-semibold";
+  "grid size-[34px] flex-none place-items-center rounded-full border border-border-strong bg-surface text-text-2";
 
 /**
- * The pager, in the shape the design gives the staff list. The inventory list
- * in the mockup shows every item at once, so this is the same control applied
- * to a longer table.
+ * The pager: how many rows, where you are, and a step either way.
+ *
+ * No page numbers. The design draws a numbered row, and with three per-page
+ * options over 41 items the highest this app can reach is five — few enough
+ * that a numbered row is mostly empty gesture, and not few enough to be worth
+ * the truncation logic a longer list would need. The range text already says
+ * where you are, so the numbers were saying it twice.
  *
  * Every step is a link, so a page is somewhere you can be sent rather than a
  * state you have to arrive at by clicking. What a step *means* is the caller's
@@ -58,61 +63,68 @@ export function Pagination({
         }))}
         className="h-[34px] rounded-[9px] px-2.5"
       />
-      <span className="ml-1.5 text-[12.5px] font-medium text-text-4">
-        {total === 0 ? empty : `${from}–${to} of ${total}`}
-      </span>
 
-      <div className="ml-auto flex items-center gap-2">
-        {page === 1 ? (
-          <span aria-disabled className={cx(stepClass, "text-text-4")}>
-            Previous
-          </span>
-        ) : (
-          <Link
-            href={href({ page: page - 1 })}
+      <div className="ml-auto flex items-center gap-3">
+        <span className="text-[12.5px] font-medium text-text-4">
+          {total === 0 ? empty : `${from}–${to} of ${total}`}
+        </span>
+
+        <div className="flex items-center gap-2">
+          <Step
+            to={href({ page: page - 1 })}
+            disabled={page === 1}
             rel="prev"
-            className={cx(stepClass, "text-text-2 hover:bg-muted")}
-          >
-            Previous
-          </Link>
-        )}
-
-        {Array.from({ length: pages }, (_, index) => index + 1).map(
-          (number) => {
-            const current = number === page;
-            return (
-              <Link
-                key={number}
-                href={href({ page: number })}
-                aria-label={`Page ${number}`}
-                aria-current={current ? "page" : undefined}
-                className={cx(
-                  "flex h-[34px] min-w-[34px] items-center justify-center rounded-[9px] border px-2.5 text-[12.5px] font-semibold",
-                  current
-                    ? "border-accent bg-accent text-white"
-                    : "border-border-strong bg-surface text-text-2 hover:bg-muted",
-                )}
-              >
-                {number}
-              </Link>
-            );
-          },
-        )}
-
-        {page === pages ? (
-          <span aria-disabled className={cx(stepClass, "text-text-4")}>
-            Next
-          </span>
-        ) : (
-          <Link
-            href={href({ page: page + 1 })}
+            label="Previous page"
+            // The chevron is drawn pointing down; a quarter turn clockwise
+            // aims it left.
+            spin="rotate-90"
+          />
+          <Step
+            to={href({ page: page + 1 })}
+            disabled={page === pages}
             rel="next"
-            className={cx(stepClass, "text-text-2 hover:bg-muted")}
-          >
-            Next
-          </Link>
-        )}
+            label="Next page"
+            spin="-rotate-90"
+          />
+        </div>
       </div>
     </nav>
+  );
+}
+
+/**
+ * A step, as a link when there is somewhere to go and a disabled button when
+ * there is not — rather than a styled `<span>`, which looks like a control a
+ * screen reader is never told about and the keyboard cannot reach.
+ */
+function Step({
+  to,
+  disabled,
+  rel,
+  label,
+  spin,
+}: {
+  to: string;
+  disabled: boolean;
+  rel: "prev" | "next";
+  label: string;
+  spin: string;
+}) {
+  const glyph = <Icon name="chevron" className={cx("size-4", spin)} />;
+
+  if (disabled) {
+    return (
+      <button type="button" disabled className={cx(stepClass, "opacity-40")}>
+        {glyph}
+        <span className="sr-only">{label}</span>
+      </button>
+    );
+  }
+
+  return (
+    <Link href={to} rel={rel} className={cx(stepClass, "hover:bg-muted")}>
+      {glyph}
+      <span className="sr-only">{label}</span>
+    </Link>
   );
 }

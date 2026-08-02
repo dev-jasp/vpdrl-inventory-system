@@ -4,6 +4,7 @@ import { useActionState, useId, useState } from "react";
 
 import { saveScheduleEntry } from "@/app/(dashboard)/schedule/actions";
 import { inputFocus, primaryButton } from "@/components/ui/buttons";
+import { Select } from "@/components/ui/Select";
 import {
   DEFAULT_DURATION,
   DURATIONS,
@@ -139,19 +140,18 @@ export function EntryForm({
             <label htmlFor={field("itemId")} className={labelClass}>
               Books the calibration due on
             </label>
-            <select
+            <Select
               id={field("itemId")}
               name="itemId"
+              label="Books the calibration due on"
               defaultValue={valueOf("itemId", entry?.itemId ?? "")}
+              placeholder="Choose an instrument…"
+              options={calibratable.map((item) => ({
+                value: item.id,
+                label: `${item.id} · ${item.name}`,
+              }))}
               className={cx(fieldClass, "cursor-pointer")}
-            >
-              <option value="">Choose an instrument…</option>
-              {calibratable.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.id} · {item.name}
-                </option>
-              ))}
-            </select>
+            />
             <FieldError message={error("itemId")} />
             <p className="mt-1.5 text-[11.5px] font-normal text-text-3">
               The due date stays on the item. This is the appointment to do it.
@@ -182,18 +182,17 @@ export function EntryForm({
           <label htmlFor={field("status")} className={labelClass}>
             Status
           </label>
-          <select
+          <Select
             id={field("status")}
             name="status"
+            label="Status"
             defaultValue={valueOf("status", entry?.status ?? "Tentative")}
+            options={ENTRY_STATUSES.map((option) => ({
+              value: option,
+              label: option,
+            }))}
             className={cx(fieldClass, "cursor-pointer")}
-          >
-            {ENTRY_STATUSES.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         <div>
@@ -220,22 +219,21 @@ export function EntryForm({
           <label htmlFor={field("minutes")} className={labelClass}>
             Length
           </label>
-          <select
+          <Select
             id={field("minutes")}
             name="minutes"
+            label="Length"
             defaultValue={valueOf(
               "minutes",
               String(entry?.minutes ?? DEFAULT_DURATION),
             )}
             disabled={!start}
-            className={cx(fieldClass, "cursor-pointer disabled:opacity-50")}
-          >
-            {DURATIONS.map((minutes) => (
-              <option key={minutes} value={minutes}>
-                {minutes} min
-              </option>
-            ))}
-          </select>
+            options={DURATIONS.map((minutes) => ({
+              value: String(minutes),
+              label: `${minutes} min`,
+            }))}
+            className={cx(fieldClass, "cursor-pointer")}
+          />
         </div>
 
         <div className="col-span-2 -mt-2">
@@ -250,38 +248,37 @@ export function EntryForm({
           <label htmlFor={field("ownerId")} className={labelClass}>
             Owner
           </label>
-          <select
+          <Select
             id={field("ownerId")}
             name="ownerId"
+            label="Owner"
             defaultValue={valueOf("ownerId", entry?.ownerId ?? "")}
+            options={[
+              { value: "", label: "Unassigned" },
+              ...staff.map((person) => ({
+                value: person.id,
+                label: `${person.name} · ${person.role}`,
+              })),
+            ]}
             className={cx(fieldClass, "cursor-pointer")}
-          >
-            <option value="">Unassigned</option>
-            {staff.map((person) => (
-              <option key={person.id} value={person.id}>
-                {person.name} · {person.role}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         <div>
           <label htmlFor={field("supplier")} className={labelClass}>
             Supplier
           </label>
-          <select
+          <Select
             id={field("supplier")}
             name="supplier"
+            label="Supplier"
             defaultValue={valueOf("supplier", entry?.supplier ?? "")}
+            options={[
+              { value: "", label: "None" },
+              ...suppliers.map((name) => ({ value: name, label: name })),
+            ]}
             className={cx(fieldClass, "cursor-pointer")}
-          >
-            <option value="">None</option>
-            {suppliers.map((name) => (
-              <option key={name} value={name}>
-                {name}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         <div className="col-span-2">
