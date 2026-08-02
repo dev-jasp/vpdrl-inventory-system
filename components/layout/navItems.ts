@@ -70,6 +70,42 @@ export const INVENTORY_CHILDREN: NavChild[] = INVENTORY_CHILD_GROUPS.flatMap(
   (group) => group.items,
 );
 
+/**
+ * The Schedule sub-nav, sorted the same way the Inventory one is and for the
+ * same reason: **When** narrows the span being looked at, **Kind** narrows
+ * what sort of work is drawn, and the two combine (`?view=week&kind=CAL`),
+ * which a flat list would give no hint of.
+ *
+ * The unheaded first entry is "Calendar" rather than "Today" deliberately.
+ * These are searchParam presets resolved by `activeChild`, which does not look
+ * at `date` — so a "Today" entry would go on reading as active after paging to
+ * next Thursday. Today is a control in the page header, where the reference
+ * screenshot puts it and where it can be honest about what it means.
+ */
+export const SCHEDULE_CHILD_GROUPS: NavChildGroup[] = [
+  { items: [{ label: "Calendar", href: "/schedule" }] },
+  {
+    label: "When",
+    items: [
+      { label: "This week", href: "/schedule?view=week" },
+      { label: "Unscheduled", href: "/schedule?when=unscheduled" },
+    ],
+  },
+  {
+    label: "Kind",
+    items: [
+      { label: "Calibrations", href: "/schedule?kind=CAL" },
+      { label: "Deliveries", href: "/schedule?kind=DEL" },
+      { label: "Meetings", href: "/schedule?kind=MTG" },
+    ],
+  },
+];
+
+/** The same entries flat, which is what `activeChild` resolves against. */
+export const SCHEDULE_CHILDREN: NavChild[] = SCHEDULE_CHILD_GROUPS.flatMap(
+  (group) => group.items,
+);
+
 export const NAV_GROUPS: NavGroup[] = [
   {
     label: "GENERAL",
@@ -80,6 +116,16 @@ export const NAV_GROUPS: NavGroup[] = [
         href: "/inventory",
         icon: "package",
         children: INVENTORY_CHILD_GROUPS,
+      },
+      // Schedule sits in GENERAL rather than under PEOPLE or PROCUREMENT
+      // because it spans both — calibrations are equipment, deliveries and
+      // meetings are suppliers, and the columns are staff. A cross-cutting
+      // view belongs beside the other one, which is the Dashboard.
+      {
+        label: "Schedule",
+        href: "/schedule",
+        icon: "calendar",
+        children: SCHEDULE_CHILD_GROUPS,
       },
     ],
   },

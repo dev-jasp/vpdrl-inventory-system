@@ -21,6 +21,12 @@ export type Staff = {
   group: StaffGroup;
   /** Zones this person covers — "Bay A", "Cold chain", … */
   areas: string[];
-  /** Data URL or path; people photographed through the staff form have one. */
+  /**
+   * A headshot: a path under `public/staff/` — the filenames are as they were
+   * downloaded, and one carries a space — or a `data:` URL for a photo attached
+   * through the staff form. Render it through `photoUrl` in
+   * `lib/shared/photos.ts` rather than dropping it into a URL, which `Avatar`
+   * already does.
+   */
   photo?: string;
 };

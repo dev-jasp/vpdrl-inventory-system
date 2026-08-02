@@ -6,7 +6,7 @@ import {
   CATEGORY_ICONS,
   CATEGORY_TINTS,
 } from "@/lib/inventory/palette";
-import { isDataUrl, photoUrl } from "@/lib/inventory/photos";
+import { isDataUrl, photoUrl } from "@/lib/shared/photos";
 import type { Category } from "@/types/item";
 import { cx } from "@/utils/cx";
 

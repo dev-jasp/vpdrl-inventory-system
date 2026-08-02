@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { photoUrl } from "@/lib/shared/photos";
+
 /**
  * The headshot on the staff form: attach a file, or take the one already there
  * away.
@@ -45,7 +47,7 @@ export function StaffPhotoField({ initial }: { initial?: string }) {
           // intrinsic size to optimise, and this is a fixed 76px preview.
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={photo}
+            src={photoUrl(photo)}
             alt="Staff photo"
             className="absolute inset-0 size-full object-cover"
           />

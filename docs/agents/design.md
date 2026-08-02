@@ -1,7 +1,15 @@
 # Design reference
 
-The UI is designed in **Claude Design**, not in this repo. The design is the spec: when
-implementing a view, read the design file rather than inventing layout, spacing, or copy.
+The UI is designed in **Claude Design**, not in this repo. The design is the **starting
+point**: when implementing a view, read the design file rather than inventing layout,
+spacing, or copy.
+
+It is not a ceiling. Where fidelity and polish conflict, polish wins — the design is a
+mockup, and a mockup leaves interaction chrome undrawn. The clearest case is the native
+`<select>` it specifies everywhere, whose popup the platform draws and the design never
+chose; see [ADR 0005](../adr/0005-form-controls.md). Layout, spacing, type, colour and
+dimensions still come from the design, and a divergence in those is worth an ADR rather
+than a judgement call.
 
 There is no handoff prompt to paste. The design is vendored here, and can be re-pulled
 with the `DesignSync` tool.
@@ -58,6 +66,11 @@ When the design changes upstream, re-pull rather than hand-editing the vendored 
 The read methods need design access on the claude.ai login; `/design-login` grants it for
 sessions without one. Never hand-edit the snapshot to match code — the design is upstream of
 the code, so a drift means either re-pull or change the design.
+
+Deliberate divergences are the exception, and they live in `docs/adr/` rather than in the
+snapshot: [0001](../adr/0001-typography.md) for weights, [0002](../adr/0002-icons.md) for
+icons, [0005](../adr/0005-form-controls.md) for dropdowns and menus. A re-pull will keep
+carrying the design's version of each. That is expected, not a regression.
 
 ## When code and design disagree
 

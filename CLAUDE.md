@@ -16,4 +16,4 @@ Single-context — `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agen
 
 ### Design reference
 
-The UI is designed in Claude Design and vendored to `design/LabTrack Dashboard.dc.html`. Read it before writing UI code. See `docs/agents/design.md`.
+The UI is designed in Claude Design and vendored to `design/LabTrack Dashboard.dc.html`. Read it before writing UI code — it is the starting point for layout, spacing, type and colour, not a ceiling on polish. See `docs/agents/design.md`.

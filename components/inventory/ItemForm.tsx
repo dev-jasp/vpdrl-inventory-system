@@ -4,6 +4,7 @@ import { useActionState, useId, useState } from "react";
 
 import { PhotoField } from "@/components/inventory/PhotoField";
 import { inputFocus, primaryButton } from "@/components/ui/buttons";
+import { Select } from "@/components/ui/Select";
 import { saveItem } from "@/app/(dashboard)/inventory/actions";
 import {
   ITEM_FORM_FIELDS,
@@ -131,18 +132,17 @@ export function ItemForm({
               </label>
 
               {"select" in field && field.select ? (
-                <select
+                <Select
                   id={`${errorId}-${field.name}-input`}
                   name={field.name}
+                  label={label}
                   defaultValue={valueOf(field.name)}
+                  options={zoneOptions.map((zone) => ({
+                    value: zone,
+                    label: zone,
+                  }))}
                   className={cx(inputClass, "cursor-pointer")}
-                >
-                  {zoneOptions.map((zone) => (
-                    <option key={zone} value={zone}>
-                      {zone}
-                    </option>
-                  ))}
-                </select>
+                />
               ) : (
                 <input
                   id={`${errorId}-${field.name}-input`}

@@ -19,6 +19,9 @@ Every view shares one shell (sidebar + topbar), so all pages live in a
 | `app/(dashboard)/inventory/new/page.tsx`               | `/inventory/new`             |
 | `app/(dashboard)/inventory/[itemId]/page.tsx`          | `/inventory/:itemId`         |
 | `app/(dashboard)/inventory/[itemId]/edit/page.tsx`     | `/inventory/:itemId/edit`    |
+| `app/(dashboard)/schedule/page.tsx`                    | `/schedule`                  |
+| `app/(dashboard)/schedule/new/page.tsx`                | `/schedule/new`              |
+| `app/(dashboard)/schedule/[entryId]/edit/page.tsx`     | `/schedule/:entryId/edit`    |
 | `app/(dashboard)/purchase-orders/page.tsx`             | `/purchase-orders`           |
 | `app/(dashboard)/staff/page.tsx`                       | `/staff`                     |
 | `app/(dashboard)/staff/new/page.tsx`                   | `/staff/new`                 |
@@ -56,6 +59,11 @@ app/(dashboard)/@modal/(.)suppliers/new/page.tsx         modal over the table
 app/(dashboard)/@modal/(.)suppliers/[supplier]/edit/page.tsx
 app/(dashboard)/suppliers/new/page.tsx                   the same form as a page
 app/(dashboard)/suppliers/[supplier]/edit/page.tsx
+
+app/(dashboard)/@modal/(.)schedule/new/page.tsx          modal over the calendar
+app/(dashboard)/@modal/(.)schedule/[entryId]/edit/page.tsx
+app/(dashboard)/schedule/new/page.tsx                    the same form as a page
+app/(dashboard)/schedule/[entryId]/edit/page.tsx
 ```
 
 A navigation from inside the app is intercepted and lays the dialog over
@@ -79,6 +87,10 @@ Cancel and a finished save can return to the filtered page somebody opened them
 from rather than to an unfiltered page 1. `staffPath` in `lib/staff/filters.ts`
 builds them.
 
+The two schedule routes carry the calendar's searchParams for the same reason,
+built by `scheduleHref` — a save from Thursday's grid has to land back on
+Thursday, filters and view intact, not on today.
+
 The two supplier routes carry nothing, because `/suppliers` has no filters,
 search or paging to come back to. Their segment is the supplier's **name** — the
 identity, since a supplier has no id (`types/supplier.ts`) — URL-encoded by the
@@ -101,6 +113,12 @@ row menu and decoded back by the route.
   for the same reason the inventory filters are. `lib/staff/filters.ts` owns
   them. The design holds this in component state and so has no param names to
   inherit; unlike the inventory list's, these are ours.
+- **The calendar's day, view, kind and owner** — `/schedule` with searchParams
+  (`date`, `view`, `kind`, `owner`, `when`), owned by
+  `lib/schedule/filters.ts`. The sidebar's This week / Unscheduled /
+  Calibrations entries are those params, so a day somebody is looking at is a
+  day they can send to somebody else. Ours entirely: the design has no schedule
+  view to inherit param names from.
 - **Photo capture** — the camera lives inside the item form (`camOn` in the
   design), not at a URL of its own.
 
@@ -124,6 +142,10 @@ components/
 ├── suppliers/   supplier table (contact, catalogue, delivery performance),
 │                row menu, and the supplier form wrapped in a dialog for the
 │                modal route
+├── schedule/    the calendar: header controls, all-day band, day grid (staff
+│                columns × hours) and week grid (staff rows × 7 days), the
+│                event card in its three sizes, the unscheduled backlog, and
+│                the entry form wrapped in a dialog for the modal route
 ├── reports/     report cards with real CSV downloads, plus the analytics band
 │                (stat tiles, expiry horizon, on-time delivery) — see ADR 0003
 └── support/     FAQ accordion (native `<details name>`, no client JS), contact
@@ -134,7 +156,7 @@ components/
 
 ```
 types/    domain types — Item, Lot, Staff, Supplier, Report, Alert, Activity,
-          Todo, StockStatus, Category
+          Todo, StockStatus, Category, ScheduleEntry, ScheduleEvent
 lib/
 ├── inventory/  status derivation (Available / Low Stock / Out of Stock /
 │               Expiring Soon / Expired / Cal. Due / Cal. Overdue), filtering,
@@ -145,6 +167,11 @@ lib/
 │               searchParams the list travels on, and reading the form back
 ├── suppliers/  on-time banding, joining a supplier to what it supplies, the
 │               store, and reading the form back
+├── schedule/   the projection that unions calibration due dates off the item
+│               store with authored entries, the grid geometry (who gets a
+│               lane, which hours the day spans, how overlaps share a column),
+│               the searchParams the calendar travels on, the store, and
+│               reading the form back — see ADR 0004
 ├── reports/    building each report's CSV from the stores, and the figures
 │               the analytics band reports
 └── shared/     currency (₱), dates, units, and the pieces both lists share —
@@ -213,6 +240,19 @@ Built on top of it:
   through `/reports/:reportId/download`, so the size on each card is measured
   from the bytes produced rather than seeded, and every report is a CSV rather
   than the design's PDF / XLSX / CSV. See `docs/adr/0003-reports-analytics.md`.
+- **`/schedule`** — the calendar, and the one view with no drawing behind it:
+  the design has no schedule and its `navDef` has no entry for one, so the
+  layout comes from a resource-calendar reference rebuilt on this app's
+  primitives. Calibration due dates are **projected** off the item store rather
+  than stored, a booking to perform one is its own record beside the due date,
+  and an entry with no start time waits in the all-day band until somebody pins
+  a window. Day view is staff columns × hours; week view is staff rows × seven
+  days, with each person's off-days hatched from `Staff.days`. See
+  `docs/adr/0004-schedule.md`.
+- **`/schedule/new`, `/schedule/:entryId/edit`** — the entry form, as a modal
+  or a page (see Modals above). Saving goes through the `saveScheduleEntry`
+  server action in `app/(dashboard)/schedule/actions.ts`, which lands back on
+  the calendar the form was opened from.
 - **`/support`** — the design's FAQ beside the contact and status cards, with
   the content in `data/support.ts`. The accordion is native `<details>` sharing
   one `name`, which is the design's exclusive-open behaviour (`faqOpen` holds a
@@ -220,17 +260,21 @@ Built on top of it:
   `mailto:` / `tel:` links, as every other one in the app is.
 
 Items are read through `lib/inventory/store.ts`, people through
-`lib/staff/store.ts` and suppliers through `lib/suppliers/store.ts`, not from
-`data/items.ts`, `data/staff.ts` or `data/suppliers.ts` directly. A store is a
+`lib/staff/store.ts`, suppliers through `lib/suppliers/store.ts` and schedule
+entries through `lib/schedule/store.ts`, not from `data/items.ts`,
+`data/staff.ts`, `data/suppliers.ts` or `data/schedule.ts` directly. A store is a
 mutable module-level copy of the seed: it gives the form somewhere to write,
-survives navigations and refreshes, and resets when the server does. The three
+survives navigations and refreshes, and resets when the server does. The four
 are the seams to replace with a real API.
 
 Because the stores change under them, the routes that read them are not served
 from a build-time render. `/inventory`, `/staff` and everything under them are
 dynamic already, having searchParams or a dynamic segment to resolve; the two
 inventory `new` routes say `force-dynamic` outright, because a zone picker built
-from the store would otherwise be frozen at the seed.
+from the store would otherwise be frozen at the seed. The three `/schedule`
+routes say it for both reasons at once: the calendar reads a store that the form
+writes, and the form's own instrument, staff and supplier pickers are built from
+three more.
 
 `/reports` says `force-dynamic` for a different reason: rendering it means
 generating all six reports, because each card's size is measured from the bytes
@@ -246,6 +290,12 @@ row, both call `revalidatePath("/suppliers")` for the ITEMS column, and
 `/purchase-orders` is still a placeholder page that renders the view name.
 
 Item photos are vendored under `public/<category-folder>/` and wired to items
-by `Item.photo` in `data/items.ts`. The filenames are as downloaded — spaces,
-`%`, `µ`, a U+2212 minus — so anything rendering one goes through
-`photoUrl` in `lib/inventory/photos.ts`, which `ItemPhoto` already does.
+by `Item.photo` in `data/items.ts`; staff headshots sit under `public/staff/`
+and are wired by `Staff.photo` in `data/staff.ts`. The filenames are as
+downloaded — spaces, `%`, `µ`, a U+2212 minus — so anything rendering one goes
+through `photoUrl` in `lib/shared/photos.ts`, which `ItemPhoto`, `PhotoField`,
+`Avatar` and `StaffPhotoField` already do. Shared rather than inventory-local
+because both sides need it.
+
+Ten of the fourteen staff records have a headshot; the four support-side ones
+fall back to the initials `Avatar` draws underneath.
