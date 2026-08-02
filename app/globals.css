@@ -41,10 +41,17 @@
   /* `--accent` is the solid fill a primary button wears, with white on it.
      `--accent-fg` is the accent as *ink* — an active nav label, a link, a
      figure. They are separate because they invert differently: the fill stays
-     saturated in both themes, while the ink has to go light on a dark surface. */
-  --accent: #4258eb;
-  --accent-hover: oklch(48% 0.221 270);
-  --accent-fg: #4258eb;
+     saturated in both themes, while the ink has to go light on a dark surface.
+
+     Darkened from #4258eb, one lightness step down at the same hue —
+     oklch(53.7% .221 270) → oklch(48.2% .199 272). As ink on the tint-blue an
+     active row wears it sat at 4.79:1, a hair over the 4.5 floor and with
+     nothing spare; it is 6.03:1 there now, 6.91:1 on the sidebar's white, and
+     the same as a fill under white text. `--accent-hover` moves down with it,
+     or a filled button would have *lightened* on hover. */
+  --accent: #3b4acc;
+  --accent-hover: oklch(43% 0.185 271);
+  --accent-fg: #3b4acc;
   --av-1: #dbeafe;
   --av-2: #e6f7f0;
   --av-3: #fff1e2;
