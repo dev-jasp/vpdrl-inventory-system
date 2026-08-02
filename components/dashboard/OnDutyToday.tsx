@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 import { Avatar } from "@/components/ui/Avatar";
-import { STAFF } from "@/data/staff";
 import { TODAY } from "@/lib/shared/dates";
 import { onDuty } from "@/lib/staff/schedule";
+import { allStaff } from "@/lib/staff/store";
 
 /** The design shows six faces before collapsing the rest into a "+N" chip. */
 const VISIBLE = 6;
@@ -13,7 +13,7 @@ const VISIBLE = 6;
  * avatars with the overflow linking through to the staff list.
  */
 export function OnDutyToday() {
-  const roster = onDuty(STAFF, TODAY);
+  const roster = onDuty(allStaff(), TODAY);
   const shown = roster.slice(0, VISIBLE);
   const overflow = roster.length - shown.length;
 
@@ -27,13 +27,16 @@ export function OnDutyToday() {
         className="flex items-center gap-[7px]"
       >
         {shown.map((person) => (
-          // TODO: the design opens the staff profile dialog from here; there is
-          // no profile view yet, so this is a label-only avatar.
+          // The design opens the staff profile from here, which is a link to
+          // it here; the dashboard is not the staff list, so it carries no
+          // filters and Close lands on the plain list.
           <li key={person.id} title={`${person.name} · ${person.role}`}>
-            <Avatar id={person.id} name={person.name} photo={person.photo} />
-            <span className="sr-only">
-              {person.name} · {person.role}
-            </span>
+            <Link href={`/staff/${person.id}`} className="block">
+              <Avatar id={person.id} name={person.name} photo={person.photo} />
+              <span className="sr-only">
+                {person.name} · {person.role}
+              </span>
+            </Link>
           </li>
         ))}
         {overflow > 0 ? (

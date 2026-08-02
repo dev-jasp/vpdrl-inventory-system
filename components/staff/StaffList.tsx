@@ -1,6 +1,14 @@
+import Link from "next/link";
+
 import { StaffAreas } from "@/components/staff/StaffAreas";
 import { StaffDays } from "@/components/staff/StaffDays";
+import { StaffRowMenu } from "@/components/staff/StaffRowMenu";
 import { Avatar } from "@/components/ui/Avatar";
+import {
+  type StaffQuery,
+  staffEditHref,
+  staffProfileHref,
+} from "@/lib/staff/filters";
 import type { Staff } from "@/types/staff";
 
 /** The design's fixed column widths; the name column takes what is left. */
@@ -10,22 +18,32 @@ const COLUMNS = [
   { label: "WORKING DAYS", width: 236 },
   { label: "ASSIGNED AREAS", width: 208 },
   { label: "TYPE", width: 122 },
+  // The ⋯ column, which the design leaves headed by an empty box.
+  { label: "Row actions", width: 56, unlabelled: true },
 ];
 
 /**
  * The staff list as a table.
  *
- * The design's row opens the staff profile dialog and carries a ⋯ menu for
- * "View staff profile" and "Edit info". Neither dialog exists yet, so the row
- * is presentational here rather than a control that goes nowhere — see
- * `docs/structure.md`.
+ * The whole row opens the profile, as it does in the design. That is one link
+ * on the name stretched across the row rather than a click handler on the row
+ * itself, which is what keeps it a real link — keyboard-reachable, openable in
+ * a new tab, and with somewhere to go before JavaScript arrives. Everything
+ * else interactive in the row is raised back above that cover.
  */
-export function StaffList({ rows }: { rows: Staff[] }) {
+export function StaffList({
+  rows,
+  query,
+}: {
+  rows: Staff[];
+  /** Carried into every link, so Close and Cancel come back to this list. */
+  query: StaffQuery;
+}) {
   return (
     // The design pins the columns and lets the table scroll rather than
     // reflow, so a narrow window slides across it instead of crushing it.
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[1100px] table-fixed border-collapse text-left">
+      <table className="w-full min-w-[1156px] table-fixed border-collapse text-left">
         <caption className="sr-only">
           Staff, with rota and assigned zones
         </caption>
@@ -46,7 +64,11 @@ export function StaffList({ rows }: { rows: Staff[] }) {
                 scope="col"
                 className="px-[18px] py-[11px] text-[10.5px] font-semibold tracking-[0.1em] whitespace-nowrap text-text-4"
               >
-                {column.label}
+                {column.unlabelled ? (
+                  <span className="sr-only">{column.label}</span>
+                ) : (
+                  column.label
+                )}
               </th>
             ))}
           </tr>
@@ -65,9 +87,12 @@ export function StaffList({ rows }: { rows: Staff[] }) {
           ) : null}
 
           {rows.map((person) => (
+            // Positioned so the profile link can cover the whole row, which is
+            // what makes the row clickable without nesting anything
+            // interactive inside an anchor.
             <tr
               key={person.id}
-              className="border-b border-border-soft hover:bg-surface-2"
+              className="relative border-b border-border-soft hover:bg-surface-2"
             >
               <td className="px-[18px] py-3">
                 <div className="flex items-center gap-3">
@@ -78,9 +103,12 @@ export function StaffList({ rows }: { rows: Staff[] }) {
                     className="size-[38px] text-[12.5px]"
                   />
                   <div className="min-w-0">
-                    <div className="truncate text-[13.5px] font-semibold">
+                    <Link
+                      href={staffProfileHref(query, person.id)}
+                      className="block truncate text-[13.5px] font-semibold after:absolute after:inset-0 after:content-['']"
+                    >
                       {person.name}
-                    </div>
+                    </Link>
                     <div className="mt-0.5 truncate text-[11.5px] font-normal text-text-3">
                       {person.role}
                     </div>
@@ -90,9 +118,10 @@ export function StaffList({ rows }: { rows: Staff[] }) {
 
               <td className="px-[18px] py-3">
                 <div className="text-[12.5px] font-medium">{person.phone}</div>
+                {/* Positioned, so it stays clickable through the row's cover. */}
                 <a
                   href={`mailto:${person.email}`}
-                  className="mt-0.5 block truncate text-[12px] font-normal text-accent-fg hover:underline"
+                  className="relative mt-0.5 block truncate text-[12px] font-normal text-accent-fg hover:underline"
                 >
                   {person.email}
                 </a>
@@ -110,6 +139,16 @@ export function StaffList({ rows }: { rows: Staff[] }) {
 
               <td className="px-[18px] py-3 text-[10.5px] font-semibold tracking-[0.04em] whitespace-nowrap uppercase">
                 {person.employment}
+              </td>
+
+              <td className="relative px-2.5 py-3">
+                <div className="flex justify-center">
+                  <StaffRowMenu
+                    name={person.name}
+                    profileHref={staffProfileHref(query, person.id)}
+                    editHref={staffEditHref(query, person.id)}
+                  />
+                </div>
               </td>
             </tr>
           ))}

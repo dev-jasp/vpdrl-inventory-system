@@ -2,8 +2,8 @@ import { cx } from "@/utils/cx";
 
 /**
  * Assigned zones, as the design abbreviates them: the first one, then "+N" for
- * the rest. The full list is the `title`, so the count is not a dead end while
- * the profile dialog that would spell it out does not exist.
+ * the rest. The full list is the `title` as well, so the count reads as a count
+ * of something without having to open the profile that spells it out.
  *
  * Returns the two spans rather than a box around them — the list and the card
  * arrange them differently.

@@ -9,6 +9,7 @@ import {
   type ViewMode,
   countLabel,
   staffHref,
+  staffPath,
 } from "@/lib/staff/filters";
 import { cx } from "@/utils/cx";
 
@@ -93,15 +94,15 @@ export function StaffToolbar({
           })}
         </div>
 
-        {/* TODO: the design opens the staff form dialog from here
-            (`staffFormOpen`); there is no staff form yet, so this is inert. */}
-        <button
-          type="button"
-          disabled
-          className="flex h-[38px] items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-semibold text-white disabled:opacity-60"
+        {/* The design opens the form dialog from here; here it is a link to
+            `/staff/new`, which the modal slot intercepts into the same
+            dialog. */}
+        <Link
+          href={staffPath("/staff/new", query)}
+          className="flex h-[38px] items-center rounded-[10px] bg-[#3b82f6] px-[18px] text-[13px] font-semibold text-white hover:bg-[#2563eb]"
         >
           Add staff
-        </button>
+        </Link>
       </div>
     </div>
   );

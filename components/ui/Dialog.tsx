@@ -15,12 +15,20 @@ import { cx } from "@/utils/cx";
 export function Dialog({
   title,
   subtitle,
+  titleHidden,
   onClose,
   className,
   children,
 }: {
   title: string;
   subtitle?: string;
+  /**
+   * Keep the heading out of the header bar, for a dialog whose contents open
+   * with the title themselves — the staff profile leads with a face and a
+   * name, so repeating it above would say it twice. The dialog is still named
+   * `title`; only the drawn heading goes away.
+   */
+  titleHidden?: boolean;
   /** Called for every dismissal: Escape, the ×, or a click on the backdrop. */
   onClose: () => void;
   className?: string;
@@ -38,7 +46,8 @@ export function Dialog({
   return (
     <dialog
       ref={ref}
-      aria-labelledby="dialog-title"
+      aria-labelledby={titleHidden ? undefined : "dialog-title"}
+      aria-label={titleHidden ? title : undefined}
       // Escape fires `cancel`; letting it through would close the element
       // without telling the route that opened it.
       onCancel={(event) => {
@@ -56,20 +65,29 @@ export function Dialog({
         className,
       )}
     >
-      <div className="sticky top-0 z-2 flex items-start gap-4 border-b border-border-soft bg-surface px-[26px] pt-[22px] pb-[18px]">
-        <div>
-          <h2
-            id="dialog-title"
-            className="text-xl font-semibold tracking-[-0.025em]"
-          >
-            {title}
-          </h2>
-          {subtitle ? (
-            <p className="mt-1 text-[10px] font-semibold tracking-[0.12em] text-text-4">
-              {subtitle}
-            </p>
-          ) : null}
-        </div>
+      <div
+        className={cx(
+          "flex items-start gap-4 px-[26px] pt-[22px]",
+          titleHidden
+            ? ""
+            : "sticky top-0 z-2 border-b border-border-soft bg-surface pb-[18px]",
+        )}
+      >
+        {titleHidden ? null : (
+          <div>
+            <h2
+              id="dialog-title"
+              className="text-xl font-semibold tracking-[-0.025em]"
+            >
+              {title}
+            </h2>
+            {subtitle ? (
+              <p className="mt-1 text-[10px] font-semibold tracking-[0.12em] text-text-4">
+                {subtitle}
+              </p>
+            ) : null}
+          </div>
+        )}
         <button
           type="button"
           onClick={onClose}
