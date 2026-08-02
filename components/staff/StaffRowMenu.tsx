@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
+import { Icon } from "@/components/ui/Icon";
+
 /** The design's menu width, needed here to hang it off the button's right. */
 const WIDTH = 180;
 
@@ -87,9 +89,9 @@ export function StaffRowMenu({
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
-        className="grid size-7 place-items-center rounded-lg border border-transparent text-base leading-none font-semibold text-text-2 hover:bg-muted"
+        className="grid size-7 place-items-center rounded-lg border border-transparent text-text-2 hover:bg-muted"
       >
-        <span aria-hidden>⋯</span>
+        <Icon name="ellipsis" className="size-[18px]" />
         <span className="sr-only">Actions for {name}</span>
       </button>
 
