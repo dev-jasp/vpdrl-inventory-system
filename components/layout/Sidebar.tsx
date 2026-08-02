@@ -46,7 +46,7 @@ export function Sidebar() {
             VI
           </span>
           <span className="min-w-0 text-[15px] font-semibold tracking-[-0.015em]">
-            VPDRL Inventory and Supplies
+            
           </span>
           <RailToggle rail={rail} onToggle={toggleRail} />
         </div>

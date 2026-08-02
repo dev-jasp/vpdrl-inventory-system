@@ -8,7 +8,12 @@ import {
   parseStaffForm,
   type SaveStaffState,
 } from "@/lib/staff/form";
-import { findStaff, nextStaffId, upsertStaff } from "@/lib/staff/store";
+import {
+  findStaff,
+  nextStaffId,
+  removeStaff,
+  upsertStaff,
+} from "@/lib/staff/store";
 
 /**
  * What is worth handing back to a rejected form. Named explicitly rather than
@@ -65,4 +70,23 @@ export async function saveStaff(
   revalidatePath(`/staff/${parsed.staff.id}`);
 
   redirect(back.startsWith("/staff") ? back : "/staff");
+}
+
+/**
+ * Remove a person for good.
+ *
+ * `staffId` is bound by the caller rather than posted, for the same reason it
+ * is on `saveStaff` and with more at stake: a deletion that reads its target
+ * out of the form can be pointed at anybody by editing a hidden field.
+ *
+ * There is no redirect. The only way in is the ⋯ menu on the list, so the page
+ * to land on is the one already underneath — revalidating drops the row out of
+ * it, which is the whole of the feedback.
+ */
+export async function deleteStaff(staffId: string) {
+  if (!removeStaff(staffId)) return;
+
+  // The dashboard's on-duty row reads the same store as the list.
+  revalidatePath("/");
+  revalidatePath("/staff");
 }

@@ -10,6 +10,21 @@ import type { Staff } from "@/types/staff";
  */
 let staff: Staff[] = STAFF.map((person) => ({ ...person }));
 
+/** The number part of an `S-NN` id, or 0 for anything not in that shape. */
+function idNumber(id: string) {
+  const parsed = Number(/^S-(\d+)$/.exec(id)?.[1]);
+  return Number.isInteger(parsed) ? parsed : 0;
+}
+
+/**
+ * The highest id ever handed out, which is not the same as the highest in the
+ * list once somebody can be removed. Only ever climbs — see `nextStaffId`.
+ */
+let highestIssued = staff.reduce(
+  (top, person) => Math.max(top, idNumber(person.id)),
+  0,
+);
+
 export function allStaff(): Staff[] {
   return staff;
 }
@@ -25,22 +40,35 @@ export function upsertStaff(person: Staff) {
     index >= 0
       ? staff.map((existing, at) => (at === index ? person : existing))
       : [...staff, person];
+  highestIssued = Math.max(highestIssued, idNumber(person.id));
   return person;
+}
+
+/**
+ * Take somebody off the list. Reports whether there was anybody to take off, so
+ * a delete arriving twice is a message rather than a silent success.
+ *
+ * `highestIssued` deliberately does not come down with them: their id is spent,
+ * not returned to the pool.
+ */
+export function removeStaff(id: string) {
+  const before = staff.length;
+  staff = staff.filter((person) => person.id !== id);
+  return staff.length < before;
 }
 
 /**
  * The next id in the design's `S-NN` shape.
  *
- * Counted from the highest number in use rather than from the list length,
- * which is what the design does: with a list of 14 whose last id is S-14 the
- * two agree, but they stop agreeing the moment anybody is removed, and an id
- * that silently lands on somebody else's record is the one mistake this has to
- * not make.
+ * Counted from the highest ever issued rather than from the list length or from
+ * the highest still in it. The design counts the length, which agrees with the
+ * ids right up until somebody is removed; counting the survivors agrees for
+ * longer but breaks the same way, because deleting S-14 from a list of 14 makes
+ * S-14 the next id out. Either way a new hire inherits a departed colleague's
+ * id, and every record that pointed at the old one — a rota, an assigned zone —
+ * silently points at the new one. That is the one mistake this has to not make,
+ * so the counter only ever climbs.
  */
 export function nextStaffId() {
-  const highest = staff.reduce((top, person) => {
-    const number = Number(/^S-(\d+)$/.exec(person.id)?.[1]);
-    return Number.isInteger(number) && number > top ? number : top;
-  }, 0);
-  return `S-${String(highest + 1).padStart(2, "0")}`;
+  return `S-${String(highestIssued + 1).padStart(2, "0")}`;
 }
