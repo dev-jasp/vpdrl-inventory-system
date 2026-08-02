@@ -6,34 +6,24 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 /** The design's menu width, needed here to hang it off the button's right. */
-const WIDTH = 180;
-
-const itemClass =
-  "block rounded-[7px] px-2.5 py-2 text-[13px] font-medium text-text hover:bg-muted";
+const WIDTH = 150;
 
 /**
- * The row's ⋯ menu: view the profile, or go straight to editing.
+ * The row's ⋯ menu. One entry, as the design has it: the row itself already
+ * leads to the catalogue, so "Edit supplier" is the only thing the menu adds.
  *
- * Both are links, so the menu offers the same two destinations the row and the
- * profile already lead to rather than a second way of doing something.
- *
- * It is a `popover`, which puts it in the top layer. An absolutely positioned
- * menu would be clipped by the table's horizontal scroll container — `overflow-x`
- * on a box makes its `overflow-y` a scroller too, so the last row's menu would
- * be cut off at the bottom of the table. The top layer sits outside all of
- * that, and the browser handles the light dismiss and Escape while it is up.
- * The cost is that a popover is positioned against the viewport, so the
- * coordinates are measured on open and the menu closes on scroll rather than
- * drifting away from the row it belongs to.
+ * A popover, for the reasons `StaffRowMenu` sets out at length — the table
+ * scrolls sideways in its own box, and an absolutely positioned menu would be
+ * clipped out of the bottom of it. The trade is that a popover is positioned
+ * against the viewport, so the coordinates are measured on open and the menu
+ * closes on scroll rather than drifting away from its row.
  */
-export function StaffRowMenu({
+export function SupplierRowMenu({
   name,
-  profileHref,
   editHref,
 }: {
   /** Whose row this is — the ⋯ needs to say so out loud. */
   name: string;
-  profileHref: string;
   editHref: string;
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -102,22 +92,15 @@ export function StaffRowMenu({
           style={{ width: WIDTH }}
           className="fixed m-0 rounded-[11px] border border-border bg-surface p-1.5 text-left shadow-[var(--shadow-2)]"
         >
-          {/* Plain links rather than role="menu"/"menuitem": that contract owes
-              a screen reader arrow-key navigation and focus management, and Tab
-              through ordinary links is honest about what this does. */}
-          <Link
-            href={profileHref}
-            onClick={() => setOpen(false)}
-            className={itemClass}
-          >
-            View staff profile
-          </Link>
+          {/* A plain link rather than role="menu"/"menuitem": that contract
+              owes a screen reader arrow-key navigation and focus management,
+              and Tab through an ordinary link is honest about what this does. */}
           <Link
             href={editHref}
             onClick={() => setOpen(false)}
-            className={itemClass}
+            className="block rounded-[7px] px-2.5 py-2 text-[13px] font-medium text-text hover:bg-muted"
           >
-            Edit info
+            Edit supplier
           </Link>
         </div>
       ) : null}
