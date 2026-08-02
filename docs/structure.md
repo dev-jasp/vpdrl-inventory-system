@@ -290,6 +290,12 @@ row, both call `revalidatePath("/suppliers")` for the ITEMS column, and
 `/purchase-orders` is still a placeholder page that renders the view name.
 
 Item photos are vendored under `public/<category-folder>/` and wired to items
-by `Item.photo` in `data/items.ts`. The filenames are as downloaded — spaces,
-`%`, `µ`, a U+2212 minus — so anything rendering one goes through
-`photoUrl` in `lib/inventory/photos.ts`, which `ItemPhoto` already does.
+by `Item.photo` in `data/items.ts`; staff headshots sit under `public/staff/`
+and are wired by `Staff.photo` in `data/staff.ts`. The filenames are as
+downloaded — spaces, `%`, `µ`, a U+2212 minus — so anything rendering one goes
+through `photoUrl` in `lib/shared/photos.ts`, which `ItemPhoto`, `PhotoField`,
+`Avatar` and `StaffPhotoField` already do. Shared rather than inventory-local
+because both sides need it.
+
+Ten of the fourteen staff records have a headshot; the four support-side ones
+fall back to the initials `Avatar` draws underneath.

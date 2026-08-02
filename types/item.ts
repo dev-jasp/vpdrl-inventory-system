@@ -29,7 +29,7 @@ export type Item = {
    * Either a path under `public/` exactly as the file is named on disk —
    * several carry spaces, `%` and `µ` — or a `data:` URL for a photo attached
    * or captured through the item form. Render it through `photoUrl` in
-   * `lib/inventory/photos.ts` rather than dropping it into a URL.
+   * `lib/shared/photos.ts` rather than dropping it into a URL.
    */
   photo?: string;
   /** Storage conditions, hazard class, handling steps. Free text. */

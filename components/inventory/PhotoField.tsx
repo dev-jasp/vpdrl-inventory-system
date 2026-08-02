@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { isDataUrl, photoUrl } from "@/lib/inventory/photos";
+import { isDataUrl, photoUrl } from "@/lib/shared/photos";
 
 /** The design caps a captured frame's long edge, then encodes it as JPEG. */
 const CAPTURE_MAX_EDGE = 900;

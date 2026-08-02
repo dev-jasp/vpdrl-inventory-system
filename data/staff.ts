@@ -4,6 +4,13 @@ import type { Staff } from "@/types/staff";
  * Seed staff list, standing in for the API. Ported verbatim from `staffRaw` in
  * `design/LabTrack Dashboard.dc.html`, including the rotas, so views built
  * from the design show the same people on the same days.
+ *
+ * `photo` is the addition the design has no value for: it attaches headshots
+ * through the staff form, so everyone starts bare there. The vendored files
+ * under `public/staff/` are named as they were downloaded — mixed case, one
+ * with a space — so the paths are written literally here and encoded at render
+ * by `photoUrl` in `lib/shared/photos.ts`. The four support-side records have
+ * no file yet and fall back to their tinted initials.
  */
 export const STAFF: Staff[] = [
   {
@@ -16,6 +23,7 @@ export const STAFF: Staff[] = [
     employment: "Full-time",
     group: "tech",
     areas: ["Bay A", "Cold chain", "Bay B"],
+    photo: "/staff/Amelia-Okafor.jpg",
   },
   {
     id: "S-02",
@@ -27,6 +35,7 @@ export const STAFF: Staff[] = [
     employment: "Full-time",
     group: "tech",
     areas: ["Bay C", "Cabinets"],
+    photo: "/staff/marcus-reyes.jpg",
   },
   {
     id: "S-03",
@@ -38,6 +47,7 @@ export const STAFF: Staff[] = [
     employment: "Full-time",
     group: "tech",
     areas: ["Cold chain", "Bench"],
+    photo: "/staff/Priya-Nair.png",
   },
   {
     id: "S-04",
@@ -49,6 +59,7 @@ export const STAFF: Staff[] = [
     employment: "Part-time",
     group: "tech",
     areas: ["Bench", "Room 214", "Bay A"],
+    photo: "/staff/Tomas-Lindqvist.jpg",
   },
   {
     id: "S-05",
@@ -60,6 +71,7 @@ export const STAFF: Staff[] = [
     employment: "Full-time",
     group: "tech",
     areas: ["Bench", "Room 214"],
+    photo: "/staff/Chen Wei.jpg",
   },
   {
     id: "S-06",
@@ -71,6 +83,7 @@ export const STAFF: Staff[] = [
     employment: "Full-time",
     group: "tech",
     areas: ["Bay B", "Bay C"],
+    photo: "/staff/Sofia-Duarte.jpg",
   },
   {
     id: "S-07",
@@ -82,6 +95,7 @@ export const STAFF: Staff[] = [
     employment: "Part-time",
     group: "tech",
     areas: ["Cabinets"],
+    photo: "/staff/Daniel-Boateng.jpg",
   },
   {
     id: "S-08",
@@ -93,6 +107,7 @@ export const STAFF: Staff[] = [
     employment: "Full-time",
     group: "tech",
     areas: ["Cold chain", "Bay A", "Bench"],
+    photo: "/staff/Hannah-Kim.jpg",
   },
   {
     id: "S-09",
@@ -104,6 +119,7 @@ export const STAFF: Staff[] = [
     employment: "Part-time",
     group: "tech",
     areas: ["Bay C"],
+    photo: "/staff/Ivan-Petrov.jpg",
   },
   {
     id: "S-10",
@@ -115,6 +131,7 @@ export const STAFF: Staff[] = [
     employment: "Full-time",
     group: "tech",
     areas: ["Cold chain", "Room 214"],
+    photo: "/staff/Leila-Haddad.jpg",
   },
   {
     id: "S-11",

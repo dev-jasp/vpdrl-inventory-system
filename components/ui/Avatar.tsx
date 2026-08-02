@@ -1,5 +1,6 @@
 import { hash } from "@/lib/shared/hash";
 import { initials } from "@/lib/shared/names";
+import { photoUrl } from "@/lib/shared/photos";
 import { cx } from "@/utils/cx";
 
 /** The design's `avatarTints` — background paired with the initials colour. */
@@ -43,7 +44,9 @@ export function Avatar({
           role="img"
           aria-label={name}
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${photo})` }}
+          // Quoted as well as encoded: `url()` takes an unquoted argument only
+          // if it is bare of the characters the headshot filenames carry.
+          style={{ backgroundImage: `url("${photoUrl(photo)}")` }}
         />
       ) : null}
     </span>
