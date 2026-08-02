@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 import { cx } from "@/utils/cx";
 import { activeChild, type NavChild, type NavChildGroup } from "./navItems";
+import { navSubItem, navSubItemActive, navSubLabel } from "./navType";
 
 /**
  * A nav item's sub-list. Which entry reads as active depends on the query
@@ -43,20 +44,21 @@ export function NavChildList({
 }) {
   return (
     // The rail sits on the container rather than on each list, so it runs
-    // unbroken past the headings instead of restarting under every one.
-    <div
-      id={id}
-      className="mt-0.5 mr-0 mb-1 ml-[22px] border-l border-border pl-3"
-    >
+    // unbroken past the headings instead of restarting under every one. It is
+    // an absolute child rather than a `border-l` so the active segment has
+    // something to overlay: `pl-[13px]` is the old 1px border plus `pl-3`, so
+    // the entries themselves have not moved.
+    <div id={id} className="relative mt-0.5 mr-0 mb-1 ml-[22px] pl-[13px]">
+      <span aria-hidden className="absolute inset-y-0 left-0 w-px bg-border" />
       {groups.map((group, index) => (
         <div key={group.label ?? "ungrouped"}>
           {group.label ? (
             <div
+              // Flush with the entries it heads — it labels the run, it does
+              // not parent it, so it takes no indent of its own.
+              //
               // The first run carries no heading, so it needs no gap above it.
-              className={cx(
-                "px-[10px] pb-1 text-[10px] font-normal tracking-[0.13em] text-text-4 uppercase",
-                index > 0 && "pt-2",
-              )}
+              className={cx(navSubLabel, "px-[10px] pb-1", index > 0 && "pt-2")}
             >
               {group.label}
             </div>
@@ -65,21 +67,28 @@ export function NavChildList({
             {group.items.map((item) => {
               const isActive = item.href === active?.href;
               return (
-                <li key={item.href}>
+                <li key={item.href} className="relative">
+                  {/* The rail's state: a 2px accent segment over the hairline,
+                      spanning exactly the row it marks. Offset by the
+                      container's padding, which puts it back on the rail. */}
+                  {isActive ? (
+                    <span
+                      aria-hidden
+                      className="absolute inset-y-0 -left-[13px] w-0.5 rounded-full bg-accent-fg"
+                    />
+                  ) : null}
                   <Link
                     href={item.href}
                     aria-current={isActive ? "page" : undefined}
                     className={cx(
-                      "flex items-center gap-2 rounded-lg px-[10px] py-[7px]",
-                      isActive
-                        ? "bg-tint-blue text-accent-fg"
-                        : "text-text-2 hover:bg-bg",
+                      "flex items-center gap-2 rounded-lg px-[10px] py-[7px] hover:bg-bg",
+                      isActive ? "text-accent-fg" : "text-text-2",
                     )}
                   >
                     <span
                       className={cx(
-                        "flex-1 text-[12.5px] whitespace-nowrap",
-                        isActive ? "font-semibold" : "font-normal",
+                        "flex-1 whitespace-nowrap",
+                        isActive ? navSubItemActive : navSubItem,
                       )}
                     >
                       {item.label}

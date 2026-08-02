@@ -36,7 +36,7 @@ menu — nine glyphs, replacing eight of the design's and adding one it lacked:
 | `clipboard`        | Purchase Orders nav  | `clipboard-document-list` |
 | `truck`            | Suppliers nav        | `truck`                   |
 | `report`           | Reports nav          | `chart-bar`               |
-| `support`          | Support nav          | `rocket-launch`           |
+| `support`          | Support nav          | `lifebuoy`                |
 | `bell`             | Topbar notifications | `bell-alert`              |
 | `ellipsis`         | Staff row menu (new) | `ellipsis-horizontal`     |
 
@@ -45,15 +45,22 @@ is embedded in `GLYPHS`; the licence notice travels with this ADR rather than as
 a vendored file, since no Heroicons source file is copied into the tree.
 
 **Keys are semantic slots, not drawing names.** `package` is a cube now and
-`support` is a rocket; the key names the place the icon appears, so renaming them
-to match the artwork would churn every call site for nothing.
+`support` is a lifebuoy; the key names the place the icon appears, so renaming
+them to match the artwork would churn every call site for nothing.
+
+`support` was `rocket-launch` in the first cut of this decision. A rocket is the
+launch/upgrade glyph — it promises a bigger plan, not a way out of trouble — and
+the page it leads to is an FAQ and a contact form. `lifebuoy` says rescue, which
+is what Support is for. `question-mark-circle` was the other candidate and reads
+just as clearly; the lifebuoy wins on not being the default.
 
 ## Stroke weight is a property of the glyph, not of the set
 
 The design renders every icon at `stroke-width: 1.7`, which suits geometry built
 from rects and lines. Heroicons outline is drawn for **1.5** and carries far more
-detail — the rocket's exhaust, the clipboard's three list dots, the truck's two
-wheel arcs. At 1.7 those close-set strokes fill in at the 17px the sidebar uses.
+detail — the lifebuoy's four spokes, the clipboard's three list dots, the truck's
+two wheel arcs. At 1.7 those close-set strokes fill in at the 17px the sidebar
+uses.
 
 So `maskUrl` picks the width per glyph from a `HEROICONS` set. The design's own
 coarser geometry keeps its 1.7 unchanged.

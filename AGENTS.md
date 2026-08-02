@@ -30,6 +30,6 @@ beside it, which is what gives it Heroicons' 1.5 stroke instead of the design's
 design's own glyphs are still there for everything else.
 
 Keys are semantic slots, not drawing names — `package` is a cube, `support` is a
-rocket. Don't rename a key to match its artwork.
+lifebuoy. Don't rename a key to match its artwork.
 
 See `docs/adr/0002-icons.md` before adding a glyph or changing a stroke weight.

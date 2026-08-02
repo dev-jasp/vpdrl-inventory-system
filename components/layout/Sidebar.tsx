@@ -9,6 +9,7 @@ import { cx } from "@/utils/cx";
 import { NavChildLinks, NavChildList } from "./NavChildLinks";
 import { UserMenu } from "./UserMenu";
 import { NAV_GROUPS, isSectionActive, type NavItem } from "./navItems";
+import { navGroupLabel, navItemLabel } from "./navType";
 
 /**
  * The app shell's sidebar, from `design/LabTrack Dashboard.dc.html`: brand,
@@ -63,7 +64,7 @@ export function Sidebar() {
             {rail ? (
               <div className="mx-1.5 mb-[7px] h-px bg-muted" />
             ) : (
-              <div className="px-2.5 pb-[7px] text-[10px] font-normal tracking-[0.13em] text-text">
+              <div className={cx(navGroupLabel, "px-2.5 pb-[7px]")}>
                 {group.label}
               </div>
             )}
@@ -181,7 +182,7 @@ function NavRow({
         {rail ? (
           <span className="sr-only">{item.label}</span>
         ) : (
-          <span className="flex-1 text-[14.5px] font-medium whitespace-nowrap">
+          <span className={cx(navItemLabel, "flex-1 whitespace-nowrap")}>
             {item.label}
           </span>
         )}
