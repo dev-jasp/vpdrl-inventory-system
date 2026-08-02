@@ -10,23 +10,24 @@ folder, `@/*` resolves to the repo root.
 Every view shares one shell (sidebar + topbar), so all pages live in a
 `(dashboard)` route group. The group name is omitted from the URL.
 
-| Path                                               | URL                          |
-| -------------------------------------------------- | ---------------------------- |
-| `app/layout.tsx`                                   | root layout, fonts, metadata |
-| `app/(dashboard)/layout.tsx`                       | app shell                    |
-| `app/(dashboard)/page.tsx`                         | `/`                          |
-| `app/(dashboard)/inventory/page.tsx`               | `/inventory`                 |
-| `app/(dashboard)/inventory/new/page.tsx`           | `/inventory/new`             |
-| `app/(dashboard)/inventory/[itemId]/page.tsx`      | `/inventory/:itemId`         |
-| `app/(dashboard)/inventory/[itemId]/edit/page.tsx` | `/inventory/:itemId/edit`    |
-| `app/(dashboard)/purchase-orders/page.tsx`         | `/purchase-orders`           |
-| `app/(dashboard)/staff/page.tsx`                   | `/staff`                     |
-| `app/(dashboard)/staff/new/page.tsx`               | `/staff/new`                 |
-| `app/(dashboard)/staff/[staffId]/page.tsx`         | `/staff/:staffId`            |
-| `app/(dashboard)/staff/[staffId]/edit/page.tsx`    | `/staff/:staffId/edit`       |
-| `app/(dashboard)/suppliers/page.tsx`               | `/suppliers`                 |
-| `app/(dashboard)/reports/page.tsx`                 | `/reports`                   |
-| `app/(dashboard)/support/page.tsx`                 | `/support`                   |
+| Path                                                   | URL                          |
+| ------------------------------------------------------ | ---------------------------- |
+| `app/layout.tsx`                                       | root layout, fonts, metadata |
+| `app/(dashboard)/layout.tsx`                           | app shell                    |
+| `app/(dashboard)/page.tsx`                             | `/`                          |
+| `app/(dashboard)/inventory/page.tsx`                   | `/inventory`                 |
+| `app/(dashboard)/inventory/new/page.tsx`               | `/inventory/new`             |
+| `app/(dashboard)/inventory/[itemId]/page.tsx`          | `/inventory/:itemId`         |
+| `app/(dashboard)/inventory/[itemId]/edit/page.tsx`     | `/inventory/:itemId/edit`    |
+| `app/(dashboard)/purchase-orders/page.tsx`             | `/purchase-orders`           |
+| `app/(dashboard)/staff/page.tsx`                       | `/staff`                     |
+| `app/(dashboard)/staff/new/page.tsx`                   | `/staff/new`                 |
+| `app/(dashboard)/staff/[staffId]/page.tsx`             | `/staff/:staffId`            |
+| `app/(dashboard)/staff/[staffId]/edit/page.tsx`        | `/staff/:staffId/edit`       |
+| `app/(dashboard)/suppliers/page.tsx`                   | `/suppliers`                 |
+| `app/(dashboard)/reports/page.tsx`                     | `/reports`                   |
+| `app/(dashboard)/reports/[reportId]/download/route.ts` | the report's CSV             |
+| `app/(dashboard)/support/page.tsx`                     | `/support`                   |
 
 ### Modals
 
@@ -96,9 +97,6 @@ row menu and decoded back by the route.
   for the same reason the inventory filters are. `lib/staff/filters.ts` owns
   them. The design holds this in component state and so has no param names to
   inherit; unlike the inventory list's, these are ours.
-- **Add/edit supplier** — a dialog driven by local state in the design
-  (`supFormOpen`). If it should become linkable later, the parallel slot above is
-  the pattern to copy, as the staff profile and form already do.
 - **Photo capture** — the camera lives inside the item form (`camOn` in the
   design), not at a URL of its own.
 
@@ -122,7 +120,8 @@ components/
 ├── suppliers/   supplier table (contact, catalogue, delivery performance),
 │                row menu, and the supplier form wrapped in a dialog for the
 │                modal route
-├── reports/     report list rows, download actions
+├── reports/     report cards with real CSV downloads, plus the analytics band
+│                (stat tiles, expiry horizon, on-time delivery) — see ADR 0003
 └── support/     FAQ accordion, contact channels, status card
 ```
 
@@ -141,6 +140,8 @@ lib/
 │               searchParams the list travels on, and reading the form back
 ├── suppliers/  on-time banding, joining a supplier to what it supplies, the
 │               store, and reading the form back
+├── reports/    building each report's CSV from the stores, and the figures
+│               the analytics band reports
 └── shared/     currency (₱), dates, units, and the pieces both lists share —
                 paginating a list, and reading typed values off searchParams
 data/     seed datasets standing in for the API
@@ -201,6 +202,12 @@ Built on top of it:
   record, and `renameItemSupplier` for the catalogue when the name changed. The
   name is required and has to be unique, where the design allows a blank one and
   falls back to "Untitled supplier".
+- **`/reports`** — the design's six report cards, over an analytics band the
+  design does not have: four stat tiles, the expiry / calibration horizon and
+  on-time delivery by supplier. Download generates a real CSV from the stores
+  through `/reports/:reportId/download`, so the size on each card is measured
+  from the bytes produced rather than seeded, and every report is a CSV rather
+  than the design's PDF / XLSX / CSV. See `docs/adr/0003-reports-analytics.md`.
 
 Items are read through `lib/inventory/store.ts`, people through
 `lib/staff/store.ts` and suppliers through `lib/suppliers/store.ts`, not from
@@ -215,6 +222,10 @@ dynamic already, having searchParams or a dynamic segment to resolve; the two
 inventory `new` routes say `force-dynamic` outright, because a zone picker built
 from the store would otherwise be frozen at the seed.
 
+`/reports` says `force-dynamic` for a different reason: rendering it means
+generating all six reports, because each card's size is measured from the bytes
+its download actually produces.
+
 `/`, `/suppliers` and `/suppliers/new` are the exceptions — none takes request
 input, so all three prerender, and the actions revalidate them: `saveItem` and
 `saveStaff` call `revalidatePath("/")` for the dashboard's counts and on-duty
@@ -222,7 +233,8 @@ row, both call `revalidatePath("/suppliers")` for the ITEMS column, and
 `saveSupplier` calls it for the supplier's own row. A rename also revalidates
 `/inventory` and the item pages, because the items carry the name it changed.
 
-Every other route is still a placeholder page that renders the view name.
+`/purchase-orders` and `/support` are still placeholder pages that render the
+view name.
 
 Item photos are vendored under `public/<category-folder>/` and wired to items
 by `Item.photo` in `data/items.ts`. The filenames are as downloaded — spaces,
