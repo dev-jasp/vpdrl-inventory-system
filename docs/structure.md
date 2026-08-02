@@ -122,7 +122,8 @@ components/
 │                modal route
 ├── reports/     report cards with real CSV downloads, plus the analytics band
 │                (stat tiles, expiry horizon, on-time delivery) — see ADR 0003
-└── support/     FAQ accordion, contact channels, status card
+└── support/     FAQ accordion (native `<details name>`, no client JS), contact
+                 channels, status card
 ```
 
 ## Domain and data
@@ -208,6 +209,11 @@ Built on top of it:
   through `/reports/:reportId/download`, so the size on each card is measured
   from the bytes produced rather than seeded, and every report is a CSV rather
   than the design's PDF / XLSX / CSV. See `docs/adr/0003-reports-analytics.md`.
+- **`/support`** — the design's FAQ beside the contact and status cards, with
+  the content in `data/support.ts`. The accordion is native `<details>` sharing
+  one `name`, which is the design's exclusive-open behaviour (`faqOpen` holds a
+  single index) without a client component. The address and number are real
+  `mailto:` / `tel:` links, as every other one in the app is.
 
 Items are read through `lib/inventory/store.ts`, people through
 `lib/staff/store.ts` and suppliers through `lib/suppliers/store.ts`, not from
@@ -233,8 +239,7 @@ row, both call `revalidatePath("/suppliers")` for the ITEMS column, and
 `saveSupplier` calls it for the supplier's own row. A rename also revalidates
 `/inventory` and the item pages, because the items carry the name it changed.
 
-`/purchase-orders` and `/support` are still placeholder pages that render the
-view name.
+`/purchase-orders` is still a placeholder page that renders the view name.
 
 Item photos are vendored under `public/<category-folder>/` and wired to items
 by `Item.photo` in `data/items.ts`. The filenames are as downloaded — spaces,
