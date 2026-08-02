@@ -4,6 +4,7 @@ import { useActionState, useId, useState } from "react";
 
 import { saveStaff } from "@/app/(dashboard)/staff/actions";
 import { StaffPhotoField } from "@/components/staff/StaffPhotoField";
+import { inputFocus, primaryButton } from "@/components/ui/buttons";
 import {
   DEFAULT_DAYS,
   EMPLOYMENT_TYPES,
@@ -15,8 +16,10 @@ import { DAY_LABELS, DAY_NAMES } from "@/lib/staff/schedule";
 import type { EmploymentType, Staff, StaffGroup } from "@/types/staff";
 import { cx } from "@/utils/cx";
 
-const inputClass =
-  "h-10 w-full rounded-[10px] border border-border-strong bg-surface px-[13px] text-[13px] font-normal text-text outline-none focus:border-[#3b82f6] focus:shadow-[0_0_0_3px_rgba(59,130,246,.16)]";
+const inputClass = cx(
+  "h-10 w-full rounded-md border border-border-strong bg-surface px-[13px] text-[13px] font-normal text-text",
+  inputFocus,
+);
 
 const legendClass = "text-[10px] font-semibold tracking-[0.12em] text-text-4";
 
@@ -203,7 +206,7 @@ export function StaffForm({
                   className={cx(
                     "size-[33px] flex-none rounded-full border text-[11px] font-semibold",
                     on
-                      ? "border-[#3b82f6] bg-[#3b82f6] text-white"
+                      ? "border-accent bg-accent text-white"
                       : "border-border-strong bg-surface text-text-3 hover:bg-muted",
                   )}
                 >
@@ -217,11 +220,7 @@ export function StaffForm({
 
       <div className="mt-[26px] flex justify-end gap-2.5 border-t border-border-soft pt-5">
         {cancel}
-        <button
-          type="submit"
-          disabled={pending}
-          className="flex h-10 items-center rounded-[10px] bg-[#3b82f6] px-5 text-[13px] font-semibold text-white hover:bg-[#2563eb] disabled:opacity-60"
-        >
+        <button type="submit" disabled={pending} className={primaryButton}>
           {pending ? "Saving…" : "Save staff"}
         </button>
       </div>

@@ -1,7 +1,7 @@
 import { Card, CardTitle } from "@/components/ui/Card";
 import { SUPPORT_CONTACT } from "@/data/support";
 
-const labelClass = "text-[10px] font-semibold tracking-[0.12em] text-text-4";
+const labelClass = "text-xs font-semibold tracking-[0.12em] text-text-4";
 
 /**
  * How to reach the team.

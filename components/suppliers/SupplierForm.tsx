@@ -3,6 +3,7 @@
 import { useActionState, useId } from "react";
 
 import { saveSupplier } from "@/app/(dashboard)/suppliers/actions";
+import { inputFocus, primaryButton } from "@/components/ui/buttons";
 import {
   DEFAULT_LEAD_DAYS,
   DEFAULT_ON_TIME,
@@ -12,8 +13,10 @@ import {
 import type { Supplier } from "@/types/supplier";
 import { cx } from "@/utils/cx";
 
-const inputClass =
-  "h-10 w-full rounded-[10px] border border-border-strong bg-surface px-[13px] text-[13px] font-normal text-text outline-none focus:border-[#3b82f6] focus:shadow-[0_0_0_3px_rgba(59,130,246,.16)]";
+const inputClass = cx(
+  "h-10 w-full rounded-md border border-border-strong bg-surface px-[13px] text-[13px] font-normal text-text",
+  inputFocus,
+);
 
 /**
  * Add or edit a supplier. `supplier` absent means add.
@@ -119,11 +122,7 @@ export function SupplierForm({
 
       <div className="mt-[26px] flex justify-end gap-2.5 border-t border-border-soft pt-5">
         {cancel}
-        <button
-          type="submit"
-          disabled={pending}
-          className="flex h-10 items-center rounded-[10px] bg-[#3b82f6] px-5 text-[13px] font-semibold text-white hover:bg-[#2563eb] disabled:opacity-60"
-        >
+        <button type="submit" disabled={pending} className={primaryButton}>
           {pending ? "Saving…" : "Save supplier"}
         </button>
       </div>

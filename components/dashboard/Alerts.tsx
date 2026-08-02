@@ -20,7 +20,7 @@ export function Alerts({ items }: { items: TrackedItem[] }) {
         {/* "View all" is the inventory list sorted by priority, descending. */}
         <Link
           href="/inventory?sort=p&dir=-1"
-          className="ml-auto text-[12.5px] font-normal text-[#3b82f6] hover:text-[#2563eb]"
+          className="ml-auto text-[12.5px] font-normal text-accent-fg hover:text-accent-hover"
         >
           View all
         </Link>

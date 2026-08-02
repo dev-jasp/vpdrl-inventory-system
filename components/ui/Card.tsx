@@ -28,8 +28,6 @@ export function Card({
  */
 export function CardTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-sm font-semibold tracking-[-0.015em]">
-      {children}
-    </h2>
+    <h2 className="text-sm font-semibold tracking-[-0.015em]">{children}</h2>
   );
 }

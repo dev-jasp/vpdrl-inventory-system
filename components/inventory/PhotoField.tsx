@@ -155,7 +155,7 @@ export function PhotoField({ initial }: { initial?: string }) {
               <button
                 type="button"
                 onClick={capture}
-                className="flex h-[34px] items-center rounded-[9px] bg-[#3b82f6] px-4 text-[12.5px] font-semibold text-white hover:bg-[#2563eb]"
+                className="flex h-[34px] items-center rounded-md bg-accent px-4 text-[12.5px] font-medium text-white hover:bg-accent-hover"
               >
                 Capture
               </button>

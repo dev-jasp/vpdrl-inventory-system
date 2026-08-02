@@ -44,7 +44,7 @@ export function SpendVsBudget() {
 
       <div className="mt-3.5 flex justify-end gap-[18px]">
         <span className="flex items-center gap-[7px] text-[11.5px] font-normal text-text-3">
-          <span aria-hidden className="size-[9px] rounded-sm bg-[#3b82f6]" />
+          <span aria-hidden className="size-[9px] rounded-sm bg-accent" />
           Spend
         </span>
         <span className="flex items-center gap-[7px] text-[11.5px] font-normal text-text-3">
@@ -88,7 +88,7 @@ export function SpendVsBudget() {
                 className="flex h-full flex-1 items-end justify-center gap-1"
               >
                 <span
-                  className="w-3 rounded-t bg-[#3b82f6]"
+                  className="w-3 rounded-t bg-accent"
                   style={{ height: height(month.spend) }}
                 />
                 <span

@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 import { SuppliersTable } from "@/components/suppliers/SuppliersTable";
+import { primaryButton } from "@/components/ui/buttons";
+import { cx } from "@/utils/cx";
 import { allItems } from "@/lib/inventory/store";
 import { supplierRows } from "@/lib/suppliers/performance";
 import { allSuppliers } from "@/lib/suppliers/store";
@@ -28,10 +30,7 @@ export default function SuppliersPage() {
           {rows.length} suppliers on record
         </p>
 
-        <Link
-          href="/suppliers/new"
-          className="ml-auto flex h-9.5 items-center rounded-md bg-[#4258eb] px-4.5 text-[13px] font-medium text-white hover:bg-[#4258eb] capitalize"
-        >
+        <Link href="/suppliers/new" className={cx("ml-auto", primaryButton)}>
           + Add supplier
         </Link>
       </div>

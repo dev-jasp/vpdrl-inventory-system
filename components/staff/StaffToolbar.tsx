@@ -3,6 +3,7 @@ import Link from "next/link";
 import { StaffSearch } from "@/components/staff/StaffSearch";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { NavSelect } from "@/components/ui/NavSelect";
+import { primaryButton } from "@/components/ui/buttons";
 import {
   GROUP_FILTERS,
   type StaffQuery,
@@ -97,10 +98,7 @@ export function StaffToolbar({
         {/* The design opens the form dialog from here; here it is a link to
             `/staff/new`, which the modal slot intercepts into the same
             dialog. */}
-        <Link
-          href={staffPath("/staff/new", query)}
-          className="flex h-9.5 items-center rounded-md bg-[#4258eb] px-4.5 text-[13px] font-medium text-white hover:bg-[#4258eb] capitalize"
-        >
+        <Link href={staffPath("/staff/new", query)} className={primaryButton}>
           Add staff
         </Link>
       </div>

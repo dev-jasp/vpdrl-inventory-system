@@ -2,7 +2,9 @@
 
 import { useRouter } from "next/navigation";
 
+import { inputFocus } from "@/components/ui/buttons";
 import { type StaffQuery, staffHref } from "@/lib/staff/filters";
+import { cx } from "@/utils/cx";
 
 /**
  * The staff list's own search box — the topbar's search goes to the inventory.
@@ -34,7 +36,10 @@ export function StaffSearch({ query }: { query: StaffQuery }) {
         defaultValue={query.q}
         placeholder="Search name, email, or phone"
         aria-label="Search staff"
-        className="h-[38px] w-[300px] max-w-full rounded-[10px] border border-border-strong bg-surface px-[13px] text-[13px] font-normal text-text outline-none placeholder:text-text-4 focus:border-[#3b82f6] focus:shadow-[0_0_0_3px_rgba(59,130,246,.16)]"
+        className={cx(
+          "h-9.5 w-[300px] max-w-full rounded-md border border-border-strong bg-surface px-[13px] text-[13px] font-normal text-text placeholder:text-text-4",
+          inputFocus,
+        )}
       />
     </form>
   );

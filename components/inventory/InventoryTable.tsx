@@ -69,7 +69,7 @@ export function InventoryTable({
                 >
                   <Link
                     href={inventoryHref(query, nextSort(query, column.key))}
-                    className="block px-[18px] py-[11px] text-[10.5px] tracking-[0.1em] whitespace-nowrap text-text-4 hover:text-[#3b82f6]"
+                    className="block px-[18px] py-[11px] text-[10.5px] tracking-[0.1em] whitespace-nowrap text-text-4 hover:text-accent-fg"
                   >
                     {column.label}{" "}
                     <span aria-hidden>

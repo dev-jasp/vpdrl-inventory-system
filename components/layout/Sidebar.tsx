@@ -41,7 +41,7 @@ export function Sidebar() {
         </div>
       ) : (
         <div className="flex items-center gap-[11px] px-4 pt-[18px] pb-5">
-          <span className="grid size-[34px] flex-none place-items-center rounded-[10px] bg-[#3b82f6] text-sm font-semibold tracking-[-0.02em] text-white">
+          <span className="grid size-[34px] flex-none place-items-center rounded-md bg-accent text-sm font-semibold tracking-[-0.02em] text-white">
             VI
           </span>
           <span className="min-w-0 text-[15px] font-semibold tracking-[-0.015em]">
@@ -181,7 +181,7 @@ function NavRow({
         {rail ? (
           <span className="sr-only">{item.label}</span>
         ) : (
-          <span className="flex-1 text-[14px] font-medium whitespace-nowrap">
+          <span className="flex-1 text-[14.5px] font-medium whitespace-nowrap">
             {item.label}
           </span>
         )}
