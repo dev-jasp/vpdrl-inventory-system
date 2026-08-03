@@ -55,7 +55,7 @@ export function Sidebar() {
       <nav
         aria-label="Main"
         className={cx(
-          "flex min-h-0 flex-1 flex-col gap-[18px] overflow-auto pb-3",
+          "flex min-h-0 lg:pt-6.5 flex-1 flex-col gap-[18px] overflow-auto pb-3",
           rail ? "px-[10px]" : "px-3",
         )}
       >
