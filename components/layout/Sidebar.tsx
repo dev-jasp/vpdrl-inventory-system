@@ -32,8 +32,8 @@ export function Sidebar() {
   return (
     <div
       className={cx(
-        "sticky top-0 flex h-screen flex-none flex-col self-start border-r border-border bg-surface transition-[width] duration-[180ms] ease-out",
-        rail ? "w-[68px]" : "w-[236px]",
+        "sticky top-0 flex h-screen flex-none flex-col self-start border-r border-border bg-bg transition-[width] duration-180 ease-out",
+        rail ? "w-[64px]" : "w-65",
       )}
     >
       {rail ? (
