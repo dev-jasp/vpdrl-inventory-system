@@ -144,6 +144,7 @@ export function StaffList({
               <td className="relative px-2.5 py-3">
                 <div className="flex justify-center">
                   <StaffRowMenu
+                    staffId={person.id}
                     name={person.name}
                     profileHref={staffProfileHref(query, person.id)}
                     editHref={staffEditHref(query, person.id)}

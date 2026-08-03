@@ -16,18 +16,8 @@ const WINDOWS = [
  * The most-withdrawn items over a 4- or 12-week window. Client-side because
  * the window is a local choice that doesn't belong in the URL — nothing else
  * on the dashboard reacts to it.
- *
- * `children` is the stock status section, which the design hangs off the
- * bottom of this card. Taking it as a prop keeps it server-rendered instead of
- * dragging the whole 41-item tracker into the client bundle for one dropdown.
  */
-export function TopConsumed({
-  items,
-  children,
-}: {
-  items: TrackedItem[];
-  children?: React.ReactNode;
-}) {
+export function TopConsumed({ items }: { items: TrackedItem[] }) {
   const [weeks, setWeeks] = useState(12);
   const rows = topConsumed(items, weeks);
   const max = rows[0]?.used ?? 1;
@@ -45,7 +35,7 @@ export function TopConsumed({
             label: option.label,
           }))}
           align="end"
-          className="ml-auto h-7 rounded-lg px-2 text-xs"
+          className="ml-auto h-7 w-35 rounded-lg px-2.5 text-xs font-normal"
         />
       </div>
 
@@ -73,8 +63,6 @@ export function TopConsumed({
           </li>
         ))}
       </ul>
-
-      {children}
     </Card>
   );
 }

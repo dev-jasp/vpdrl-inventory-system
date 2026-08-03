@@ -1,8 +1,5 @@
-import Link from "next/link";
-
 import { StaffDays } from "@/components/staff/StaffDays";
 import { Avatar } from "@/components/ui/Avatar";
-import { primaryButton } from "@/components/ui/buttons";
 import type { Staff } from "@/types/staff";
 import { cx } from "@/utils/cx";
 
@@ -38,14 +35,18 @@ function Section({
  *
  * The body is shared between the dialog and the page it falls through to, so
  * the two dismiss differently and nothing else does.
+ *
+ * Read-only, unlike the design, which pairs Close with an "Edit info" button.
+ * Opening a person is how you look them up — from the list, from a card, from
+ * the dashboard's on-duty faces — and every one of those is a glance rather
+ * than an intent to change anything. Editing is one deliberate step further,
+ * so it lives in the row's ⋯ menu, which is the one place you have to aim at.
  */
 export function StaffProfile({
   person,
-  editHref,
   close,
 }: {
   person: Staff;
-  editHref: string;
   /** The dismiss control, which differs between the page and the dialog. */
   close: React.ReactNode;
 }) {
@@ -90,15 +91,10 @@ export function StaffProfile({
         </p>
       </Section>
 
-      <div className="mt-6 flex w-full gap-2.5">
-        {close}
-        <Link
-          href={editHref}
-          className={cx(primaryButton, "flex-1 justify-center")}
-        >
-          Edit info
-        </Link>
-      </div>
+      {/* Still a row, though it holds one control now: both callers hand their
+          Close a `flex-1`, so it spans the dialog rather than sitting half
+          width with a hole where the edit button used to be. */}
+      <div className="mt-6 flex w-full gap-2.5">{close}</div>
     </div>
   );
 }

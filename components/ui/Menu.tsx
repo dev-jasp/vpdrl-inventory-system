@@ -62,19 +62,32 @@ export function MenuContent({
 export function MenuItem({
   children,
   asChild,
+  tone = "default",
+  onSelect,
   className,
 }: {
   children: React.ReactNode;
   /** For a `<Link>` — Radix closes the menu on select either way. */
   asChild?: boolean;
+  /**
+   * `danger` for an item that destroys something. It takes the red badge pair
+   * rather than a red of its own, so the one thing in the menu that cannot be
+   * undone is the same red as every other warning in the app.
+   */
+  tone?: "default" | "danger";
+  /** For an item that acts rather than navigates. */
+  onSelect?: (event: Event) => void;
   className?: string;
 }) {
   return (
     <RadixMenu.Item
       asChild={asChild}
+      onSelect={onSelect}
       className={cx(
-        "flex cursor-pointer items-center gap-[10px] rounded-[7px] px-2.5 py-2 text-[13px] font-medium text-text outline-none select-none",
-        "data-[highlighted]:bg-muted",
+        "flex cursor-pointer items-center gap-[10px] rounded-[7px] px-2.5 py-2 text-[13px] font-medium outline-none select-none",
+        tone === "danger"
+          ? "text-badge-red-fg data-[highlighted]:bg-badge-red-bg"
+          : "text-text data-[highlighted]:bg-muted",
         className,
       )}
     >

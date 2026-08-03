@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Card, CardTitle } from "@/components/ui/Card";
 import { STATUS_TRACK_COLORS } from "@/lib/inventory/palette";
 import {
   countByPriority,
@@ -9,8 +10,10 @@ import {
 
 /**
  * Stock status: the four counts, then one block per SKU ordered calmest to
- * loudest. A section rather than a card — the design hangs it off the bottom
- * of Top Consumed, below a rule.
+ * loudest. Its own card, stacked under Top Consumed. The design hangs it off
+ * the bottom of that card below a rule, but a rule inside a card is doing a
+ * card's job — the split gives the two readings the same standing as every
+ * other card on the dashboard, at the same 20px gutter.
  */
 export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
   const summary = statusSummary(items);
@@ -23,12 +26,10 @@ export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
     );
 
   return (
-    <div className="mt-[18px] border-t border-border-soft pt-3.5">
-      <h3 className="text-xs font-semibold tracking-[0.12em] text-text-4">
-        STOCK STATUS
-      </h3>
+    <Card>
+      <CardTitle>Stock Status</CardTitle>
 
-      <ul className="mt-[11px] grid grid-cols-2 gap-x-[18px] gap-y-2">
+      <ul className="mt-4 grid grid-cols-2 gap-x-[18px] gap-y-2">
         {summary.map((bucket) => (
           <li key={bucket.label} className="flex items-center gap-2">
             <span
@@ -44,7 +45,10 @@ export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
         ))}
       </ul>
 
-      <ul className="mt-4 flex gap-0.5">
+      {/* 20px blocks rather than the design's 26px: splitting the card off
+          costs a second set of card padding plus the gutter, and the track is
+          the one element here that reads the same a little shorter. */}
+      <ul className="mt-3.5 flex gap-0.5">
         {blocks.map((item) => (
           <li key={item.id} className="min-w-0 flex-1">
             <Link
@@ -52,7 +56,7 @@ export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
               // 41 blocks would otherwise each prefetch their own route.
               prefetch={false}
               title={`${item.name} · ${item.status.kind}`}
-              className="block h-[26px] rounded-[3px] hover:opacity-[0.72]"
+              className="block h-5 rounded-[3px] hover:opacity-[0.72]"
               style={{ background: STATUS_TRACK_COLORS[item.status.kind] }}
             >
               <span className="sr-only">
@@ -70,6 +74,6 @@ export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
         </span>
         <span>1 block = 1 SKU</span>
       </div>
-    </div>
+    </Card>
   );
 }

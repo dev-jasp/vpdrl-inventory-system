@@ -149,7 +149,20 @@ export function EventBlock({
   );
 }
 
-/** The row the all-day band draws: one line, no window to show. */
+/**
+ * The chip the all-day band draws: one line, no window to show.
+ *
+ * It sizes to its content rather than filling the band, and the status sits
+ * where the text leaves off rather than at the far right. Stretched across a
+ * full-width band, four words of content left a tinted slab of empty space
+ * with a pill marooned at its edge — the tint stopped reading as a label on a
+ * thing and started reading as a coloured row. Hugging the content puts the
+ * whole anatomy back under one glance, and lets a quiet day fit its two or
+ * three entries on a single line.
+ *
+ * `max-w-full` is what keeps a long title honest: the chip grows to its text
+ * until it reaches the band's width, and the title truncates from there.
+ */
 export function EventRow({ event }: { event: ScheduleEvent }) {
   const tone = TONES[event.tone];
 
@@ -157,7 +170,7 @@ export function EventRow({ event }: { event: ScheduleEvent }) {
     <CardShell
       event={event}
       className={cx(
-        "flex items-center gap-2 rounded-lg border py-[5px] pr-2 pl-2.5",
+        "flex max-w-full items-center gap-2 rounded-lg border py-[5px] pr-2 pl-2.5",
         tone.fill,
         tone.edge,
       )}
@@ -166,17 +179,15 @@ export function EventRow({ event }: { event: ScheduleEvent }) {
         name={KIND_ICONS[event.kind]}
         className="size-[13px] flex-none text-text-2"
       />
-      <span className="truncate text-[12.5px] font-medium text-text">
+      <span className="min-w-0 truncate text-[12.5px] font-medium text-text">
         {event.title}
       </span>
       {event.subtitle ? (
-        <span className="hidden truncate text-[11.5px] font-normal text-text-3 sm:block">
+        <span className="hidden min-w-0 truncate text-[11.5px] font-normal text-text-3 sm:block">
           {event.subtitle}
         </span>
       ) : null}
-      <span className="ml-auto flex-none">
-        <StatusPill tone={event.tone}>{event.status}</StatusPill>
-      </span>
+      <StatusPill tone={event.tone}>{event.status}</StatusPill>
     </CardShell>
   );
 }

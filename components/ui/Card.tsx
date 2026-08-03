@@ -11,7 +11,7 @@ export function Card({
   return (
     <section
       className={cx(
-        "flex flex-col rounded-sm border border-border bg-surface px-[22px] py-5 shadow-[var(--shadow-1)]",
+        "flex flex-col rounded-xl border border-border bg-surface px-[22px] py-5 shadow-[var(--shadow-1)]",
         className,
       )}
     >

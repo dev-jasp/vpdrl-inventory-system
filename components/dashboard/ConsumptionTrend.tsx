@@ -60,10 +60,10 @@ export function ConsumptionTrend() {
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-controls={menuOpen ? menuId : undefined}
-            className="flex h-[34px] items-center gap-2 rounded-[9px] border border-border-strong bg-surface px-3 text-[12.5px] font-medium text-text outline-none"
+            className="flex h-7 w-35 items-center justify-between gap-2 truncate rounded-lg border border-border-strong bg-surface px-2.5 text-[12.5px] font-normal text-text outline-none"
           >
             Last {months} months
-            <Icon name="chevron" className="size-3.5 text-text-3" />
+            <Icon name="chevron" className="size-3.5 flex-none text-text-3" />
           </button>
           {menuOpen ? (
             <>
@@ -74,7 +74,13 @@ export function ConsumptionTrend() {
               />
               <div
                 id={menuId}
-                className="absolute top-10 right-0 z-6 w-[172px] rounded-xl border border-border bg-surface p-1.5 shadow-[var(--shadow-2)]"
+                // Sized and offset off the trigger rather than fixed. At least
+                // as wide as the button, then as wide as its longest row needs
+                // — the trigger truncates a long label, but a menu that wraps
+                // one across two lines is just harder to read. Right-anchored,
+                // so the overspill grows inward. 34px is the button's 28px plus
+                // the 6px gap the shared Select puts under its trigger.
+                className="absolute top-8.5 right-0 z-6 w-max min-w-full rounded-xl border border-border bg-surface p-1.5 shadow-[var(--shadow-2)]"
               >
                 {CONSUMPTION_WINDOWS.map((option) => {
                   const selected = option === months;
@@ -88,7 +94,7 @@ export function ConsumptionTrend() {
                         setMenuOpen(false);
                       }}
                       className={cx(
-                        "flex w-full items-center justify-between gap-2.5 rounded-lg px-2.5 py-[9px] text-[13px] text-text hover:bg-bg",
+                        "flex w-full items-center justify-between gap-2.5 rounded-lg px-2.5 py-[9px] text-[13px] whitespace-nowrap text-text hover:bg-bg",
                         selected ? "font-semibold" : "font-normal",
                       )}
                     >

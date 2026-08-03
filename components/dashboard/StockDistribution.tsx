@@ -9,6 +9,23 @@ import {
 const CIRCUMFERENCE = 364.4;
 
 /**
+ * The break between two segments, in path units — 3 of the 364 the ring runs,
+ * against a 13-unit stroke, so the break is a good deal narrower than the ring
+ * is thick. Enough to separate one category from the next; not so much that the
+ * ring starts reading as five detached arcs. Half of it comes off each end of a
+ * segment, so every arc stays centred on the share it actually represents.
+ */
+const GAP = 3;
+
+/**
+ * The shortest arc still worth drawing. A category smaller than the gap would
+ * otherwise come out at zero length and vanish from the ring entirely while
+ * still holding a row in the legend, which reads as a bug rather than as a
+ * small number.
+ */
+const MIN_ARC = 1.5;
+
+/**
  * How the catalogue splits by category, as a donut with a legend.
  *
  * The design puts a month picker in the header, but its `donutMonth` state
@@ -17,26 +34,30 @@ const CIRCUMFERENCE = 364.4;
  * so it is left out until there is per-month data behind it.
  */
 export function StockDistribution({ items }: { items: TrackedItem[] }) {
-  const arcs = categoryDistribution(items).map((segment) => ({
-    ...segment,
-    dash: `${Math.max(0, (segment.percent / 100) * CIRCUMFERENCE).toFixed(1)} ${CIRCUMFERENCE}`,
-    offset: (-(segment.startPercent / 100) * CIRCUMFERENCE).toFixed(1),
-  }));
+  const arcs = categoryDistribution(items).map((segment) => {
+    const span = (segment.percent / 100) * CIRCUMFERENCE;
+    const start = (segment.startPercent / 100) * CIRCUMFERENCE;
+
+    return {
+      ...segment,
+      dash: `${Math.max(MIN_ARC, span - GAP).toFixed(1)} ${CIRCUMFERENCE}`,
+      offset: (-(start + GAP / 2)).toFixed(1),
+    };
+  });
 
   return (
     <Card>
       <CardTitle>Stock Distribution</CardTitle>
 
-      <div className="relative mx-auto mt-[38px] mb-7 size-[172px]">
+      {/* The box grows, the viewBox doesn't: r, stroke and gap are all in the
+          same 160-unit space, so sizing the box scales the ring and its breaks
+          together and there is one number to change. */}
+      <div className="relative mx-auto mt-7 mb-6 size-48">
         <svg viewBox="0 0 160 160" className="size-full">
-          <circle
-            cx="80"
-            cy="80"
-            r="58"
-            fill="none"
-            stroke="var(--muted)"
-            strokeWidth="13"
-          />
+          {/* No track circle behind the segments. It was a backing for a ring
+              that met itself all the way round; behind gapped arcs it shows
+              through every break as a grey sliver, which reads as a sixth
+              category rather than as a gap. */}
           {arcs.map((arc) => (
             <circle
               key={arc.category}
@@ -54,7 +75,9 @@ export function StockDistribution({ items }: { items: TrackedItem[] }) {
           ))}
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="font-mono text-[26px] font-extrabold">
+          {/* The count tracks the hole it sits in: at the design's 26px it
+              looked stranded in the middle of the larger ring. */}
+          <span className="font-mono text-[30px] font-extrabold">
             {items.length}
           </span>
           <span className="text-[11px] font-medium text-text-3">

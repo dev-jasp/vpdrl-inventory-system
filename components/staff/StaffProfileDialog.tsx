@@ -11,13 +11,7 @@ import type { Staff } from "@/types/staff";
  * from. Reached through the intercepted route in `app/(dashboard)/@modal`, so
  * dismissing it is a back navigation: the URL it masked goes away with it.
  */
-export function StaffProfileDialog({
-  person,
-  editHref,
-}: {
-  person: Staff;
-  editHref: string;
-}) {
+export function StaffProfileDialog({ person }: { person: Staff }) {
   const router = useRouter();
   const close = () => router.back();
 
@@ -30,7 +24,6 @@ export function StaffProfileDialog({
     >
       <StaffProfile
         person={person}
-        editHref={editHref}
         close={
           <button
             type="button"
