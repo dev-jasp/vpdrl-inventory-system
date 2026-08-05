@@ -33,41 +33,87 @@ export function Sidebar() {
     <div
       className={cx(
         "sticky top-0 flex h-screen flex-none flex-col self-start border-r border-border bg-bg transition-[width] duration-180 ease-out",
+        // Nothing inside reflows as the box narrows — it is clipped instead.
+        // Text that rewraps and re-ellipsises on every frame of a width
+        // transition is most of what makes a collapsing sidebar look cheap.
+        "overflow-hidden",
         rail ? "w-[64px]" : "w-65",
       )}
     >
-      {rail ? (
-        <div className="flex justify-center pt-4 pb-[18px]">
-          <RailToggle rail={rail} onToggle={toggleRail} />
-        </div>
-      ) : (
-        <div className="flex items-center gap-[11px] px-4 pt-[18px] pb-5">
-          <span className="grid size-[34px] flex-none place-items-center rounded-md bg-accent text-sm font-semibold tracking-[-0.02em] text-white">
-            VI
-          </span>
-          <span className="min-w-0 text-[15px] font-semibold tracking-[-0.015em]">
-            
-          </span>
-          <RailToggle rail={rail} onToggle={toggleRail} />
-        </div>
-      )}
+      {/* One structure for both states rather than a branch per state. A
+          conditional cannot animate its own removal, so anything that unmounts
+          on the way to the rail leaves instantly while the box is still
+          moving; everything here transitions between two sets of values on
+          nodes that stay mounted throughout. */}
+      <div
+        className={cx(
+          "flex items-center transition-[padding,column-gap] duration-180 ease-out",
+          rail
+            ? "gap-0 px-[18px] pt-4 pb-[18px]"
+            : "gap-[11px] px-4 pt-[18px] pb-5",
+        )}
+      >
+        {/* Collapses to nothing rather than disappearing: width and opacity
+            both run, so the mark shrinks out of the way and the toggle takes
+            its place instead of jumping into it. */}
+        <span
+          className={cx(
+            "grid h-[34px] flex-none place-items-center overflow-hidden rounded-md bg-accent text-sm font-semibold tracking-[-0.02em] text-white transition-[width,opacity] duration-180 ease-out",
+            rail ? "w-0 opacity-0" : "w-[34px] opacity-100",
+          )}
+        >
+          VI
+        </span>
+        <span className="min-w-0 text-[15px] font-semibold tracking-[-0.015em]"></span>
+        {/* `ml-auto` in both states, so the button rides the container's right
+            edge inward as the width transitions instead of being re-centred
+            by a different layout. At the rail's 18px gutter that lands it
+            dead centre with no second rule to keep in sync. */}
+        <RailToggle rail={rail} onToggle={toggleRail} />
+      </div>
 
       <nav
         aria-label="Main"
         className={cx(
-          "flex min-h-0 lg:pt-6.5 flex-1 flex-col gap-[18px] overflow-auto pb-3",
+          "flex min-h-0 flex-1 flex-col gap-[18px] pb-3 lg:pt-6.5",
+          // Vertical scroll only. `overflow-auto` would let the labels the
+          // narrowing rail pushes out of bounds raise a horizontal scrollbar
+          // partway through the transition.
+          "overflow-x-hidden overflow-y-auto",
+          // Matched to the container's own width transition, so the gutter
+          // closes with the box rather than snapping a frame ahead of it.
+          "transition-[padding] duration-180 ease-out",
           rail ? "px-[10px]" : "px-3",
         )}
       >
         {NAV_GROUPS.map((group) => (
           <div key={group.label} className="flex flex-col gap-0.5">
-            {rail ? (
-              <div className="mx-1.5 mb-[7px] h-px bg-muted" />
-            ) : (
-              <div className={cx(navGroupLabel, "px-2.5 pb-[7px]")}>
-                {group.label}
+            {/* The heading gives way to the rule by height, not by swap: both
+                stay mounted and one collapses as the other opens. `0fr`→`1fr`
+                is what lets a block of unknown height transition at all —
+                `height: auto` is not interpolable. */}
+            <div
+              className={cx(
+                "grid transition-[grid-template-rows] duration-180 ease-out",
+                rail ? "grid-rows-[0fr]" : "grid-rows-[1fr]",
+              )}
+            >
+              <div className="overflow-hidden">
+                <div className={cx(navGroupLabel, "px-2.5 pb-[7px]")}>
+                  {group.label}
+                </div>
               </div>
-            )}
+            </div>
+            <div
+              className={cx(
+                "grid transition-[grid-template-rows] duration-180 ease-out",
+                rail ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+              )}
+            >
+              <div className="overflow-hidden">
+                <div className="mx-1.5 mb-[7px] h-px bg-muted" />
+              </div>
+            </div>
             <ul aria-label={group.label} className="flex flex-col gap-0.5">
               {group.items.map((item) => {
                 const subNavId = `${idPrefix}${item.href}`;
@@ -87,18 +133,40 @@ export function Sidebar() {
                         }))
                       }
                     />
-                    {item.children && subNavOpen && !rail ? (
-                      <Suspense
-                        fallback={
-                          <NavChildList
-                            id={subNavId}
-                            groups={item.children}
-                            active={null}
-                          />
-                        }
+                    {/* Height-collapsed rather than unmounted, which is what
+                        lets it close on the way to the rail instead of
+                        vanishing and dropping the whole nav upward. It also
+                        settles the older mismatch here: the caret animated
+                        over 160ms while the list it controls snapped. */}
+                    {item.children ? (
+                      <div
+                        className={cx(
+                          "grid transition-[grid-template-rows] duration-180 ease-out",
+                          subNavOpen && !rail
+                            ? "grid-rows-[1fr]"
+                            : "grid-rows-[0fr]",
+                        )}
+                        // Still in the DOM when collapsed, so without this the
+                        // links stay tabbable behind a zero-height clip.
+                        inert={!subNavOpen || rail}
                       >
-                        <NavChildLinks id={subNavId} groups={item.children} />
-                      </Suspense>
+                        <div className="overflow-hidden">
+                          <Suspense
+                            fallback={
+                              <NavChildList
+                                id={subNavId}
+                                groups={item.children}
+                                active={null}
+                              />
+                            }
+                          >
+                            <NavChildLinks
+                              id={subNavId}
+                              groups={item.children}
+                            />
+                          </Suspense>
+                        </div>
+                      </div>
                     ) : null}
                   </li>
                 );
@@ -129,10 +197,7 @@ function RailToggle({
       onClick={onToggle}
       title={label}
       aria-label={label}
-      className={cx(
-        "grid size-7 flex-none place-items-center rounded-lg border border-border bg-surface text-text-3 hover:bg-bg",
-        rail ? "" : "ml-auto",
-      )}
+      className="ml-auto grid size-7 flex-none place-items-center rounded-lg border border-border bg-surface text-text-3 hover:bg-bg"
     >
       <Icon name="panel" className="size-[15px]" />
     </button>
@@ -170,22 +235,40 @@ function NavRow({
         title={item.label}
         aria-current={active ? "page" : undefined}
         className={cx(
-          "flex min-w-0 flex-1 items-center gap-[10px] rounded-[9px] py-[9px]",
-          rail ? "justify-center" : "pl-[11px]",
+          // `pl-[11px]` in both states rather than swapping to
+          // `justify-center`. The rail's 44px of row less an 11px gutter
+          // leaves exactly the 22px the icon grows to, so the same padding
+          // that indents it when expanded centres it on the rail — and the
+          // icon never moves, it only grows.
+          "flex min-w-0 flex-1 items-center gap-[10px] rounded-[9px] py-[9px] pl-[11px]",
           !rail && !hasCaret && "pr-[11px]",
         )}
       >
+        {/* Grows to hold the row on its own once the label is gone.
+            Transitioned, not swapped, so it scales with the box instead of
+            jumping a size mid-slide. */}
         <Icon
           name={item.icon}
-          className={rail ? "size-[22px]" : "size-[18px]"}
+          className={cx(
+            "transition-[width,height] duration-180 ease-out",
+            rail ? "size-[22px]" : "size-[18px]",
+          )}
         />
-        {rail ? (
-          <span className="sr-only">{item.label}</span>
-        ) : (
-          <span className={cx(navItemLabel, "flex-1 whitespace-nowrap")}>
-            {item.label}
-          </span>
-        )}
+        {/* Mounted in both states and faded, never swapped for an `sr-only`
+            copy — that swap is what made the labels cut out a frame into the
+            collapse. It keeps the row's accessible name either way, and the
+            clipped container hides what the fade leaves behind. Out faster
+            than the box closes, so the text is gone before the edge reaches
+            it. */}
+        <span
+          className={cx(
+            navItemLabel,
+            "flex-1 whitespace-nowrap transition-opacity duration-120 ease-out",
+            rail ? "opacity-0" : "opacity-100",
+          )}
+        >
+          {item.label}
+        </span>
       </Link>
       {hasCaret ? (
         <button
