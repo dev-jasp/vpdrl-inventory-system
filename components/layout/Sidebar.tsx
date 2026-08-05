@@ -132,6 +132,12 @@ export function Sidebar() {
                           [item.href]: subNavOpen,
                         }))
                       }
+                      onOpenSubNav={() =>
+                        setCollapsed((value) => ({
+                          ...value,
+                          [item.href]: false,
+                        }))
+                      }
                     />
                     {/* Height-collapsed rather than unmounted, which is what
                         lets it close on the way to the rail instead of
@@ -211,6 +217,7 @@ function NavRow({
   subNavId,
   subNavOpen,
   onToggleSubNav,
+  onOpenSubNav,
 }: {
   item: NavItem;
   rail: boolean;
@@ -218,10 +225,20 @@ function NavRow({
   subNavId: string;
   subNavOpen: boolean;
   onToggleSubNav: () => void;
+  onOpenSubNav: () => void;
 }) {
-  // The design's row both navigates and expands. Splitting the caret off keeps
-  // the disclosure reachable without leaving the page you are on.
+  // The design's row both navigates and expands, and it does both here. The
+  // caret is split off on top of that, not instead of it: it toggles the
+  // disclosure without leaving the page you are on, which the row alone
+  // cannot do.
   const hasCaret = Boolean(item.children) && !rail;
+
+  // Arriving somewhere opens it; clicking where you already are toggles it.
+  // A row that toggled unconditionally would shut a section's filters at the
+  // moment you navigated into it, which is the one case nobody asks for — and
+  // on the rail there is no disclosure on screen to be toggling, so a click
+  // there only ever leaves it open for when the sidebar comes back.
+  const onRowClick = active && !rail ? onToggleSubNav : onOpenSubNav;
 
   return (
     <div
@@ -234,6 +251,7 @@ function NavRow({
         href={item.href}
         title={item.label}
         aria-current={active ? "page" : undefined}
+        onClick={onRowClick}
         className={cx(
           // `pl-[11px]` in both states rather than swapping to
           // `justify-center`. The rail's 44px of row less an 11px gutter
