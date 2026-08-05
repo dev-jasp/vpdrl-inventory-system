@@ -122,6 +122,12 @@ export function Select({
           className={cx(
             "z-50 min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-[11px]",
             "border border-border bg-surface p-1.5 shadow-[var(--shadow-2)]",
+            // Scales out of the trigger rather than appearing beside it. Radix
+            // computes the origin from the resolved side, so a menu that
+            // flipped upward grows downward-to-up without us tracking that.
+            // Exit is shorter than entry; Radix holds the node through it.
+            "origin-[var(--radix-select-content-transform-origin)]",
+            "data-[state=closed]:animate-lt-fade-out data-[state=open]:animate-lt-popover",
           )}
         >
           <RadixSelect.Viewport className="max-h-[var(--radix-select-content-available-height)]">

@@ -151,6 +151,35 @@
   /* The design's dialog entrance: the scrim fades, the panel rises. */
   --animate-lt-fade: lt-fade 0.16s ease-out;
   --animate-lt-pop: lt-pop 0.2s cubic-bezier(0.2, 0.8, 0.3, 1);
+
+  /* A card settling into a grid slot it already occupies, against `lt-pop`'s
+     dialog arriving over the page — so 6px of travel, not 10. `backwards`
+     holds the `from` state through the stagger delay below, which is what
+     stops an undelayed card being painted before its neighbours start. */
+  --animate-lt-rise: lt-rise 0.2s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+
+  /* Popover entrance. Scale only, no travel: these are anchored to a trigger
+     and scale out of it, so the transform-origin carries the direction and a
+     translate would fight it. */
+  --animate-lt-popover: lt-popover 0.16s cubic-bezier(0.2, 0.8, 0.3, 1);
+
+  /* Exits run shorter than entrances — a surface on its way out has nothing
+     left to say and shouldn't hold the pointer up while it says it. */
+  --animate-lt-fade-out: lt-fade-out 0.12s ease-in;
+
+  /* The two chart entrances. Longer than the rest of the vocabulary because
+     they describe a shape being drawn rather than an element arriving, which
+     is the one case the 200ms ceiling doesn't serve — but both still finish
+     inside 750ms of first paint.
+
+     The delay is baked in rather than left to the caller: each runs on exactly
+     one element, and each has to wait out its own card's `lt-rise` so the
+     chart isn't drawing itself while the card is still moving. `backwards`
+     holds the from-state through that delay, without which the mark flashes
+     complete for a frame before it starts. */
+  --animate-lt-sweep: lt-sweep 0.56s cubic-bezier(0.2, 0.8, 0.3, 1) 0.18s
+    backwards;
+  --animate-lt-roll: lt-roll 0.52s cubic-bezier(0.2, 0.8, 0.3, 1) 0.2s backwards;
 }
 
 @keyframes lt-fade {
@@ -170,6 +199,142 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@keyframes lt-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lt-popover {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lt-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Wipes the trend lines in from the left, over gridlines that are already
+   there. `inset()` rather than a `<clipPath>` and an id: on an SVG element the
+   percentages resolve against the fill box, so 100% is exactly the group's own
+   width and there is nothing to keep in sync with the viewBox. */
+@keyframes lt-sweep {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* The donut spinning into place. The ring alone carries this — the count in
+   the hole is a separate overlay, so the figure stays still and stays legible
+   while the segments settle around it. */
+@keyframes lt-roll {
+  from {
+    opacity: 0;
+    transform: rotate(-140deg) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* SVG elements have no CSS layout box, so `transform-origin: center` would
+   otherwise resolve against the viewport rather than the shape. */
+.lt-roll-origin {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* The dashboard's entrance, as a class rather than on `Card` itself: the same
+   card chrome carries the inventory, staff and supplier views, and none of
+   those wants a rise every time a filter re-renders the page. Direct children
+   so the grid's own slots stagger, not each card's contents. */
+.lt-stagger > * {
+  animation: var(--animate-lt-rise);
+}
+
+/* 45ms apart, capped at the sixth. Past that the delay is longer than the
+   animation and the tail reads as a queue rather than as one entrance. */
+.lt-stagger > *:nth-child(2) {
+  animation-delay: 45ms;
+}
+.lt-stagger > *:nth-child(3) {
+  animation-delay: 90ms;
+}
+.lt-stagger > *:nth-child(4) {
+  animation-delay: 135ms;
+}
+.lt-stagger > *:nth-child(5) {
+  animation-delay: 180ms;
+}
+.lt-stagger > *:nth-child(n + 6) {
+  animation-delay: 225ms;
+}
+
+/* Gentler, not zero. Opacity is not what makes motion-sensitive users unwell —
+   travel and scale are — so the fades stay and the transforms go. Killing
+   animation outright here would also strand anything that fades *in* from
+   `opacity: 0` at zero opacity. */
+@media (prefers-reduced-motion: reduce) {
+  /* Only the keyframe name is swapped, so each animation keeps its own
+     duration, easing and fill mode and nothing changes timing — the travel and
+     the scale are what go, which is what actually makes motion-sensitive users
+     unwell. Opacity doesn't, so the fades stay.
+
+     This overrides the property rather than the `--animate-lt-*` tokens
+     because Tailwind inlines those values into its `animate-*` utilities
+     instead of emitting a `var()`; redefining the token only reaches rules
+     that spell the `var()` out, like `.lt-stagger` below. `!important` is what
+     clears the extra attribute specificity of the `data-[state=open]:`
+     variants on the Radix surfaces.
+
+     `lt-fade-out` is deliberately not matched here: an exit still has to fade
+     out, and folding it into `lt-fade` would fade a closing menu back in. */
+  [class*="animate-lt-rise"],
+  [class*="animate-lt-sweep"],
+  [class*="animate-lt-roll"],
+  .lt-stagger > * {
+    animation-name: lt-fade !important;
+  }
+
+  /* Named separately because the Radix surfaces carry an open *and* a close
+     animation on the same element: forcing the name unconditionally there
+     would fade a closing menu back in. The `:not` also covers the surfaces
+     with no state at all — the dialog, the trend's own menu. */
+  [class*="animate-lt-pop"]:not([data-state="closed"]) {
+    animation-name: lt-fade !important;
+  }
+
+  .lt-stagger > * {
+    animation-delay: 0ms;
+  }
+
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
   }
 }
 

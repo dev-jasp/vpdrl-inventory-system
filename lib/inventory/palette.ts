@@ -9,7 +9,7 @@ import type { LotStatusKind } from "./lots";
  */
 export const CATEGORY_COLORS: Record<Category, string> = {
   Reagent: "#3b82f6",
-  Solvent: "#22c55e",
+  Solvent: "#10b981",
   Consumable: "#f59e0b",
   Equipment: "#8b5cf6",
   Standard: "#94a3b8",

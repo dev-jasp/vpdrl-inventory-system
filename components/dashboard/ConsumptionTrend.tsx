@@ -80,7 +80,11 @@ export function ConsumptionTrend() {
                 // one across two lines is just harder to read. Right-anchored,
                 // so the overspill grows inward. 34px is the button's 28px plus
                 // the 6px gap the shared Select puts under its trigger.
-                className="absolute top-8.5 right-0 z-6 w-max min-w-full rounded-xl border border-border bg-surface p-1.5 shadow-[var(--shadow-2)]"
+                // Entrance only: this menu unmounts on a bare conditional, so
+                // there is no closed state to animate out of the way the
+                // shared `Select` has. Origin is the button it hangs off,
+                // which `right-0` pins to the top-right corner.
+                className="absolute top-8.5 right-0 z-6 w-max min-w-full origin-top-right animate-lt-popover rounded-xl border border-border bg-surface p-1.5 shadow-[var(--shadow-2)]"
               >
                 {CONSUMPTION_WINDOWS.map((option) => {
                   const selected = option === months;
@@ -172,19 +176,31 @@ export function ConsumptionTrend() {
             />
           ))}
 
-          {/* Back to front, so the busiest series sits on top. */}
-          {[...series].reverse().map((entry) => (
-            <path
-              key={entry.key}
-              d={pathOf(entry.values)}
-              fill="none"
-              stroke={entry.color}
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              vectorEffect="non-scaling-stroke"
-            />
-          ))}
+          {/* Wiped in from the left on load. One group for all three series
+              rather than a draw-on per path: the paths are different lengths,
+              so per-path stroke-dashoffset would have them finishing at
+              different moments and reading as three separate events. The
+              gridlines sit outside the group and stay put, so the lines draw
+              over a chart that is already framed.
+
+              Not keyed on `months` — the wipe is an entrance, and replaying it
+              every time the window changes would put half a second between the
+              click and a readable chart. */}
+          <g className="animate-lt-sweep">
+            {/* Back to front, so the busiest series sits on top. */}
+            {[...series].reverse().map((entry) => (
+              <path
+                key={entry.key}
+                d={pathOf(entry.values)}
+                fill="none"
+                stroke={entry.color}
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+              />
+            ))}
+          </g>
 
           {hover !== null && leadPoints[hover] ? (
             <line

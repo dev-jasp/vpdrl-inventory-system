@@ -56,7 +56,7 @@ export function StockStatusTracker({ items }: { items: TrackedItem[] }) {
               // 41 blocks would otherwise each prefetch their own route.
               prefetch={false}
               title={`${item.name} · ${item.status.kind}`}
-              className="block h-5 rounded-[3px] hover:opacity-[0.72]"
+              className="block h-5 rounded-[3px] transition-opacity duration-150 ease-out hover:opacity-[0.72]"
               style={{ background: STATUS_TRACK_COLORS[item.status.kind] }}
             >
               <span className="sr-only">

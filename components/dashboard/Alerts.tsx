@@ -32,7 +32,7 @@ export function Alerts({ items }: { items: TrackedItem[] }) {
             <li key={item.id}>
               <Link
                 href={`/inventory/${item.id}`}
-                className="-mx-1.5 flex items-center gap-[11px] rounded-[9px] border-t border-border-soft px-1.5 py-[11px] hover:bg-muted"
+                className="-mx-1.5 flex items-center gap-[11px] rounded-[9px] border-t border-border-soft px-1.5 py-[11px] transition-colors duration-150 ease-out hover:bg-muted"
               >
                 <ItemPhoto
                   category={item.category}
