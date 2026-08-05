@@ -267,6 +267,34 @@
   transform-origin: center;
 }
 
+/* Press feedback for the sidebar's controls, which all had a hover state and
+   nothing that answered the click itself.
+
+   The background is in the same transition as the transform on purpose: half
+   of what reads as stiffness here is the hover colour snapping on and off, not
+   the missing press.
+
+   Two scales because the same percentage reads much larger on a wide element
+   than a small one — 2% of a 236px nav row is about the same travel as 6% of a
+   28px button. Both sit at the quiet end of the useful range deliberately: the
+   nav gets clicked dozens of times a day, and at that frequency feedback
+   should register as tactile rather than as an animation someone has to sit
+   through. */
+.lt-press,
+.lt-press-sm {
+  transition:
+    transform 150ms ease-out,
+    background-color 150ms ease-out;
+}
+
+.lt-press:active {
+  transform: scale(0.98);
+}
+
+.lt-press-sm:active {
+  transform: scale(0.94);
+}
+
 /* The dashboard's entrance, as a class rather than on `Card` itself: the same
    card chrome carries the inventory, staff and supplier views, and none of
    those wants a rise every time a filter re-renders the page. Direct children
@@ -329,6 +357,14 @@
 
   .lt-stagger > * {
     animation-delay: 0ms;
+  }
+
+  /* The press keeps its colour change and loses its travel. Without this the
+     blanket duration below would not remove the scale — it would just make it
+     snap, which is the worst of both. */
+  .lt-press:active,
+  .lt-press-sm:active {
+    transform: none;
   }
 
   *,

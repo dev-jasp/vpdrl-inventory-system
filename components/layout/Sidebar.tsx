@@ -203,7 +203,7 @@ function RailToggle({
       onClick={onToggle}
       title={label}
       aria-label={label}
-      className="ml-auto grid size-7 flex-none place-items-center rounded-lg border border-border bg-surface text-text-3 hover:bg-bg"
+      className="lt-press-sm ml-auto grid size-7 flex-none place-items-center rounded-lg border border-border bg-surface text-text-3 hover:bg-bg"
     >
       <Icon name="panel" className="size-[15px]" />
     </button>
@@ -243,7 +243,11 @@ function NavRow({
   return (
     <div
       className={cx(
-        "flex items-center rounded-[9px]",
+        // On the row rather than on the link and the caret separately.
+        // `:active` matches an ancestor of whatever is being pressed, so one
+        // class here answers a click on either — and the whole row responding
+        // reads better than two controls each twitching on their own.
+        "lt-press flex items-center rounded-[9px]",
         active ? "bg-tint-blue text-accent-fg" : "text-text hover:bg-bg",
       )}
     >

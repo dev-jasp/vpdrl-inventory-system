@@ -42,7 +42,7 @@ export function UserMenu({
         <button
           type="button"
           className={cx(
-            "flex w-full items-center gap-[10px] rounded-[10px] px-2 py-[7px] text-left outline-none hover:bg-bg data-[state=open]:bg-bg",
+            "lt-press flex w-full items-center gap-[10px] rounded-[10px] px-2 py-[7px] text-left outline-none hover:bg-bg data-[state=open]:bg-bg",
             rail ? "justify-center" : "justify-start",
           )}
         >

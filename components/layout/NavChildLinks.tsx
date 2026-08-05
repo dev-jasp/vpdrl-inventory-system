@@ -81,7 +81,9 @@ export function NavChildList({
                     href={item.href}
                     aria-current={isActive ? "page" : undefined}
                     className={cx(
-                      "flex items-center gap-2 rounded-lg px-[10px] py-[7px] hover:bg-bg",
+                      // The accent segment is a sibling, not a child, so it
+                      // holds its place on the rail while the row presses.
+                      "lt-press flex items-center gap-2 rounded-lg px-[10px] py-[7px] hover:bg-bg",
                       isActive ? "text-accent-fg" : "text-text-2",
                     )}
                   >
