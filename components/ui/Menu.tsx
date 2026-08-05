@@ -50,6 +50,10 @@ export function MenuContent({
         sideOffset={8}
         className={cx(
           "z-50 min-w-[180px] rounded-[11px] border border-border bg-surface p-1.5 text-left shadow-[var(--shadow-2)]",
+          // Same entrance as `Select`: scales out of the trigger, using the
+          // origin Radix resolves once it knows which side it landed on.
+          "origin-[var(--radix-dropdown-menu-content-transform-origin)]",
+          "data-[state=closed]:animate-lt-fade-out data-[state=open]:animate-lt-popover",
           className,
         )}
       >

@@ -58,21 +58,28 @@ export function StockDistribution({ items }: { items: TrackedItem[] }) {
               that met itself all the way round; behind gapped arcs it shows
               through every break as a grey sliver, which reads as a sixth
               category rather than as a gap. */}
-          {arcs.map((arc) => (
-            <circle
-              key={arc.category}
-              cx="80"
-              cy="80"
-              r="58"
-              fill="none"
-              stroke={CATEGORY_COLORS[arc.category]}
-              strokeWidth="13"
-              strokeLinecap="butt"
-              strokeDasharray={arc.dash}
-              strokeDashoffset={arc.offset}
-              transform="rotate(-90 80 80)"
-            />
-          ))}
+          {/* The ring rolls into place on load. The rotation is on this group,
+              not on the arcs — each of those carries its own `rotate(-90)` to
+              put twelve o'clock at the top, and the two compose rather than
+              fight. `lt-roll-origin` is what pins the spin to the ring's own
+              centre; see `app/globals.css`. */}
+          <g className="lt-roll-origin animate-lt-roll">
+            {arcs.map((arc) => (
+              <circle
+                key={arc.category}
+                cx="80"
+                cy="80"
+                r="58"
+                fill="none"
+                stroke={CATEGORY_COLORS[arc.category]}
+                strokeWidth="13"
+                strokeLinecap="butt"
+                strokeDasharray={arc.dash}
+                strokeDashoffset={arc.offset}
+                transform="rotate(-90 80 80)"
+              />
+            ))}
+          </g>
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           {/* The count tracks the hole it sits in: at the design's 26px it

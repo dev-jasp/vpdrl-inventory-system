@@ -20,7 +20,9 @@ export default function DashboardPage() {
     <div className="flex flex-col gap-3">
       {/* The design's header row: on duty, handover note, then today's date
           and the to-do list. The latter two are still to build. */}
-      <div className="flex flex-wrap items-center gap-3.5">
+      {/* Rises undelayed, ahead of the grid's stagger, so the entrance reads
+          top-down rather than as a sixth card. */}
+      <div className="flex animate-lt-rise flex-wrap items-center gap-3.5">
         <OnDutyToday />
       </div>
 
@@ -30,7 +32,11 @@ export default function DashboardPage() {
           gutter between rows is the same 20px as the gutter between columns.
           The design has no media queries, so narrow screens stay a whole-shell
           follow-up. */}
-      <div className="grid grid-cols-3 gap-5">
+      {/* `lt-stagger` walks the five grid slots in 45ms steps; see the rule in
+          `app/globals.css`. On the grid rather than the outer column, so the
+          cards stagger against each other instead of the whole grid arriving
+          as one block behind the header. */}
+      <div className="lt-stagger grid grid-cols-3 gap-5">
         <ConsumptionTrend />
         <StockDistribution items={items} />
         <SpendVsBudget />
